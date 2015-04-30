@@ -215,7 +215,7 @@ sub concat{
 
 ##########################
 
-sub crap {
+sub test {
 	print "everything has to be unix-delimited, non-interleaved\n";
 	print "file containing list of taxa: ";
 	$infile=<>;
