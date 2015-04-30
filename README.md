@@ -1,6 +1,6 @@
 # nexustools
 
-Scripts to work with NEXUS files containing morphological data
+Scripts to import, concatenate, and merge morphological NEXUS datasets
 
 ## TODO
 
