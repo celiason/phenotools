@@ -57,5 +57,3 @@ PROBLEMS
 2. Character 25. [bourdon2009 char 25] -- unique id: bourdon2009_25, take this from what's in the brackets, like /([a-z]+[0-9]+)\schar\s(\d{1,4})/ then new id would be $1_$2
 
 then look both scorings side-by-side to see if they line up?
-
-

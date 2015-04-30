@@ -22,3 +22,4 @@ wishlist
 - [ ] Add ability to subset based on character type
 - [ ] Add a way to merge taxa (code overlapping, different scorings as polymorphisms?)
 - [ ] Add way to merge duplicate characters (keep most recent? interleave data?)
+- [ ] Add ability to sort/subset characters based on charsets or grep
