@@ -14,11 +14,9 @@ dat <- readNexus('data/concatenated.nex', type='data', return.labels=FALSE)
 
 dat <- data.matrix(dat)
 
-colnames(dat)
+
 
 # look for pairwise correlations
-
-
 
 # only want comparisons BETWEEN datasets, not within
 

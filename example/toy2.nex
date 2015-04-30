@@ -1,0 +1,25 @@
+#NEXUS
+
+BEGIN TAXA;
+	DIMENSIONS NTAX=3;
+	TAXLABELS
+		species1
+		species2
+		species4
+	;
+END;
+
+BEGIN CHARACTERS;
+	DIMENSIONS NTAX=3 NCHAR=3;
+	FORMAT DATATYPE=STANDARD MISSING=? GAP=- SYMBOLS="01234";
+	CHARLABELS
+	[1] 'wings: absent (0), present (1)'
+	[2] 'skull: absent (0), present (1)'
+	[3] 'beak: absent (0), present (1)'
+	;
+MATRIX
+	species1	111
+	species2	011
+	species4	101
+	;
+END;
