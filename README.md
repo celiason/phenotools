@@ -10,10 +10,10 @@ quality control for input datasets
 - [x] include character state labels
 - [x] make concat script bring in state labels
 - [x] identify possible duplicate characters with some symbol to pull out later
-- [ ] include character sets for trait types (what are these trait types? maybe take from Livezey and Zusi 2006?)
 
 wishlist
 
+- [ ] Make pl script recognize and output character sets from input --> concatenated dataset
 - [ ] Add ability to work with NEXML files
 - [ ] Implement concatenate function in R
 - [ ] Complete find duplicates function
