@@ -21,6 +21,7 @@ use diagnostics;
 #  must not be interleaved.
 
 sub concat{
+	# a toggle for whether to output state labels (1) or not (0)
 	$labelstates=0;
 	print "everything has to be unix-delimited, non-interleaved\n";
 	print "file containing list of taxa: ";

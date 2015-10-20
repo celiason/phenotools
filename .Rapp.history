@@ -1,0 +1,396 @@
+birdrept <- plot(paste.tree(tmp, reptiles2))
+plot(paste.tree(tmp, reptiles2))
+mammals2$root.edge
+reptiles2$root.edge
+reptiles2$root.edge <- 315
+plot(paste.tree(tmp, reptiles2))
+birdrept <- paste.tree(tmp, reptiles2)
+plot(birdrept)
+axisPhylo()
+d4 <- branching.times(birdrept)[1]
+d4
+tmp <- bind.tip(birdrept,"NA",position=315-d1,edge.length=-d2)
+birdrept$root.edge
+birdrept$root.edge <- 315
+tmp <- bind.tip(birdrept,"NA",position=315-d1,edge.length=-d2)
+plot(tmp)
+tmp <- bind.tip(birdrept,"NA",position=315-d1,edge.length=d2)
+plot(tmp)
+alltax <- paste.tree(birdrept, mammals2)
+mammals2$root.edge
+tmp$root.edge
+alltax <- paste.tree(tmp, mammals2)
+plot(alltax)
+axisPhylo()
+tmp <- bind.tip(birds2,"NA",position=315-d1,edge.length=-d3)
+birdrept <- paste.tree(tmp, reptiles2)
+plot(birdrept)#
+axisPhylo()
+d4 <- branching.times(birdrept)[1]
+birdrept$root.edge <- 315
+tmp <- bind.tip(birdrept,"NA",position=315-d4,edge.length=d2)
+plot(tmp)
+alltax <- paste.tree(tmp, mammals2)#
+plot(alltax)#
+axisPhylo()
+tmp <- bind.tip(birdrept,"NA",position=315-d4,edge.length=-d2)
+plot(tmp)#
+#
+alltax <- paste.tree(tmp, mammals2)#
+plot(alltax)#
+axisPhylo()
+tmp <- bind.tip(birds2,"NA",position=275-d1,edge.length=-d3)
+birdrept <- paste.tree(tmp, reptiles2)
+plot(birdrept)#
+axisPhylo()
+mammals2$root.edge <- 315#
+birds2$root.edge <- 275#
+reptiles2$root.edge <- 275
+tmp <- bind.tip(birds2, "NA", position=275)
+d1 <- branching.times(birds2)[1]#
+d2 <- branching.times(mammals2)[1]#
+d3 <- branching.times(reptiles2)[1]
+tmp <- bind.tip(birds2,"NA",position=275-d1,edge.length=-d3)
+birdrept <- paste.tree(tmp, reptiles2)
+plot(birdrept)#
+axisPhylo()
+d4 <- branching.times(birdrept)[1]
+birdrept$root.edge <- 315
+tmp <- bind.tip(birdrept,"NA",position=315-d4,edge.length=-d2)#
+#
+plot(tmp)#
+#
+alltax <- paste.tree(tmp, mammals2)#
+plot(alltax)#
+axisPhylo()
+abline(v=-275)
+abline(v=275)
+plot(alltax,no.margin=T)
+abline(v=275)
+abline(v=315)
+abline(v=0)
+abline(v=315-275)
+plot(alltax,no.margin=T)#
+axisPhylo()
+abline(v=0)
+abline(v=315-275)
+write.tree(alltax, file="~/palaeognaths/phylogenetic trees/alltax.phy")
+alltax
+alltax$tip.label
+branching.times(alltax)
+makeNodeLabel(alltax)
+write.tree(makeNodeLabel(alltax), file="~/palaeognaths/phylogenetic trees/alltax.phy")
+library(pavo)
+dat <- read.csv("~/Desktop/spectra.csv")
+source("~/github/pavo/R/spec2xyz.R")
+source("~/github/pavo/R_temp/spec2xyz.R")
+library(pavo)
+dat <- read.csv("~/Desktop/spectra.csv")
+head(dat)
+spec <- as.rspec(dat)
+plot(spec)
+spec2rgb(spec)
+source("~/github/pavo/R_temp/spec2xyz.R")
+specxyz(spec)
+spec2xyz(spec)
+source("~/github/pavo/R_temp/spec2xyz.R")
+spec2xyz(spec)
+source("~/github/pavo/R/spec2rgb.")
+source("~/github/pavo/R/spec2rgb.R")
+spec2rgb(spec)
+col2rgb(spec2rgb(spec))
+source("~/github/pavo/R_temp/spec2xyz.R")
+spec2xyz(spec)
+library(pavo)#
+#
+dat <- read.csv("~/Desktop/spectra.csv")#
+#
+spec <- as.rspec(dat)#
+#
+head(spec)#
+#
+# old version#
+spec2rgb(spec)#
+#
+source("~/github/pavo/R_temp/spec2xyz.R")#
+#
+spec2xyz(spec)
+library(pavo)#
+#
+dat <- read.csv("~/Desktop/spectra.csv")#
+#
+spec <- as.rspec(dat)#
+#
+head(spec)#
+#
+# old version#
+pavo:::spec2rgb(spec)#
+#
+source("~/github/pavo/R_temp/spec2xyz.R")#
+#
+spec2xyz(spec)
+spec$spec100 <- spec[,2] * 100
+head(spec)
+pavo:::spec2rgb(spec)
+col2rgb(pavo:::spec2rgb(spec))
+col2rgb(spec2rgb(spec))
+source("~/github/pavo/R_temp/spec2xyz.R")
+spec2xyz(spec)
+spec2xyz(spec)[1, ]
+col2rgb(spec2rgb(spec))[3]
+col2rgb(pavo:::spec2rgb(spec))[2]
+col2rgb(pavo:::spec2rgb(spec))[,2]
+col2rgb(pavo:::spec2rgb(spec))
+col2rgb(pavo:::spec2rgb(spec))[,3]
+col2rgb(spec2rgb(spec))[,3]
+pavo
+version()
+ver(pavo)
+apropos("ver")
+version
+?pavo
+library(pavo)
+?pavo
+library(pavo)#
+#
+dat <- read.csv("~/Desktop/spectra.csv")#
+#
+spec <- as.rspec(dat)#
+#
+# create spectrum ranging from 0-100% reflectance#
+spec$spec100 <- spec[,2] * 100#
+#
+head(spec)#
+#
+# pavo version 0.0-1#
+col2rgb(pavo:::spec2rgb(spec))[,3]#
+#
+# pavo version #
+col2rgb(spec2rgb(spec))[,3]#
+#
+source("~/github/pavo/R_temp/spec2xyz.R")#
+#
+spec2xyz(spec)[1, ]
+update.packages("pavo")
+library(pavo)
+spec2rgb
+install.packages("pavo")
+library(pavo)
+?pavo
+spec2rgb
+update.packages("pavo")
+library(pavo)
+?pavo
+library(pavo)
+?pavo
+library(pavo)
+?pavo
+dat <- read.csv("~/Desktop/spectra.csv")#
+#
+spec <- as.rspec(dat)#
+#
+# create spectrum ranging from 0-100% reflectance#
+spec$spec100 <- spec[,2] * 100#
+#
+head(spec)#
+#
+# pavo version 0.0-1#
+col2rgb(pavo:::spec2rgb(spec))[,3]#
+#
+# pavo version #
+col2rgb(spec2rgb(spec))[,3]#
+#
+source("~/github/pavo/R_temp/spec2xyz.R")#
+#
+spec2xyz(spec)[1, ]
+library(pavo)#
+#
+dat <- read.csv("~/Desktop/spectra.csv")#
+#
+spec <- as.rspec(dat)#
+#
+# create spectrum ranging from 0-100% reflectance#
+spec$spec100 <- spec[,2] * 100#
+#
+head(spec)#
+#
+# pavo version 0.0-1#
+col2rgb(pavo:::spec2rgb(spec))[,3]#
+#
+# pavo version #
+col2rgb(spec2rgb(spec))[,3]#
+#
+source("~/github/pavo/R_temp/spec2xyz.R")#
+#
+spec2xyz(spec)[1, ]
+library(pavo)#
+#
+dat <- read.csv("~/Desktop/spectra.csv")#
+#
+spec <- as.rspec(dat)#
+#
+# create spectrum ranging from 0-100% reflectance#
+spec$spec100 <- spec[,2] * 100#
+#
+head(spec)#
+#
+col2rgb(spec2rgb(spec))[,3]#
+#
+source("~/github/pavo/R_temp/spec2xyz.R")#
+#
+spec2xyz(spec)[1, ]
+install.packages("pavo")
+library(pavo)
+?pavo
+library(pavo)
+?pavo
+dat <- read.delim(pipe("pbpaste"), head=F)
+dat
+dat$type <- c('diameter', 'spacing')
+dat
+boxplot(V8~type, dat)
+dat$type <- c('platelet_diameter', 'platelet_spacing')
+boxplot(V8~type, dat)
+dat %>% group_by(type) %>% summarize(mean(V8))
+dat %>% group_by(type) %>% summarize(size.mean=mean(V8))
+dat %>% group_by(type) %>% summarize(size.mean=mean(V8), size.sd=sd(V8))
+dat %>% group_by(type) %>% summarize(size.mean=mean(V8), size.se=sd(V8)/sqrt(length(V8)))
+dat %>% group_by(type) %>% summarize(size.mean=mean(V8), size.2se=2*sd(V8)/sqrt(length(V8)))
+2*(61/143) + 1.56*((143-61)/143)
+navg <- 2*(61/143) + 1.56*((143-61)/143)
+navg
+2*144*navg
+data <- read.delim(pipe("pbpaste"), head=F)
+data
+head(data)
+data
+data[33,]
+plot(V4~V3, data, xlab="length", ylab="diameter")
+plot(as.numeric(V4)~V3, data, xlab="length", ylab="diameter")
+plot(as.numeric(V4)~as.numeric(V3), data, xlab="length", ylab="diameter")
+source("/Users/chadeliason/Documents/UT/projects/melanocolor/color analysis.Rmd")
+10 + 10
+library(proto)
+10 + 10
+library(knite)
+library(knitr)
+packageVersion(knitr)
+packageVersion('knitr')
+?knitr
+library(knitr)
+packageVersion('knitr')
+.libPaths()
+library(knitr)
+?knitr
+library(knitr)
+update.packages("formatR")
+library(knitr)
+?knitr
+apropos("uninstall")
+apropos("remove")
+remove.packages("knitr")
+.libPaths()
+library(knitr)
+install.packages("formatR")
+library(knitr)
+?knitr
+tre <- read.nexus('~/Downloads/DataFiles+Trees/2_MolecularDating/2.1_BEAST_AllTaxa/Mitochondrial_AllTaxa.tree')
+library(phytools)
+packageVersion('phytools')
+??adf
+bg1 <- readRDS("~/Dropbox/peacocks/output/bandgap_ra0.27.RDS")
+head(bg1)
+head(bg1[[1]])
+plot(te.band.1~k.index, bg1[[1]])
+plot(te.band.1~k.index, bg1[[1]], type='l', ylim=c(0, 1))
+lines(te.band.2~k.index, bg1[[1]], type='l', ylim=c(0, 1))
+lines(te.band.3~k.index, bg1[[1]], type='l', ylim=c(0, 1))
+lines(te.band.4~k.index, bg1[[1]], type='l', ylim=c(0, 1))
+lines(tm.band.1~k.index, bg1[[2]], type='l', ylim=c(0, 1))
+lines(tm.band.1~k.index, bg1[[2]], type='l', ylim=c(0, 1), lty=2)
+lines(tm.band.2~k.index, bg1[[2]], type='l', ylim=c(0, 1), lty=2)
+lines(tm.band.3~k.index, bg1[[2]], type='l', ylim=c(0, 1), lty=2)
+lines(tm.band.4~k.index, bg1[[2]], type='l', ylim=c(0, 1), lty=2)
+plot(te.band.1~k.index, bg1[[1]], type='l', ylim=c(0, 1))
+lines(tm.band.2~k.index, bg1[[2]], type='l', ylim=c(0, 1), lty=2)
+lines(tm.band.3~k.index, bg1[[2]], type='l', ylim=c(0, 1), lty=2)
+lines(tm.band.4~k.index, bg1[[2]], type='l', ylim=c(0, 1), lty=2)
+lines(te.band.2~k.index, bg1[[1]], type='l', ylim=c(0, 1))
+lines(te.band.3~k.index, bg1[[1]], type='l', ylim=c(0, 1))
+lines(te.band.4~k.index, bg1[[1]], type='l', ylim=c(0, 1))
+lines(tm.band.1~k.index, bg1[[2]], type='l', ylim=c(0, 1), lty=2)
+str(bg1)
+plot(te.band.1~k.index, bg1[[1]], type='l', ylim=c(0, 1))
+lines(te.band.2~k.index, bg1[[1]], type='l', ylim=c(0, 1))
+lines(te.band.3~k.index, bg1[[1]], type='l', ylim=c(0, 1))
+lines(te.band.4~k.index, bg1[[1]], type='l', ylim=c(0, 1))
+plot(tm.band.1~k.index, bg1[[1]], type='l', ylim=c(0, 1))
+plot(tm.band.1~k.index, bg1[[2]], type='l', ylim=c(0, 1))
+lines(tm.band.2~k.index, bg1[[2]], type='l', ylim=c(0, 1))
+lines(tm.band.3~k.index, bg1[[2]], type='l', ylim=c(0, 1))
+lines(tm.band.4~k.index, bg1[[2]], type='l', ylim=c(0, 1))
+install.packages("auteur")
+library(geiger)
+?geiger
+rawdat$spp
+?update.packages
+update.packages(ask=F)
+library(ape)
+?ape
+library(momocs)
+library(momoc)
+library(Momocs)
+?Momocs
+10
+library(stringr)
+packageVersion('stringr')
+?stringr
+?str_extract
+update.packages('stringr')
+library(stringr)
+packageVersion('stringr')
+detach('package:stringr')
+packageVersion('stringr')
+?str_extract
+packageVersion('stringr')
+setwd('~/github/nexustools')
+source('R/read.nex.R')
+source('R/write.nex.R')
+tmp <- read.nex(file = '~/Documents/UT/projects/phenome/data/concatenated.nex')
+sort.nex <- function(x, by = c('charlabels', 'taxlabels'), ...) {#
+  res <- x#
+  by <- match.arg(by)#
+  if (by == 'taxlabels') {#
+    ord <- order(x$taxlabels, ...)#
+    res$data <- x$data[ord, ]#
+    res$taxlabels <- sort(x$taxlabels, ...)#
+    res#
+  }#
+  if (by == 'charlabels') {#
+    ord <- order(x$charlabels, ...)#
+    res$data <- x$data[, ord]#
+    res$charlabels <- sort(x$charlabels, ...)#
+    res#
+  }#
+}
+sort(tmp)
+print.nex <- function(x) {#
+  cat('NEXUS data file with', x$nchar, 'morphological characters and', length(x$taxlabels), 'taxa\n')#
+}
+print.nex <- function(x) {#
+  cat('NEXUS data file with', x$nchar, 'morphological characters and', length(x$taxlabels), 'taxa\n')#
+}
+plot.nex <- function(x) {#
+  # image(data.matrix(x$data))#
+  # x <- tmp#
+  xx <- x$charlabels#
+  yy <- x$taxlabels#
+  df <- expand.grid(x=xx,y=yy)#
+  df$z <- as.factor(t(x$data))#
+  # df$x <- str_extract(df$x, '\\w+(?=\\:)')#
+  df$x <- abbreviate(df$x, 6, strict=TRUE)#
+  ggplot(df, aes(x, y, fill=z)) + geom_tile() + theme(legend.position='none', axis.text.x=element_blank()) +#
+    scale_fill_discrete(na.value="white")#
+}
+sort(tmp, by='char')
+sort(tmp, by='tax')

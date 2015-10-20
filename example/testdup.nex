@@ -1,0 +1,30 @@
+#NEXUS
+
+BEGIN TAXA;
+	DIMENSIONS NTAX=4;
+	TAXLABELS
+		sp1
+		sp2
+		sp3
+		sp4
+	;
+END;
+
+BEGIN CHARACTERS;
+	DIMENSIONS NTAX=4 NCHAR=6;
+	FORMAT DATATYPE=STANDARD MISSING=? GAP=- SYMBOLS="012";
+	CHARLABELS
+		[1] 'trait 1'
+		[2] 'trait 2'
+		[3] 'trait 3'
+		[4] 'trait 4'
+		[5] 'trait 5'
+		[6] 'trait 6'
+	;
+	MATRIX
+		sp1	01???0
+		sp2	10???1
+		sp3	10102?
+		sp4	01010?
+	;
+END;

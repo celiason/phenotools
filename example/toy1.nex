@@ -13,7 +13,7 @@ BEGIN CHARACTERS;
 	DIMENSIONS NTAX=3 NCHAR=3;
 	FORMAT DATATYPE=STANDARD MISSING=? GAP=- SYMBOLS="01234";
 	CHARLABELS
-	[9] 'legs: absent (0), present (1)'
+	[1] 'legs: absent (0), present (1)'
 	[2] 'manus: absent (0), present (1)'
 	[3] 'eyes: absent (0), present (1)'
 	;
@@ -22,4 +22,8 @@ MATRIX
 	species2	011
 	species3	101
 	;
+END;
+
+BEGIN SETS;
+	CHARPARTITION bodyparts=appendage:1-2, head:3;
 END;

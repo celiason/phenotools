@@ -1,0 +1,59 @@
+# snippets for merging nexus datasets
+
+	# this didn't work:
+		# 	if ($line =~ /^.+\d{1,4}\s.+/) {
+		# 		my ($statenum,$statename) = $line =~ /^.+(\d{1,4})\s(.+)/;
+		# 		my $newname = "$statename [$nexusfile trait $statenum]";
+		# 		push(@statearray,$newname);
+		# 	}
+	# foreach (@lines) {
+	# 	if (/TAXLABELS/ ... /\;/) {
+	# 		# strip whitespace
+	# 		for ($_) {
+	# 			s/^\s+//;
+	# 			s/\s+$//;
+	# 		}
+	# 		# add to taxa label array
+	# 		push(@taxlabels,$_);
+	# 	}
+	# 	# get number of taxa
+	# 	if (/NTAX[\s]*=[\s]*(\d+)\s*\;/i) {
+	# 		$ntax = $1;
+	# 	}
+	# }
+
+
+		# capture content between any tags labeled h1-h6
+		# while ($lines =~ /<h([1-6])>(.*?)<\/h\1>/igs) {
+		# 	print "$2\n";
+		# }
+		# print @lines;
+		# while (<FH> =~ /CHARLABELS(.*?);$/gs) {
+		# 	print $1;
+		# }
+
+		# collect character labels, looks for this pattern: [1.] ... or [1] ..., store
+		# character name and number:
+		# foreach (<FH> =~ /CHARLABELS(.*?);$/ms) {
+		# 	my ($charnum,$charname) = $_ =~ /^.+\[(\d{1,4})[.]*\]\s'(.+)'/;
+		# 	my $newname = "'$charname [$nexusfile trait $charnum]'";
+		# 	push(@chararray,$newname);
+		# 	print "$_";
+		# }
+
+		# foreach (@lines) {
+		# 	if (/STATELABELS/../;\n/) {
+		# 		if ($_ =~ /^[\t]*(\d{1,4})\s(.+)/) {
+		# 		# if ($_ =~ /^.+(\d{1,4})\s(.+)/) {
+		# 			my $statename = "$2 [$nexusfile trait $1]";
+		# 			push(@statearray,$statename);
+		# 		}
+		# 	}
+		# 	if ($_ =~ /CHARLABELS(.*?);$/ms) {
+		# 		my ($charnum,$charname) = $1 =~ /^.+\[(\d{1,4})[.]*\]\s'(.+)'/;
+		# 		my $newname = "'$charname [$nexusfile trait $charnum]'";
+		# 		push(@chararray,$newname);
+		# 	}
+		# }
+
+		
