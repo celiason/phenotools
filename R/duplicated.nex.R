@@ -20,8 +20,8 @@
 #'
 #' @author Chad Eliason \email{chad_eliason@@utexas.edu}
 #'
-# x <- allnex
-# map <- NULL
+x <- subset(allnex, charpartition=="skull")
+map <- NULL
 duplicated.nex <- function(x, cutoff = 0.25, map = NULL, force = FALSE) {
   # provide map of duplicated characters
   if (!is.null(map)) {
@@ -36,18 +36,18 @@ duplicated.nex <- function(x, cutoff = 0.25, map = NULL, force = FALSE) {
     # generate all possible pairs of character combinations
     pairids <- combn(1:ncol(x$data), m=2)
     # only want comparisons BETWEEN datasets/character types, not within
+    # TODO - m???
     file <- x$file
     id <- file[pairids[1, ]] != file[pairids[2, ]]
     pairids <- pairids[, id]
     # only look within character partitions
-    if (!is.null(x$charpartition)) {
+    if (!is.null(x$charpartition) & length(unique(x$charpartition))>1) {
       charpart <- x$charpartition
       id <- charpart[pairids[1, ]] != charpart[pairids[2, ]]
       pairids <- pairids[, id]
     }
     # dim(pairids)
     # 9,376,615 -> 4,482,475 possible combinations (only 2X improvement..hmm might need to look into another way of "blocking" these comparisons)
-
     # calculate text distances (takes ~200 seconds for 2.2M comparisons)
     stringdists <- numeric(length = ncol(pairids))
     require(stringdist)
