@@ -20,8 +20,28 @@
 #'
 #' @author Chad Eliason \email{chad_eliason@@utexas.edu}
 #'
+
+
+
+
 x <- subset(allnex, charpartition=="skull")
 map <- NULL
+
+
+# training step
+# logistic regression (map string distance to probability a pair is a match, given a training dataset)
+
+# hl <- subset(allnex2, charpartition=="hindlimb")
+
+# dups <- duplicated(hl, cutoff=0.15)
+
+# dups$pairids
+
+# randomly sample some high and low distance character pairs to "train" the algorithm
+
+
+
+
 duplicated.nex <- function(x, cutoff = 0.25, map = NULL, force = FALSE) {
   # provide map of duplicated characters
   if (!is.null(map)) {
@@ -32,7 +52,7 @@ duplicated.nex <- function(x, cutoff = 0.25, map = NULL, force = FALSE) {
     oldnames <- x$charlabels
     # remove comments in square brackets
     # newnames <- str_match(x$charlabels, "[\\']*(.+)[\\s\\[.+\\]]")[,2]
-    newnames <- str_replace(x$charlabels, "[\\s]*\\[.+\\][\\s]*", "")
+    newnames <- str_replace_all(x$charlabels, "[\\s]*[\\[\\(].+[\\]\\)][\\s]*", "")
     # generate all possible pairs of character combinations
     pairids <- combn(1:ncol(x$data), m=2)
     # only want comparisons BETWEEN datasets/character types, not within
@@ -76,20 +96,12 @@ duplicated.nex <- function(x, cutoff = 0.25, map = NULL, force = FALSE) {
     for (i in seq_along(sset.dist)) {
       id1 <- pairids[1, sset[i]]
       id2 <- pairids[2, sset[i]]
-      # spp1 <- names(na.omit(x$taxlabels[id1]))
-      # spp2 <- names(na.omit(x$taxlabels[id2]))
-      # not1 <- setdiff(spp2, spp1)
-      # not2 <- setdiff(spp1, spp2)
-      # both <- intersect(spp1, spp2)
       # print pairs of characters:
       cat('\n-------\nTrait pair', i, ' (string distance = ', sset.dist[i], ') \n\nCHARLABELS:\n\n',
         oldnames[id1], ' (', file[id1], ', character ', x$charnums[id1],')\n\n',
         oldnames[id2], ' (', file[id2], ', character ', x$charnums[id2],')\n\nSTATELABELS:\n\n',
         x$statelabels[id1], '\n\n',
         x$statelabels[id2], '\n----------\n\n', sep="")
-      # if (!is.null(not1)) cat('\nmissing in trait1:\n ', paste(not1, collapse='\n'))
-      # if (!is.null(not2)) cat('\n\nmissing in trait2:\n ', paste(not2, collapse='\n'))
-      # if (!is.null(both)) cat('\n\nspecies overlapping:\n ', paste(both, collapse='\n'), '\n')
       cat('Are these the same traits (y/n/N/c)\n')
       # wait for user input
       answer[i] <- scan(n=1, what='character')
@@ -184,6 +196,8 @@ duplicated.nex <- function(x, cutoff = 0.25, map = NULL, force = FALSE) {
   res$charset <- res$charset[-na.omit(drops)]
   res$charnums <- res$charnums[-na.omit(drops)]
   res$charpartition <- res$charpartition[-na.omit(drops)]
+
+  res$pairids <- pairids
 
   return(res)
 
