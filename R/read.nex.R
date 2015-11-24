@@ -169,11 +169,6 @@ read.nex <- function(file, missing = '?', gap = '-') {
 		charstatelabels <- str_match_all(x[charlabelsstart:charlabelsend],
 			"(\\t|\\,)\\s(\\d{1,})\\s'(.*?)('\\s\\/(.*?))?(?=\\;(\\s)?$|(\\,\\s\\d{1,}\\s'))")
 
-# charstatelabels[[1]][3, ]
-# charstatelabels[[1]][19, ]
-# charstatelabels[[1]][1119, ]
-# charstatelabels[[1]][2504, ]
-
 		charnums <- as.numeric(charstatelabels[[1]][,3])
 		charlabels <- charstatelabels[[1]][,4]
 		statelabels <- charstatelabels[[1]][,6]

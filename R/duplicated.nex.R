@@ -25,6 +25,12 @@
 #'
 
 # x <- allnex2
+# x <- subset(allnex2, charpartition=="hindlimb")
+# x
+
+# TODO: [ ] look for duplicates within character names (e.g., 'From Bourdon et al. (2009a: char. 66)') 
+# TODO: [x] paste together character labels and state labels, look for distances between them
+# TODO: [ ] add text output/progress bar to give user feedback
 
 duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = TRUE, cutoff = 0.35) {
 
@@ -69,7 +75,7 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = TRUE, c
   # provide map of duplicated characters
   if (!is.null(map)) {
     # pairids <- matrix(unlist(map), ncol=length(map))
-    dups <- matrix(unlist(map), ncol=length(map))
+    dups <- matrix(unlist(map), ncol = length(map))
   }
 
   # automated discovery of duplicate characters
@@ -79,9 +85,6 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = TRUE, c
     # clean up character names
     newstatenames <- cleantext(oldstatenames)
     newcharnames <- cleantext(oldcharnames)
-
-    # [ ] look for duplicates within character names (e.g., 'From Bourdon et al. (2009a: char. 66)') 
-    # [x] paste together character labels and state labels, look for distances between them
 
     # generate all possible pairs of character combinations
     pairids <- combn(seq_along(newcharnames), m=2)
@@ -112,13 +115,23 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = TRUE, c
     }
     names(stringdists) <- 1:length(stringdists)
     sset.dist <- sort(stringdists)
-    sset <- as.numeric(names(stringdists.sorted))
+    sset <- as.numeric(names(stringdists))
+
+# train <- TRUE
+
+# cutoff = 0.35
+
+# n <- 10
 
     if (train) {
       sscut <- stringdists[stringdists < cutoff]
       sscut <- sort(sscut)
       # sample evenly over range of string distances
       ss <- round(seq(1, length(sscut), length = n))
+      
+      # [ ] employ a random sampling approach?
+
+
       sstrain <- sscut[ss]
       sset.dist <- sstrain
       sset <- as.numeric(names(sset.dist))
@@ -129,7 +142,8 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = TRUE, c
       lda1 <- lda(match~dist, data=df)
       pred <- predict(lda1, data.frame(dist=stringdists))
       # matches with > 50% probability of being a match
-      matchid <- as.numeric(names(pred$posterior[, 2][pred$posterior[, 2] > 0.5]))
+      matchid <- which(pred$posterior[, 2] > 0.5)
+      # matchid <- as.numeric(names(pred$posterior[, 2][pred$posterior[, 2] > 0.5]))
       dups <- pairids[, matchid]
 
       plot(predict(lda1, df)$posterior[,2]~df[,2], type='b', col=df[,1]+1, pch=16, xlab="String distance", ylab="P(duplicate)")
