@@ -16,7 +16,7 @@
 #' @author Chad Eliason \email{chad_eliason@@utexas.edu}
 #'
 write.nex <- function(x, file, missing=NULL, gap=NULL, mrbayes=FALSE, ngen=NULL, phy=NULL, run=FALSE, format=c("nexus", "tnt")) {
-  format <- match.args(format)
+  format <- match.arg(format)
   if (is.null(missing)) {
     missing <- x$missing
   }
