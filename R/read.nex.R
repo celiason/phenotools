@@ -13,6 +13,11 @@
 #' @author Chad Eliason \email{chad_eliason@@utexas.edu}
 #'
 #'
+
+# file <- "/Users/chadeliason/Downloads/monograph matrix public.nex"
+# missing <- '?'
+# gap <- '-'
+
 read.nex <- function(file, missing = '?', gap = '-') {
 
   	x <- scan(file = file, what = "", sep = "\n")
@@ -20,7 +25,7 @@ read.nex <- function(file, missing = '?', gap = '-') {
 	# find number of characters
 	nchar <- as.numeric(na.omit(str_extract(x, regex('(?<=NCHAR=)\\d+', ignore_case=TRUE))))
 	
-	# problem if ntax specified multiple times
+	# throws an error if ntax specified multiple times
 	ntax <- as.numeric(na.omit(str_extract(x, regex('(?<=NTAX=)\\d+', ignore_case=TRUE)))[1])
 	
 	# where are taxon labels
@@ -84,8 +89,9 @@ read.nex <- function(file, missing = '?', gap = '-') {
 	
 	# charset <- rep(file, ncol(mat))
 	# charset <- rep(str_extract(file, '\\w+[\\s\\w]*\\.nex'), ncol(mat))
-
-	file <- rep(str_extract(file, '\\w+[\\s\\w]*\\.nex'), ncol(mat))
+	
+	# file <- rep(str_extract(file, '\\w+[\\s\\w]*\\.nex'), ncol(mat))
+	file <- rep(str_extract(file, '\\w+[\\s\\w]*(?=\\.nex)'), ncol(mat))
 
 	res <- list(taxlabels = taxlabels, data = mat, symbols = symbols, gap = gap, missing = missing, file = file)
 

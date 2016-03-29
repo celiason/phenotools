@@ -23,20 +23,20 @@
 #' @author Chad Eliason \email{chad_eliason@@utexas.edu}
 #'
 #'
-
 # x <- allnex2
 # x <- subset(allnex2, charpartition=="hindlimb")
 # x
-
 # TODO: [ ] look for duplicates within character names (e.g., 'From Bourdon et al. (2009a: char. 66)') 
 # TODO: [x] paste together character labels and state labels, look for distances between them
 # TODO: [ ] add text output/progress bar to give user feedback
-
-duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = TRUE, cutoff = 0.35) {
+#
+duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = TRUE, cutoff = 0.35, method = c("jw", "cosine")) {
 
   library(stringdist)
   library(tm)
   library(MASS)
+
+  method <- match.arg(method)
 
   cleantext <- function(x) {
       x <- str_replace_all(x, "[\\s]*[\\[\\(].+[\\]\\)][\\s]*", "")  # remove comments in square brackets
@@ -44,7 +44,7 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = TRUE, c
       x <- gsub("\\s{2,}", " ", x)  # remove extra spaces
       x <- gsub("^\\s", "", x)  # take out beginning spaces
       x <- gsub("\\s$", "", x)
-      x <- removePunctuation(x)
+      x <- removePunctuation(x)  # might work better not doing this??
       x <- gsub("\\bthe\\b", "", x)
       x <- gsub("\\bin\\b", "", x)
       x <- gsub("\\bat\\b", "", x)
@@ -101,37 +101,52 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = TRUE, c
       pairids <- pairids[, id]
     }
 
-    # calculate text distances (takes ~200 seconds for 2.2M comparisons):
     stringdists <- numeric(length = ncol(pairids))
+    
+    # create progress bar
+    pb <- txtProgressBar(min = 0, max = ncol(pairids), style = 3)
 
+#### WORK ON OPTIMIZING THIS PART
+    
+    # calculate text distances (takes ~200 seconds for 2.2M comparisons):
+    
     for (i in 1:ncol(pairids)) {
+      # Sys.sleep(0.1)
       str1a <- newcharnames[pairids[1,i]]
       str1b <- newstatenames[pairids[1,i]]
       str2a <- newcharnames[pairids[2,i]]
       str2b <- newstatenames[pairids[2,i]]
-      stringdist1 <- stringdist(str1a, str2a, method="jw")
-      stringdist2 <- stringdist(str1b, str2b, method="jw")
+      stringdist1 <- stringdist(str1a, str2a, method = method)
+      stringdist2 <- stringdist(str1b, str2b, method = method)
       stringdists[i] <- stringdist1 + stringdist2
+      # update progress bar
+      setTxtProgressBar(pb, i)
     }
+
+###### 71 seconds with for loop
+
+    close(pb)
+
     names(stringdists) <- 1:length(stringdists)
+
     sset.dist <- sort(stringdists)
+
     sset <- as.numeric(names(stringdists))
 
 # train <- TRUE
-
 # cutoff = 0.35
-
 # n <- 10
 
     if (train) {
       sscut <- stringdists[stringdists < cutoff]
       sscut <- sort(sscut)
       # sample evenly over range of string distances
-      ss <- round(seq(1, length(sscut), length = n))
-      
-      # [ ] employ a random sampling approach?
-
-
+      # ss <- round(seq(1, length(sscut), length = n))
+      # [x] employ a random sampling approach?
+      # ss <- round(runif(n, 0, 1) * length(sscut))
+      ss <- sapply(seq(0, cutoff, length=n), function(z) {
+        which.min(abs(sscut - z))
+      })
       sstrain <- sscut[ss]
       sset.dist <- sstrain
       sset <- as.numeric(names(sset.dist))

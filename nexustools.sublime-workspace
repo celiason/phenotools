@@ -1,0 +1,1870 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"charpart",
+				"charpartranges"
+			],
+			[
+				"elemen",
+				"element_blank"
+			],
+			[
+				"str_extract",
+				"str_extract_all"
+			],
+			[
+				"Tina",
+				"Tinamiformes_"
+			],
+			[
+				"stringdi",
+				"stringdists.RDS"
+			],
+			[
+				"stringd",
+				"stringdists.sorted"
+			],
+			[
+				"eleme",
+				"element_blank"
+			],
+			[
+				"Turnix_sylvatica",
+				"Turnix_sylvatica_sylvatica"
+			],
+			[
+				"Turnix_syl",
+				"Turnix_sylvaticus_lepurana"
+			],
+			[
+				"elem",
+				"element_blank"
+			],
+			[
+				"scale_linetyp",
+				"scale_linetype_manual"
+			],
+			[
+				"scale_shap",
+				"scale_shape_manual"
+			],
+			[
+				"pal",
+				"paleognath"
+			],
+			[
+				"updat",
+				"updateable"
+			],
+			[
+				"Aptery",
+				"Apterygiformes"
+			],
+			[
+				"Apter",
+				"Apterygiformes"
+			],
+			[
+				"Aepy",
+				"Aepyornithiformes"
+			],
+			[
+				"predi",
+				"predictability"
+			],
+			[
+				"scale_brewer",
+				"scale_color_brewer"
+			],
+			[
+				"paleo",
+				"paleognathe"
+			],
+			[
+				"Tue",
+				"TukeyHSD"
+			],
+			[
+				"branching",
+				"branching.times"
+			],
+			[
+				"nexus",
+				"nexusfilearray"
+			],
+			[
+				"worth",
+				"worthy_scofield_dataset"
+			],
+			[
+				"a",
+				"vertical-align"
+			],
+			[
+				"Pmat_",
+				"Pmat_calc"
+			],
+			[
+				"Spat",
+				"SpatialPolygons2PolySet"
+			],
+			[
+				"reduc",
+				"reduced_freq_sims"
+			],
+			[
+				"sim_uni",
+				"sim_uni_red"
+			],
+			[
+				"sim_uni_",
+				"sim_uni_green"
+			],
+			[
+				"specs_full",
+				"specs_full_noabs"
+			],
+			[
+				"tcs_2layer",
+				"tcs_2layer_mel"
+			],
+			[
+				"specs",
+				"specs_mat_const"
+			],
+			[
+				"argent",
+				"argentat"
+			],
+			[
+				"specs_2lay",
+				"specs_2layer_mel"
+			],
+			[
+				"tcs_2lay",
+				"tcs_2layer_mel"
+			],
+			[
+				"specs_lay",
+				"specs_2layer_mel"
+			],
+			[
+				"specs_mat",
+				"specs_mat_const"
+			],
+			[
+				"grade",
+				"graded_delta_sims"
+			],
+			[
+				"peakdat",
+				"peakdata_new"
+			],
+			[
+				"Anas_quer",
+				"Anas_querquedula"
+			],
+			[
+				"Anas_que",
+				"Anas_querquedela"
+			],
+			[
+				"Anas_",
+				"Anas_poecilorhyncha"
+			],
+			[
+				"Anas",
+				"Anas_poecilorhyncha"
+			],
+			[
+				"laysan",
+				"laysanensis"
+			],
+			[
+				"obs",
+				"obsoverlap"
+			],
+			[
+				"cortexmean",
+				"cortexmean_t"
+			],
+			[
+				"bri",
+				"bright_c"
+			],
+			[
+				"bright_",
+				"bright_b"
+			],
+			[
+				"broad",
+				"broadband_sims"
+			],
+			[
+				"specs_",
+				"specs_pobi_specular"
+			],
+			[
+				"grad",
+				"graded_diam_sims"
+			],
+			[
+				"graded_",
+				"graded_in_air"
+			],
+			[
+				"specs_pafa",
+				"specs_pafa_specular"
+			],
+			[
+				"specular",
+				"specular_pol"
+			],
+			[
+				"arsim_",
+				"arsims_cort"
+			],
+			[
+				"spec",
+				"specs_pobi"
+			],
+			[
+				"FALSE",
+				"FALSE"
+			],
+			[
+				"testpara",
+				"testParams2"
+			],
+			[
+				"scat_",
+				"scat_cross_section"
+			],
+			[
+				"thresh",
+				"threshold_tail"
+			],
+			[
+				"tre",
+				"threshold_tail"
+			],
+			[
+				"brightness",
+				"brightness_b3"
+			],
+			[
+				"sims_m",
+				"sims_mc_sph2"
+			],
+			[
+				"Y",
+				"Y"
+			],
+			[
+				"outpu",
+				"output-epsilon"
+			],
+			[
+				"tri",
+				"tri-rods-hollow_incid"
+			],
+			[
+				"ou_disp",
+				"ou_disparity_hue"
+			],
+			[
+				"outre",
+				"outrees_new"
+			],
+			[
+				"inti",
+				"initial"
+			],
+			[
+				"parse",
+				"parseArguments"
+			],
+			[
+				"get",
+				"getParams"
+			],
+			[
+				"arg",
+				"arguments"
+			],
+			[
+				"tri-rods",
+				"tri-rods-hollow_incid"
+			],
+			[
+				"output",
+				"output"
+			],
+			[
+				"sims_ker_",
+				"sims_ker_tm2"
+			],
+			[
+				"true",
+				"TRUE"
+			],
+			[
+				"smooth",
+				"smoothing"
+			],
+			[
+				"RM",
+				"Rmarkdown"
+			],
+			[
+				"Lampro",
+				"Lamprotornis_acuticaudus"
+			],
+			[
+				"Lamp",
+				"Lamprotornis_elisabeth"
+			],
+			[
+				"acu",
+				"Lamprotornis_acuticaudus"
+			],
+			[
+				"shade",
+				"shadecol"
+			],
+			[
+				"plot",
+				"plot"
+			],
+			[
+				"rspecdata",
+				"rspecdata"
+			],
+			[
+				"i",
+				"i"
+			],
+			[
+				"rspec",
+				"rspecdata2"
+			],
+			[
+				"rspe",
+				"rspecdata"
+			],
+			[
+				"rspecda",
+				"rspecdata2"
+			],
+			[
+				"T",
+				"TRUE"
+			],
+			[
+				"R",
+				"R"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "R/duplicated.nex.R",
+			"settings":
+			{
+				"buffer_size": 10624,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 400.0,
+		"last_filter": "r",
+		"selected_items":
+		[
+			[
+				"r",
+				"Set Syntax: R"
+			],
+			[
+				"wrap",
+				"Word Wrap: Toggle"
+			],
+			[
+				"renam",
+				"File: Rename"
+			],
+			[
+				"box",
+				"R-Box: Choose Program"
+			],
+			[
+				"date",
+				"InsertDate: Default"
+			],
+			[
+				"plain",
+				"Set Syntax: Plain Text"
+			],
+			[
+				"align",
+				"AlignTab: Table Mode"
+			],
+			[
+				"mark",
+				"Set Syntax: Markdown GFM"
+			],
+			[
+				"task",
+				"Set Syntax: Tasks"
+			],
+			[
+				"dupli",
+				"File: Duplicate"
+			],
+			[
+				"rena",
+				"File: Rename"
+			],
+			[
+				"markdo",
+				"Set Syntax: Markdown GFM"
+			],
+			[
+				"java",
+				"Set Syntax: Java"
+			],
+			[
+				"markdown",
+				"Set Syntax: Markdown"
+			],
+			[
+				"lisp",
+				"Set Syntax: Lisp"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"sort",
+				"Sort Lines"
+			],
+			[
+				"gfm",
+				"Set Syntax: Markdown GFM"
+			],
+			[
+				"markd",
+				"Set Syntax: Markdown"
+			],
+			[
+				"rmark",
+				"Set Syntax: R Markdown"
+			],
+			[
+				"css",
+				"Set Syntax: CSS"
+			],
+			[
+				"dte",
+				"InsertDate: Default"
+			],
+			[
+				"low",
+				"Convert Case: Lower Case"
+			],
+			[
+				"nexu",
+				"Snippet: new_nexus_file"
+			],
+			[
+				"nexus",
+				"Snippet: new_nexus_file"
+			],
+			[
+				"rename",
+				"File: Rename"
+			],
+			[
+				"duplic",
+				"File: Duplicate"
+			],
+			[
+				"r-box",
+				"R-Box: Choose Program"
+			],
+			[
+				"r ext",
+				"Set Syntax: R Extended"
+			],
+			[
+				"disabl",
+				"Package Control: Disable Package"
+			],
+			[
+				"ren",
+				"File: Rename"
+			],
+			[
+				"snipp",
+				"Snippet: new_nexus_file"
+			],
+			[
+				"brow",
+				"Preferences: Browse Packages"
+			],
+			[
+				"rob",
+				"R-Box: Choose Program"
+			],
+			[
+				"r-bo",
+				"R-Box: Choose Program"
+			],
+			[
+				"repl",
+				"SublimeREPL: R"
+			],
+			[
+				"r-b",
+				"R-Box: Choose Program"
+			],
+			[
+				"r mark",
+				"Set Syntax: R Markdown"
+			],
+			[
+				"perl",
+				"Set Syntax: Perl"
+			],
+			[
+				"pastry",
+				"Text Pastry: Reduce selection"
+			],
+			[
+				"1",
+				"Text Pastry: From 1 To X"
+			],
+			[
+				"enabl",
+				"Package Control: Enable Package"
+			],
+			[
+				"dis",
+				"Package Control: Disable Package"
+			],
+			[
+				"shell",
+				"Set Syntax: Shell Script (Bash)"
+			],
+			[
+				"multi",
+				"Set Syntax: MultiMarkdown"
+			],
+			[
+				"muli",
+				"Set Syntax: MultiMarkdown"
+			],
+			[
+				"bro",
+				"Preferences: Browse Packages"
+			],
+			[
+				"alig",
+				"AlignTab"
+			],
+			[
+				"table",
+				"AlignTab: Table Mode"
+			],
+			[
+				"WRAP",
+				"Word Wrap: Toggle"
+			],
+			[
+				"sor",
+				"Sort Lines"
+			],
+			[
+				"upda",
+				"Package Control: Upgrade Package"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"resou",
+				"PackageResourceViewer: Open Resource"
+			],
+			[
+				"pack",
+				"PackageResourceViewer: Open Resource"
+			],
+			[
+				"instll",
+				"Package Control: Install Package"
+			],
+			[
+				"r-bi",
+				"R-Box Application"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"disa",
+				"Package Control: Disable Package"
+			],
+			[
+				"remo",
+				"Package Control: Remove Package"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"disable",
+				"Package Control: Disable Package"
+			],
+			[
+				"upd",
+				"Package Control: Upgrade Package"
+			],
+			[
+				"mar",
+				"Set Syntax: knitr (Markdown)"
+			],
+			[
+				"ali",
+				"AlignTab"
+			],
+			[
+				"f",
+				"Text Pastry: From 1 To X"
+			],
+			[
+				"wap",
+				"Word Wrap: Toggle"
+			],
+			[
+				"python",
+				"Set Syntax: Python"
+			],
+			[
+				"r markdown",
+				"Set Syntax: knitr (Markdown)"
+			],
+			[
+				"mul",
+				"Set Syntax: MultiMarkdown"
+			],
+			[
+				"late",
+				"Set Syntax: LaTeX"
+			],
+			[
+				"plain text",
+				"Set Syntax: Plain Text"
+			],
+			[
+				"emph",
+				"Snippet: Emphasize text"
+			],
+			[
+				"latex",
+				"Set Syntax: LaTeX"
+			],
+			[
+				"r consol",
+				"Set Syntax: R Console"
+			],
+			[
+				"matl",
+				"Set Syntax: MATLAB"
+			],
+			[
+				"matlab",
+				"Set Syntax: MATLAB"
+			],
+			[
+				"migra",
+				"LaTeXTools: Reconfigure and migrate settings"
+			],
+			[
+				"insall",
+				"Package Control: Install Package"
+			],
+			[
+				"bold",
+				"Snippet: Boldface text"
+			],
+			[
+				"tabl",
+				"Snippet: table"
+			],
+			[
+				"tabular",
+				"Snippet: Tabular"
+			],
+			[
+				"figu",
+				"Snippet: Figure"
+			],
+			[
+				"figur",
+				"Snippet: Figure"
+			],
+			[
+				"fig",
+				"Snippet: figure"
+			],
+			[
+				"figure",
+				"Snippet: figure"
+			],
+			[
+				"text",
+				"Snippet: Emphasize text"
+			],
+			[
+				"subsection",
+				"Snippet: Sub Section"
+			],
+			[
+				"reconfig",
+				"LaTeXTools: Reconfigure and migrate settings"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"php",
+				"Set Syntax: PHP"
+			],
+			[
+				"brows",
+				"Preferences: Browse Packages"
+			],
+			[
+				"update",
+				"Package Control: Upgrade/Overwrite All Packages"
+			],
+			[
+				"remov",
+				"Package Control: Remove Package"
+			],
+			[
+				"acad",
+				"Set Syntax: AcademicMarkdown"
+			],
+			[
+				"uuid",
+				"Generate UUID v4"
+			],
+			[
+				"acade",
+				"Set Syntax: AcademicMarkdown"
+			],
+			[
+				"ph",
+				"Set Syntax: PHP"
+			],
+			[
+				"browse",
+				"Preferences: Browse Packages"
+			],
+			[
+				"tasks",
+				"Tasks: New"
+			],
+			[
+				"typ",
+				"Typewriter: Typing Mode (Toggle)"
+			],
+			[
+				"type",
+				"Typewriter: Typing Mode (Toggle)"
+			],
+			[
+				"markdow",
+				"Set Syntax: Markdown"
+			],
+			[
+				"enable",
+				"Package Control: Enable Package"
+			],
+			[
+				"ul",
+				"Set Syntax: Ulysses Style Sheet"
+			],
+			[
+				"preview",
+				"Markdown Preview: Python Markdown: Preview in Browser"
+			],
+			[
+				"previ",
+				"Markdown Preview: Python Markdown: Preview in Browser"
+			],
+			[
+				"previe",
+				"Markdown Preview: Open Markdown Cheat sheet"
+			],
+			[
+				"prev",
+				"Markdown Preview: Python Markdown: Preview in Browser"
+			],
+			[
+				"packa",
+				"Package Control: Install Package"
+			],
+			[
+				"html",
+				"HTML: Encode Special Characters"
+			],
+			[
+				"ena",
+				"Package Control: Enable Package"
+			],
+			[
+				"disab",
+				"Package Control: Disable Package"
+			],
+			[
+				"packag",
+				"Package Control: Enable Package"
+			],
+			[
+				"install ",
+				"Package Control: Install Package"
+			],
+			[
+				"",
+				"Build: Build"
+			],
+			[
+				"snip",
+				"Snippet: Itemize"
+			],
+			[
+				"snippe",
+				"Snippet: Itemize"
+			],
+			[
+				"taskp",
+				"Set Syntax: TaskPaper"
+			],
+			[
+				"rmarkdo",
+				"Set Syntax: Rmarkdown"
+			],
+			[
+				"mat",
+				"Set Syntax: MATLAB"
+			],
+			[
+				"rma",
+				"Set Syntax: Rmarkdown"
+			],
+			[
+				"rmak",
+				"Set Syntax: Rmarkdown"
+			],
+			[
+				"rmakw",
+				"Set Syntax: Rmarkdown"
+			],
+			[
+				"sweave",
+				"Set Syntax: SWeave"
+			],
+			[
+				"swe",
+				"Set Syntax: SWeave"
+			],
+			[
+				"json",
+				"Plist Json Converter: JSON to PLIST"
+			],
+			[
+				"swea",
+				"Set Syntax: SWeave"
+			]
+		],
+		"width": 475.0
+	},
+	"console":
+	{
+		"height": 125.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Users/chadeliason/github/nexustools"
+	],
+	"file_history":
+	[
+		"/Users/chadeliason/Documents/School/PhD/Projects/Kingfishers/kifi_diversity.Rmd",
+		"/Users/chadeliason/Downloads/mammals2.tsv",
+		"/Users/chadeliason/Downloads/mammals1.tsv",
+		"/Users/chadeliason/Downloads/reptiles.tsv",
+		"/Users/chadeliason/Downloads/amphibians.tsv",
+		"/Users/chadeliason/Downloads/birds.tsv",
+		"/Users/chadeliason/Documents/UT/projects/bmr/bmr analysis.Rmd",
+		"/Users/chadeliason/Documents/School/PhD/Projects/Duck evolvability/dropbox_duck_evolvability/duck_analysis3.Rmd",
+		"/Users/chadeliason/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/Users/chadeliason/Dropbox/Lagerstattenfolder/R/datamunge.R",
+		"/Users/chadeliason/Dropbox/Lagerstattenfolder/R/fossil_binning.R",
+		"/Users/chadeliason/Dropbox/Lagerstattenfolder/R/new fossil analysis.R",
+		"/Users/chadeliason/Desktop/miocene ostrich photos from zhiheng/methods2016_introR.R",
+		"/Users/chadeliason/MEEP/src/tri-rods-solid_incid.ctl",
+		"/Users/chadeliason/R/src/photonics/runMeep.R",
+		"/Users/chadeliason/Desktop/shell biophotonics/field plots2.r",
+		"/Users/chadeliason/MEEP/src/biolum_aragonite_periodic.ctl",
+		"/Users/chadeliason/Dropbox/Chad/Paraanchiornis/para_analyses2.Rmd",
+		"/Users/chadeliason/MEEP/src/output/test.txt",
+		"/Users/chadeliason/Dropbox/Chad/Paraanchiornis/R/morphospace emptiness.R",
+		"/Users/chadeliason/Documents/UT/projects/vocalizations/voc_analysis_20151110.Rmd",
+		"/Users/chadeliason/MEEP/src/test.txt",
+		"/Users/chadeliason/Documents/UT/projects/melanocolor/color analysis.Rmd",
+		"/Users/chadeliason/Dropbox/Chad/Paraanchiornis/para_analyses.Rmd",
+		"/Users/chadeliason/.Rprofile",
+		"/Users/chadeliason/MEEP/src/multilayer.ctl",
+		"/Users/chadeliason/MEEP/src/ring.ctl",
+		"/Users/chadeliason/MEEP/src/amorphous2.ctl",
+		"/Applications/Fiji.app/plugins/Radial_Profile.class",
+		"/Users/chadeliason/Desktop/eyecolor.R",
+		"/Users/chadeliason/Dropbox/Notes/SICB 2016 notes.txt",
+		"/Users/chadeliason/Dropbox/Notes/lab meeting 1-15.txt",
+		"/Users/chadeliason/MEEP/src/spheres3d.ctl",
+		"/Users/chadeliason/Dropbox/Notes/vocalization PI meeting.txt",
+		"/Users/chadeliason/Dropbox/Chad/Paraanchiornis/R/cda.R",
+		"/Users/chadeliason/Desktop/README",
+		"/Users/chadeliason/Documents/UT/projects/vocalizations/reconstruct body size using full tree.Rmd",
+		"/Users/chadeliason/Documents/UT/projects/vocalizations/contingent_states.R",
+		"/Users/chadeliason/Desktop/testCCT.txt",
+		"/Users/chadeliason/Desktop/test treerogue/tipnames.txt",
+		"/Users/chadeliason/Desktop/test treerogue/tips.txt",
+		"/Users/chadeliason/Box Sync/Lithornithidae/specimen notes.txt",
+		"/Users/chadeliason/Desktop/fantasy_football.R",
+		"/Users/chadeliason/Documents/jobs/applications/2014/ubc postdoc/cover.tex",
+		"/Users/chadeliason/Downloads/osteoderm practice data/Osteoderm pattern analysis.Rmd",
+		"/Users/chadeliason/Dropbox/shiny_red/color analysis.Rmd",
+		"/Users/chadeliason/Dropbox/shiny_red/doc/figures/final_figures.R",
+		"/Users/chadeliason/Dropbox/shiny_red/data/2011-08-01/spectra/Experiment 1/SPECULAR0007.ttt",
+		"/Users/chadeliason/Dropbox/shiny_red/data/2011-08-01/spectra/Experiment 1/DIFFUSE0001.TRM",
+		"/Users/chadeliason/Dropbox/shiny_red/data/2011-08-01/spectra/Experiment 1/DIFFUSE0001.ttt",
+		"/Users/chadeliason/Documents/UT/projects/melanocolor/doc/final figures/figs round 2.R",
+		"/Users/chadeliason/Box Sync/swift SEM/prep.R",
+		"/Users/chadeliason/Dropbox/Notes/iup interview prep.txt",
+		"/Users/chadeliason/Documents/UT/projects/phenome/data/new_integumentary_characters.nex",
+		"/Users/chadeliason/Desktop/palaeognaths.tre",
+		"/Users/chadeliason/Desktop/cervical.nex",
+		"/Users/chadeliason/Documents/UT/projects/phenome/data/worthy_2012.nex",
+		"/Users/chadeliason/Desktop/feather plots.R",
+		"/Users/chadeliason/Dropbox/Notes/email blurb.txt",
+		"/Users/chadeliason/github/nexustools/R/read.nex.R",
+		"/Users/chadeliason/github/nexustools/R/duplicated.nex.R",
+		"/Users/chadeliason/Documents/UT/projects/phenome/livezey characters 1-241 translations in english.txt",
+		"/Users/chadeliason/Dropbox/Notes/todo.txt",
+		"/Users/chadeliason/Dropbox/Notes/lab meeting.3.txt",
+		"/Users/chadeliason/Dropbox/Notes/university of dallas.txt",
+		"/Users/chadeliason/Dropbox/Notes/color ms todo list.txt",
+		"/Users/chadeliason/Documents/UT/projects/phenome/translate characters.R",
+		"/Users/chadeliason/Desktop/tree scripts for james proffitt.R",
+		"/Users/chadeliason/Documents/UT/projects/vocalizations/voc_analysis_20151002.Rmd",
+		"/Users/chadeliason/Documents/UT/projects/phenome/output/palaeognath_genomes.nex",
+		"/Users/chadeliason/Desktop/sphinx-rtd.css",
+		"/Users/chadeliason/R/ouwie_tutorial.R",
+		"/Users/chadeliason/.Renviron"
+	],
+	"find":
+	{
+		"height": 22.0
+	},
+	"find_in_files":
+	{
+		"height": 94.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+			"time",
+			"tmp2",
+			"M",
+			"tmp",
+			"col",
+			"dat",
+			"times",
+			"orbiodiv + ",
+			"biodiv",
+			"getcounts",
+			"bin1",
+			"multinom",
+			"nnet",
+			"scale",
+			"mod2",
+			"mod1",
+			"25",
+			"glarma",
+			"se",
+			"ppp",
+			"revell",
+			"final",
+			"stat_smooth",
+			"sea",
+			"x",
+			"dat",
+			"final",
+			"lat",
+			"z",
+			"lat",
+			"nique(as.character(dat$country))",
+			"age2",
+			"age1",
+			"mods",
+			"[x]",
+			"25",
+			"exp(final$cortex)",
+			"obs.a",
+			"$a",
+			"vm1",
+			"tcs1",
+			"vm1",
+			"ggplot(filter(final, extinct==\"no\"), aes(leng, diam)) +\n	theme_bw() +\n	geom_abline(intercept = 0, slope = 1, lty=2) +\n	geom_density2d(col='black', lwd=.25, bins = 4) +\n	geom_point(data = para %>% select(color, leng, diam) %>% filter(!grepl(\"regular|omit|nna\", color)),\n	           pch=16, cex=.5, col=yulongcol, alpha=.15) +\n	labs(x = \"Length (nm)\", y = \"Diameter (nm)\") +\n	facet_wrap(~group2, nrow = 3) +\n	theme(text = element_text(size = 8), legend.position = \"none\", panel.grid = element_blank()) +\n	theme(strip.background = element_rect(fill=NA, color=NA))",
+			"flat",
+			"flattened",
+			"anchio\\\\.pdf",
+			"anchio",
+			"overlap",
+			"bin1",
+			"approx",
+			"match",
+			"deposition",
+			"glm1",
+			"co2",
+			"outsum",
+			"world",
+			"dat",
+			"⁄",
+			"bin1",
+			"color",
+			"color2",
+			"x <- ",
+			"violin",
+			"x <- ",
+			"violin",
+			"0, 1",
+			"ylim",
+			"^1",
+			"^2",
+			"efields.h5",
+			"ez",
+			"lty=2",
+			"datx",
+			"dat",
+			"datx",
+			"dat",
+			"Overlap",
+			"size=1.5",
+			"2000",
+			"size=1",
+			"size=2",
+			"size = 8",
+			"1500",
+			"bins=6",
+			"bins=5",
+			"yulongcol",
+			"group",
+			"bygroup",
+			"hist",
+			", group",
+			"zlim=c(0, .25)",
+			"all",
+			"hist",
+			"df1",
+			"all",
+			"kde1",
+			"2000",
+			"50",
+			"leng",
+			"freq2Db",
+			"df1",
+			"df",
+			"21",
+			"ppp1",
+			"100",
+			"calc_mean_dist",
+			"ppp1",
+			"rarefaction",
+			"sd",
+			"ppp1",
+			"para_",
+			"bygroup",
+			"group",
+			"by\\_g",
+			"colr",
+			"sx",
+			"sx0",
+			"bpmm",
+			"theta.z",
+			"theta",
+			"angle",
+			"theta",
+			"xlim = c(0, 1), ",
+			", 4",
+			"leng",
+			"violin",
+			"qda1",
+			"pred4"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": true,
+		"replace_history":
+		[
+			"$1 $2",
+			"$1",
+			"$1 $2",
+			"\\)",
+			"\\(",
+			"(",
+			"[$1] '$2'",
+			"$1'$2'",
+			"\\t[$1] '$2'",
+			"[$1] '$2'",
+			"[$1]",
+			"[$1] '$2'",
+			"[$1]",
+			"?",
+			"$1",
+			"\\t\\t[$1] '$2'",
+			"\\t\\t[$1]\\\\s'$2'",
+			"\\t\\t[$1]\\s'$2'",
+			"\\t\\t[$1]",
+			"[$1]",
+			"verbose = FALSE",
+			"$1",
+			"$1 ----- $2",
+			"' / no yes",
+			"' absent present [$1],",
+			"' no yes [$1],",
+			"' no yes,",
+			"' no yes",
+			",$1",
+			"'",
+			"'$1'",
+			"hi",
+			"$2",
+			"$1",
+			"'$1'",
+			"'$2 [$1]'",
+			"$1",
+			"\\t[$1]",
+			", $1",
+			"\\n\\t\\t\\t$1",
+			"\\n$1",
+			"$1",
+			"' / ",
+			" / ",
+			"$1",
+			"\\t\\t\\[$1] ",
+			"\\t\\t\\[$1\\]\\s",
+			"\\t\\t[$1]\\s",
+			"\\t\\t[$1]",
+			"[$1]",
+			"",
+			"($1$2$3)",
+			"($1$2)",
+			")",
+			"(",
+			"\\n",
+			"\\t\\t[$1] '$2'",
+			"\\t\\t[$1]'$2'",
+			"\\t\\t[$1] '$2'",
+			"\\t\\t[$1]'$2'",
+			"\\t\\t$1 '$2'",
+			"\\t\\t[$1]",
+			"[$1]",
+			"\\n",
+			"[$1]",
+			"$1 '$2'",
+			"= 1",
+			"1",
+			"$2 $1",
+			"$2\\t$1",
+			"0",
+			"",
+			"0",
+			"$2 $1",
+			"$1",
+			"$2",
+			"$2$1\\n",
+			"$2 $1",
+			"$2 $3",
+			"",
+			"0",
+			"",
+			"0",
+			"\n[",
+			"n_mel",
+			"select"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": false
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "R/duplicated.nex.R",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 10624,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"WordCountShouldRun": true,
+							"WordCountSyntax": "r extended",
+							"syntax": "Packages/R-Box/syntax/R Extended.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 22.0
+	},
+	"input":
+	{
+		"height": 35.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.aaa_package_dev":
+	{
+		"height": 114.0
+	},
+	"output.exec":
+	{
+		"height": 324.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.markdown":
+	{
+		"height": 122.0
+	},
+	"pinned_build_system": "Packages/R-Box/support/R Markdown.sublime-build",
+	"project": "nexustools.sublime-project",
+	"replace":
+	{
+		"height": 40.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"dups",
+				"phenome/moredups.R"
+			],
+			[
+				"write.ne",
+				"nexustools/R/write.nex.R"
+			],
+			[
+				"read.nex",
+				"nexustools/R/read.nex.R"
+			],
+			[
+				"duplica",
+				"nexustools/R/duplicated.nex.R"
+			],
+			[
+				"read.ne",
+				"nexustools/R/read.nex.R"
+			],
+			[
+				"duplic",
+				"nexustools/R/duplicated.nex.R"
+			],
+			[
+				"dupli",
+				"nexustools/R/duplicated.nex.R"
+			],
+			[
+				"write.n",
+				"nexustools/R/write.nex.R"
+			],
+			[
+				"collapse",
+				"nexustools/R/collapse.nex.R"
+			],
+			[
+				"plot.",
+				"nexustools/R/plot.nex.R"
+			],
+			[
+				"collap",
+				"nexustools/R/collapse.nex.R"
+			],
+			[
+				"work",
+				"nexustools/workflow.Rmd"
+			],
+			[
+				"interna",
+				"nexustools/R/internal.R"
+			],
+			[
+				"write.",
+				"nexustools/R/write.nex.R"
+			],
+			[
+				"intern",
+				"nexustools/R/internal.R"
+			],
+			[
+				"write.nex",
+				"nexustools/R/write.nex.R"
+			],
+			[
+				"livezey",
+				"phenome/data/livezey_2006.nex"
+			],
+			[
+				"plot.nex",
+				"nexustools/R/plot.nex.R"
+			],
+			[
+				"bertelli",
+				"phenome/data/bertelli_2002.nex"
+			],
+			[
+				"worth",
+				"phenome/data/worthy_2012.nex"
+			],
+			[
+				"ploe",
+				"R/plot.nex.R"
+			],
+			[
+				"readnex",
+				"R/read.nex.R"
+			],
+			[
+				"merge.n",
+				"R/merge.nex.R"
+			],
+			[
+				"plot.ne",
+				"R/plot.nex.R"
+			],
+			[
+				"write",
+				"R/write.nex.R"
+			],
+			[
+				"merge",
+				"R/merge.nex.R"
+			],
+			[
+				"conca+",
+				"output/concat+merge.nex"
+			],
+			[
+				"inter",
+				"R/internal.R"
+			],
+			[
+				"buildn",
+				"R/buildnex.R"
+			],
+			[
+				"read",
+				"R/read.nex.R"
+			],
+			[
+				"berel",
+				"~/Documents/UT/projects/phenome/data/bertelli_2002.nex"
+			],
+			[
+				"worthy",
+				"~/Documents/UT/projects/phenome/data/worthy_2012.nex"
+			],
+			[
+				"mc",
+				"~/Documents/UT/projects/phenome/data/mckitrick_1991.nex"
+			],
+			[
+				"john",
+				"~/Documents/UT/projects/phenome/data/johnston_2011.nex"
+			],
+			[
+				"bert",
+				"bertelli_2002.nex"
+			],
+			[
+				"tax",
+				"tax"
+			],
+			[
+				"color",
+				"color analysis.Rmd"
+			],
+			[
+				"chap8",
+				"Chap8.tex"
+			],
+			[
+				"abstra",
+				"abstract.tex"
+			],
+			[
+				"note",
+				"notes.txt"
+			],
+			[
+				"chap",
+				"Chap1.tex"
+			],
+			[
+				"abs",
+				"abstract.tex"
+			],
+			[
+				"analysis",
+				"duck_analysis3.Rmd"
+			],
+			[
+				"prep",
+				"src/prep2.R"
+			],
+			[
+				"calc",
+				"src/calc_color_vars.R"
+			],
+			[
+				"subset",
+				"R/subset.rspec.R"
+			],
+			[
+				"summary.rsp",
+				"R/summary.rspec.R"
+			],
+			[
+				"getsp",
+				"R/getspec.R"
+			],
+			[
+				"fast",
+				"R_temp/fast_getspec.R"
+			],
+			[
+				"spec2rgb",
+				"R/spec2rgb.R"
+			],
+			[
+				"aggspec",
+				"R/aggspec.R"
+			],
+			[
+				"tcsvol",
+				"R/tcsvol.R"
+			],
+			[
+				"voloverla",
+				"R/voloverlap.R"
+			],
+			[
+				"plot.rsp",
+				"R/plot.rspec.r"
+			],
+			[
+				"tcsplot",
+				"R/tcsplot.R"
+			],
+			[
+				"tcspl",
+				"man/tcsplot.Rd"
+			],
+			[
+				"simul",
+				"simulations.Rmd"
+			],
+			[
+				"ml_op",
+				"src/ML_opt_multivariate.R"
+			],
+			[
+				"pmc_",
+				"src/pmc_new2_RM.R"
+			],
+			[
+				"ml_opt",
+				"src/ML_opt_univariate.R"
+			],
+			[
+				"ml_o",
+				"src/ML_opt_univariate.R"
+			],
+			[
+				"",
+				"untitled"
+			],
+			[
+				"proc",
+				"R/procspec.R"
+			],
+			[
+				"as.rsp",
+				"R/as.rspec.r"
+			],
+			[
+				"as.rspe",
+				"R/as.rspec.r"
+			],
+			[
+				"plot.rspe",
+				"R/plot.rspec.r"
+			],
+			[
+				"coldist",
+				"R/coldist.R"
+			],
+			[
+				"pavo.rnw",
+				"vignette/pavo.rnw"
+			],
+			[
+				"pavo.rn",
+				"vignette/pavo.rnw"
+			],
+			[
+				"procp",
+				"R/procspec.R"
+			],
+			[
+				"summary",
+				"R/summary.rspec.R"
+			],
+			[
+				"aggplot",
+				"R/aggplot.R"
+			],
+			[
+				"getspec",
+				"R/getspec.R"
+			],
+			[
+				"peakshap",
+				"R/peakshape.R"
+			],
+			[
+				"as.r",
+				"R/as.rspec.r"
+			],
+			[
+				"vismodel",
+				"R/vismodel.R"
+			],
+			[
+				"coldi",
+				"R/coldist.R"
+			],
+			[
+				"meep",
+				"data/2012-08-13 disorder/runmeep.r"
+			],
+			[
+				"procsp",
+				"R/procspec.R"
+			],
+			[
+				"aggspe",
+				"R/aggspec.R"
+			],
+			[
+				"pavo",
+				"vignette/pavo.rnw"
+			],
+			[
+				"summary.s",
+				"R/summary.rspec.R"
+			],
+			[
+				"vignette",
+				"vignette/pavo.rnw"
+			],
+			[
+				"new",
+				"NEWS"
+			],
+			[
+				"msbody",
+				"manuscript/MSbody.Rnw"
+			],
+			[
+				"des",
+				"DESCRIPTION"
+			],
+			[
+				"getspe",
+				"R/getspec.R"
+			],
+			[
+				"gets",
+				"R/getspec.R"
+			],
+			[
+				"procspe",
+				"R/procspec.R"
+			],
+			[
+				"projplo",
+				"R/projplot.R"
+			],
+			[
+				"tcs",
+				"R/tcs.R"
+			],
+			[
+				"plotsmoo",
+				"R/plotsmooth.R"
+			],
+			[
+				"pltsmo",
+				"R/plotsmooth.R"
+			],
+			[
+				"explore",
+				"R/explorespec.R"
+			],
+			[
+				"plotsmooth",
+				"R/plotsmooth.R"
+			],
+			[
+				"aggplot.r",
+				"R/aggplot.R"
+			],
+			[
+				"plot.rspec",
+				"R/plot.rspec.r"
+			],
+			[
+				"ttplot",
+				"R/ttplot.R"
+			],
+			[
+				"name",
+				"NAMESPACE"
+			],
+			[
+				"plot",
+				"R/plot.rspec.r"
+			],
+			[
+				"pavo.",
+				"vignette/pavo.rnw"
+			],
+			[
+				"de",
+				"DESCRIPTION"
+			],
+			[
+				"ttplo",
+				"R/ttplot.R"
+			],
+			[
+				"is.",
+				"R/is.rspec.R"
+			],
+			[
+				"ttpoint",
+				"R/ttpoints.R"
+			],
+			[
+				"ttvol",
+				"R/ttvol.R"
+			],
+			[
+				"is.r",
+				"R/is.rspec.R"
+			],
+			[
+				"as.rspec",
+				"R/as.rspec.r"
+			],
+			[
+				"smooth",
+				"R/plotsmooth.R"
+			],
+			[
+				"spec2rg",
+				"R/spec2rgb.R"
+			],
+			[
+				"explor",
+				"R/explorespec.R"
+			],
+			[
+				"summ",
+				"pavo/R/summary.rspec.R"
+			],
+			[
+				"summar",
+				"pavo/man/summary.rspec.Rd"
+			],
+			[
+				"plot.r",
+				"pavo/R/plot.rspec.r"
+			],
+			[
+				"rtools",
+				"/Users/chad/Library/Application Support/Sublime Text 2/Packages/User/Default (OSX).sublime-keymap"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"~/Documents/UT/projects/phenome/phenome.sublime-workspace"
+			],
+			[
+				"nexu",
+				"~/github/nexustools/nexustools.sublime-project"
+			],
+			[
+				"phen",
+				"~/Documents/UT/projects/phenome/phenome.sublime-workspace"
+			],
+			[
+				"dich",
+				"~/Desktop/duck dichrom draft/dichromatism.sublime-project"
+			],
+			[
+				"me",
+				"~/Desktop/Methods class - in prep/methods_class.sublime-project"
+			],
+			[
+				"lag",
+				"~/Dropbox/Lagerstattenfolder/lagerstatten.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 400.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 704.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": false,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": false,
+	"side_bar_width": 197.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

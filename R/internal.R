@@ -75,8 +75,11 @@ head.nex <- function(x) {
 
 # subset a nexus file
 
-'[.nex' <- function(x, i, j, drop = FALSE, ...) {
+'[.nex' <- function(x, i, j=NULL, drop = FALSE, ...) {
   res <- x
+  if (is.null(j)) {
+    j <- seq_along(x$charlabels)
+  }
   res$charlabels <- x$charlabels[j]
   res$charpartition <- x$charpartition[j]
   res$charset <- x$charset[j]
