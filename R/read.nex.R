@@ -17,6 +17,8 @@
 # file <- "/Users/chadeliason/Downloads/monograph matrix public.nex"
 # missing <- '?'
 # gap <- '-'
+# files <- list.files('~/Documents/UT/projects/phenome/data', pattern='\\.nex', full.names = TRUE)
+# file <- files[10]
 
 read.nex <- function(file, missing = '?', gap = '-') {
 
@@ -32,9 +34,10 @@ read.nex <- function(file, missing = '?', gap = '-') {
 	# starts with 'taxlabels'
 	taxlabelsstart <- grep('TAXLABELS', x, ignore.case=TRUE) + 1
 	# lines that had END + semicolon
-	ends <- grep('END;', x)
+	# ends <- grep(';', x)
 	# figure out which line with END; is > than taxlabelstart location
-	taxlabelsend <- ends[which(ends > taxlabelsstart)[1]] - 1
+	# taxlabelsend <- ends[which(ends > taxlabelsstart)[1]] - 1
+	taxlabelsend <- taxlabelsstart + ntax - 1
 	# taxlabelsend <- grep('\\;', x[taxlabelsstart:length(x)])[1] + taxlabelsstart - 2
 
 	# taxlabels <- str_match(x[taxlabelsstart:taxlabelsend], '[\\t]*(\\w+)')[,2]
@@ -42,7 +45,7 @@ read.nex <- function(file, missing = '?', gap = '-') {
 	# remove space at start of taxon label
 	taxlabels <- gsub('^\\s*', '', taxlabels)
 	# remove puncutation at end of taxon label
-	taxlabels <- gsub('[\\s\\;]$', '', taxlabels)
+	taxlabels <- gsub('(\\s|\\;)$', '', taxlabels)
 
 	# this makes it possible to read mesquite saved nexus files with taxa in a single line separated by spaces
 	if (length(taxlabels)!=ntax){
@@ -58,8 +61,10 @@ read.nex <- function(file, missing = '?', gap = '-') {
 	# mesquite saves spaces between polymorphic characters (annoying)
 	
 	# convert to single string of text (causing problems downstream?)
-	mat <- paste0(x[matstart:matend], collapse="\n")
-
+	mat <- x[matstart:matend]
+	mat <- gsub("^(\t)", "", mat)
+	mat <- paste0(mat, collapse="\n")
+	mat <- paste0("\n", mat)
 	# FIX UP TAXON LABELS
 	# cleantext <- function(txt) {
 	# 	txt <- gsub("\\(", "\\(", txt)
@@ -85,10 +90,7 @@ read.nex <- function(file, missing = '?', gap = '-') {
 # Genus_species
 # 'Genus species'
 
-
 	# there's a problem if some OTUs are just genus and others genus + species (with spaces between)
-
-
 
 	# break up matrix by start/end locations of taxon labels
 	mat <- str_sub(mat, start = locs[,1], end = c(locs[2:nrow(locs), 1] - 1, str_length(mat)))
@@ -97,8 +99,6 @@ read.nex <- function(file, missing = '?', gap = '-') {
 	# remove white space
 	mat <- gsub("\\s", "", mat)
 
-	# stop edit
-
 	# mat <- str_replace_all(x[matstart:matend], taxlabels, "")  # remove taxon labels
 	mat <- gsub(',', '', mat)  # remove commas in data matrix
 	# mat <- str_extract_all(mat, '\\d{1}|[\\(\\[\\{]\\d{1,4}[\\)\\]\\}]|\\-|\\?|\\w')  # extract scorings
@@ -106,11 +106,7 @@ read.nex <- function(file, missing = '?', gap = '-') {
 	# so fixed with:
 	mat <- str_extract_all(mat, '\\d{1}|[\\(\\[\\{]\\d{1,4}[\\)\\]\\}]|\\-|\\?')  # extract scorings
 
-	# sanity check
-	if (any(diff(sapply(mat, length)) > 0)) {
-		warning("Potential problem with dataset (differing numbers of characters for different taxa)")
-	}
-
+	# convert '{ }', '[ ]' --> '( )'
 	mat <- lapply(mat, gsub, pattern='\\{|\\[', replacement='\\(')
 	mat <- lapply(mat, gsub, pattern='\\}|\\]', replacement='\\)')
 
@@ -120,10 +116,17 @@ read.nex <- function(file, missing = '?', gap = '-') {
 
 
 	# checks
-	if (length(mat)!=ntax)
+	if (length(mat)!=ntax) {
 		warning('Number of rows in data matrix not equal to number of taxa.')
-	if (all(sapply(seq_along(mat), function(x) {length(mat[[x]]==nchar)})!=nchar))
+	}
+	# if (all(sapply(seq_along(mat), function(x) {length(mat[[x]]==nchar)})!=nchar)) {
+	# 	warning('Number of characters for some taxa does not equal to that in defined by `nchar`')
+	# }
+	if (any(sapply(mat, length) != nchar)) {
 		warning('Number of characters for some taxa does not equal to that in defined by `nchar`')
+	}
+
+
 	# list(taxlabels=taxlabels, nchar=nchar, ntax=ntax, data=setNames(mat, taxlabels))
 	mat <- do.call(rbind, mat)
 	symbols <- paste(unique(unlist(strsplit(gsub('[\\(\\)\\??\\-]', '', sort(unique(as.vector(mat)))), ""))),collapse="")
@@ -146,7 +149,7 @@ read.nex <- function(file, missing = '?', gap = '-') {
 	# extract charpartitions
 	# use this format for character partition by body region:
 	# CHARPARTITION bodyparts=head: 1-4 7, body:5 6, legs:8-10;
-	if (length(grep('CHARPARTITION', x, ignore.case=TRUE)) > 0) {
+	if (length(grep('\\bCHARPARTITION\\b', x, ignore.case=TRUE)) > 0) {
 		charstart <- grep('CHARPARTITION', x, ignore.case=TRUE) + 1
 		charpart <- na.omit(str_match(x, regex('CHARPARTITION\\s(.+)\\;', ignore_case=TRUE)))[,2]
 		charpartname <- str_match(charpart, '^\\w+')
