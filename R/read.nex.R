@@ -29,40 +29,88 @@ read.nex <- function(file, missing = '?', gap = '-') {
 	ntax <- as.numeric(na.omit(str_extract(x, regex('(?<=NTAX=)\\d+', ignore_case=TRUE)))[1])
 	
 	# where are taxon labels
+	# starts with 'taxlabels'
 	taxlabelsstart <- grep('TAXLABELS', x, ignore.case=TRUE) + 1
-	taxlabelsend <- grep('\\;', x[taxlabelsstart:length(x)])[1] + taxlabelsstart - 2
+	# lines that had END + semicolon
+	ends <- grep('END;', x)
+	# figure out which line with END; is > than taxlabelstart location
+	taxlabelsend <- ends[which(ends > taxlabelsstart)[1]] - 1
+	# taxlabelsend <- grep('\\;', x[taxlabelsstart:length(x)])[1] + taxlabelsstart - 2
+
 	# taxlabels <- str_match(x[taxlabelsstart:taxlabelsend], '[\\t]*(\\w+)')[,2]
-	taxlabels <- str_match(x[taxlabelsstart:taxlabelsend], '[\\t]*(.+)')[,2]
-	taxlabels <- gsub('^ ', '', taxlabels)
+	taxlabels <- str_match(x[taxlabelsstart:taxlabelsend], '[\\t]*(.*)')[,2]
+	# remove space at start of taxon label
+	taxlabels <- gsub('^\\s*', '', taxlabels)
+	# remove puncutation at end of taxon label
+	taxlabels <- gsub('[\\s\\;]$', '', taxlabels)
+
 	# this makes it possible to read mesquite saved nexus files with taxa in a single line separated by spaces
 	if (length(taxlabels)!=ntax){
 		taxlabels <- strsplit(taxlabels, split="\\s")[[1]]
 	}
+	
 	# extract data matrix
 	matstart <- grep('MATRIX$', x, ignore.case=TRUE) + 1
-	matend <- grep('\\;', x[matstart:length(x)])[1] + matstart - 2
-	# start edit
-	# mesquite saves spaces between polymorphic characters (annoying)
-	mat <- paste0(x[matstart:matend], collapse="")
+	ends <- grep('\\;', x)
+	matend <- ends[which(ends > matstart)[1]] - 1
+	# matend <- grep('\\;', x[matstart:length(x)])[1] + matstart - 2
 
-	# add word boundaries for taxa without 
-	if (is.na(any(str_locate(pattern="\\s", taxlabels)))) {
+	# mesquite saves spaces between polymorphic characters (annoying)
+	
+	# convert to single string of text (causing problems downstream?)
+	mat <- paste0(x[matstart:matend], collapse="\n")
+
+	# FIX UP TAXON LABELS
+	# cleantext <- function(txt) {
+	# 	txt <- gsub("\\(", "\\(", txt)
+	# 	txt <- gsub("\\)", "\\)", txt)
+	# 	txt <- gsub("\\+", "plus", txt)
+	# 	txt <- gsub("\\/", "\\/", txt)
+	# 	txt <- gsub(" ", "_", txt)
+	# 	txt
+	# }
+
+# gsub("\\s\\+\\s", "+", taxlabels[31])
+
+# taxlabels <- cleantext(taxlabels)
+
+	# add word boundaries for taxa without (is this needed???)
+	if (is.na(any(str_locate(pattern="\\s", fixed(taxlabels))))) {
 		locs <- str_locate(mat, paste0("\\b", taxlabels, "\\b", sep=""))
 	} else {
-		locs <- str_locate(mat, taxlabels)
+		locs <- str_locate(mat, fixed(paste0("\n", taxlabels)))
 	}
 
-	mat <- str_sub(mat, start=locs[,1], end=c(locs[2:nrow(locs),1]-1, str_length(mat)))
+# Two formats:
+# Genus_species
+# 'Genus species'
 
-	mat <- str_replace_all(mat, taxlabels, "")
 
+	# there's a problem if some OTUs are just genus and others genus + species (with spaces between)
+
+
+
+	# break up matrix by start/end locations of taxon labels
+	mat <- str_sub(mat, start = locs[,1], end = c(locs[2:nrow(locs), 1] - 1, str_length(mat)))
+	# remove taxon labels from matrix
+	mat <- str_replace_all(mat, fixed(taxlabels), "")
+	# remove white space
 	mat <- gsub("\\s", "", mat)
 
 	# stop edit
 
 	# mat <- str_replace_all(x[matstart:matend], taxlabels, "")  # remove taxon labels
 	mat <- gsub(',', '', mat)  # remove commas in data matrix
-	mat <- str_extract_all(mat, '\\d{1}|[\\(\\[\\{]\\d{1,4}[\\)\\]\\}]|\\-|\\?|\\w')  # extract scorings
+	# mat <- str_extract_all(mat, '\\d{1}|[\\(\\[\\{]\\d{1,4}[\\)\\]\\}]|\\-|\\?|\\w')  # extract scorings
+	# this didn't work with theropod working matrix (Turner 2012 AMNH version)
+	# so fixed with:
+	mat <- str_extract_all(mat, '\\d{1}|[\\(\\[\\{]\\d{1,4}[\\)\\]\\}]|\\-|\\?')  # extract scorings
+
+	# sanity check
+	if (any(diff(sapply(mat, length)) > 0)) {
+		warning("Potential problem with dataset (differing numbers of characters for different taxa)")
+	}
+
 	mat <- lapply(mat, gsub, pattern='\\{|\\[', replacement='\\(')
 	mat <- lapply(mat, gsub, pattern='\\}|\\]', replacement='\\)')
 
