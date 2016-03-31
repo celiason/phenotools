@@ -26,7 +26,7 @@
 # x <- allnex2
 # x <- subset(allnex2, charpartition=="hindlimb")
 # x
-# TODO: [ ] look for duplicates within character names (e.g., 'From Bourdon et al. (2009a: char. 66)') 
+# TODO: [x] look for duplicates within character names (e.g., 'From Bourdon et al. (2009a: char. 66)') 
 # TODO: [x] paste together character labels and state labels, look for distances between them
 # TODO: [ ] add text output/progress bar to give user feedback
 #

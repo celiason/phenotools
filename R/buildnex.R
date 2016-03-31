@@ -25,18 +25,18 @@
 # last = 17
 
 
-pdffile = '/Users/chadeliason/github/nexustools/example/Bertelli_2014.pdf'
-ntax = 56
-nchar = 157
-first = 24
-last = 25
+# pdffile = '/Users/chadeliason/github/nexustools/example/Bertelli_2014.pdf'
+# ntax = 56
+# nchar = 157
+# first = 24
+# last = 25
 
 
-pdffile = '/Users/chadeliason/github/nexustools/example/Bertelli_Chiappe_2005.pdf'
-ntax = 34
-nchar = 63
-first = 22
-last = 22
+# pdffile = '/Users/chadeliason/github/nexustools/example/Bertelli_Chiappe_2005.pdf'
+# ntax = 34
+# nchar = 63
+# first = 22
+# last = 22
 
 
 
