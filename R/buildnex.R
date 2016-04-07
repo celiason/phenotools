@@ -38,7 +38,7 @@
 # first = 22
 # last = 22
 
-
+# pdffile <- "/Users/chadeliason/Downloads/monograph\ charlist\ public.pdf"
 
 # [ ] make this also work with a text file, or word doc the user has pasted a character list into
 
