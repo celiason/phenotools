@@ -40,6 +40,9 @@
 
 # pdffile <- "/Users/chadeliason/Downloads/monograph\ charlist\ public.pdf"
 
+
+
+
 # [ ] make this also work with a text file, or word doc the user has pasted a character list into
 
 
@@ -104,16 +107,6 @@ raw2 <- do.call(paste0, list(raw, collapse="\n"))
 tmp <- str_match_all(raw2, regex("([A-Za-z\\.]*).*?(([0-9\\?\\[\\]\\-]{3,}\\s*)+)", dotall=TRUE, multiline=FALSE))
 
 tmp <- str_match_all(raw2, regex("([A-Z].*?(?=\\s[A-Z])).*?(([0-9\\?\\[\\]\\-]{3,}\\s*)+)", dotall=TRUE))
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -1,3 +1,5 @@
+# TODO: interleave data based on bone/body region
+
 # i need to write a read.chars function for reading from a PDF
 
 # pattern:
@@ -39,6 +41,8 @@ tmp <- str_match_all(raw2, regex("Character\\s(\\d+)(.*)", multiline=TRUE, dotal
 charnums <- as.numeric(tmp[[1]][, 2])
 
 charnames <- tmp[[1]][, 3]
+
+# charnames <- final$charlab
 
 
 # remove comments
@@ -86,7 +90,7 @@ head(termlist)
 
 # grep(as.character(tomatch$search.term)[15], uniwords, value=TRUE)
 
-tomatch <- lapply(as.character(tomatch$search.term), grep, uniwords, perl=TRUE, value=TRUE)
+tomatch <- lapply(as.character(termlist$search.term), grep, uniwords, perl=TRUE, value=TRUE)
 
 # tomatch <- list('pelvis' = grep("ili|isch", uniwords, value=TRUE),
 # 	'axial' = grep("verte|fem", uniwords, value=TRUE),
@@ -100,9 +104,17 @@ for (i in seq_along(tomatch)) {
 	}
 }
 
-rownames(res) <- names(tomatch)
+rownames(res) <- paste0("term", seq_len(nrow(termlist)))
 
-colnames(res) <- seq_along(words_clean)
+colnames(res) <- paste0("char", seq_along(words_clean))
+
+dim(res)
+
+image(res)
+
+
+
+
 
 
 # option B: figure out all unique words, and which characters have the words in the name
@@ -115,11 +127,21 @@ for (i in seq_along(uniwords)) {
 	}
 }
 
+
+
 res <- matrix(as.numeric(res), nrow=nrow(res))
 
-dimnames(res) <- list(rownames=paste0("term",seq_len(nrow(termlist))), colnames=paste0("char",seq_along(words_clean)))
+dim(res)
+
+rownames(res) <- paste0("term",seq_len(nrow(termlist)))
+
+paste0("char",seq_along(words_clean)))
+
 rownames(res)
+
 colnames(res)
+
+
 
 # i <- sample(1:nrow(res), 150)
 # j <- sample(1:ncol(res), 150)
