@@ -40,7 +40,11 @@
 
 # pdffile <- "/Users/chadeliason/Downloads/monograph\ charlist\ public.pdf"
 
-
+# pdffile <- "/Users/chadeliason/Dropbox/PDFs/LIVEZEY 2006_PHYLOGENY OF NEORNITHES_matrix.pdf"
+# first <- 28
+# last <- 441
+# ntax <- 188
+# nchar <- 2954
 
 
 # [ ] make this also work with a text file, or word doc the user has pasted a character list into
@@ -51,6 +55,10 @@ buildnex <- function(pdffile, ntax, nchar, first, last, missing = '?', gap = '-'
 # convert pdf to text file
 
 syscall <- paste("pdftotext -layout -f ", first, " -l ", last, " '", pdffile, "'", sep="")
+
+syscall <- paste("pdftotext -f ", first, " -l ", last, " '", pdffile, "'", sep="")
+
+# removing layout was a better option for Livezey and Zusi (2006)
 
 system(syscall)
 
@@ -100,14 +108,12 @@ raw2 <- do.call(paste0, list(raw, collapse="\n"))
 # Genus 011101001 01111210 (chunks of data greater than 3 long, separated by spaces)
 
 
-# really want to find all consecutive numbers/sep. by up to one space, and with/without period after words, at start of line, proceeded by numbers
+# really want to find all consecutive numbers/sep. by up to one space, and with/without
+# period after words, at start of line, proceeded by numbers:
 
-# in flux:
-
+# in progress..
 tmp <- str_match_all(raw2, regex("([A-Za-z\\.]*).*?(([0-9\\?\\[\\]\\-]{3,}\\s*)+)", dotall=TRUE, multiline=FALSE))
-
 tmp <- str_match_all(raw2, regex("([A-Z].*?(?=\\s[A-Z])).*?(([0-9\\?\\[\\]\\-]{3,}\\s*)+)", dotall=TRUE))
-
 
 
 
