@@ -16,3 +16,11 @@ comments <- tmp[!is.na(tmp[,3]),5] # comments
 
 write.csv(data.frame(charnum, todo, comments), file = "/Users/chadeliason/Dropbox/Chad/phenome/data/2015-09-02/modified/regex_extracted.csv")
 
+
+
+# length(charnum)
+
+# tmp <- str_match_all(txt, regex("\\{(.*?)\\}", multiline=TRUE, dotall=TRUE))
+
+# txt[str_detect(txt, "\\{.*\\}")]
+

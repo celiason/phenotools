@@ -4,10 +4,7 @@ Inbox:
      (e.g., Livezey (2006) character 2795: 'Scapus pennae (=central shaft of feather), vexillum pennae (=feather vane), barba pennae (=feather barb), barbula rami (=barbule), forma generalis definitivum (sensu four diagnostic aspects)' (overall = form of barbules). 1) ``eutrophic''-possessing differentiated (i) vexillae barbae proximales et distales (=differentiated proximal and distal barbules), (ii) basis et stylosa (=stylet barbule? - small, stiff, slender barbule with few or no projections), (iii) rugae dorsales et ventrales (=series of ridges on each side of armus of pennaceous barbs where barbules attach), and (iv) hamuli barbulae (=hooklets)', 2) 'hypotrophic'--lacking differentiated (i) vexillae barbae proximales et distales, (ii) basis et stylosa, (iii) rugae dorsales et ventrales, and (iv) hamuli barbulae' -- _I'm not sure i like using 'differentiated proximal and distal barbules' as a character b/c it doesn't tell you what is changing (probably the distal barbules?). it is like using sexual dichromatism as a character in evolutionary analyses._
  [ ] reword (in basic english?) the livezey characters, other datasets? maybe make a function to do this? access google translate perhaps?
  [ ]  find absence/presence characters (should be relatively rare, in most cases they are probably just lazy coding or absence of a zone, not a bone/structure)
- [ ]  find duplicates with fuzzy text
- [ ]  interleave characters based on similar words, character partition
- [ ]  work on way to deal with annotated notes on characters we have assessed
-
+ 
 duplicated.nex:
 this is tricky. in many cases, new characters may differ from original ones (e.g., 0-1-2 instead of 0-1, even though they are scoring the same thing. how can we deal with this?)
  [ ]  make it so the set(?) difference between species names is also returned (in find duplicates)
