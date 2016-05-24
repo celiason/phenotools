@@ -46,7 +46,6 @@ testing:
  [ ]  benchmark against Rnexml reading capabilities
 
 someday/maybe:
- [ ]  make able to work with phylogenetic trees?
  [ ]  add ability to work with NEXML files
  [ ]  make a way to scrape text from PDF files?
  [ ]  add a more general function to prune matrix (e.g., remove invariant characters, duplicates, etc.)
@@ -74,6 +73,7 @@ Archive:
  [x] Add ability to sort/subset characters based on charsets or grep @done (15-05-08 17:26)
  [x] Add a way to merge taxa (code overlapping, different scorings as polymorphisms?) @done (15-05-08 17:26)
  [x] add ability to sort @done (15-05-08 17:25)
+ [-]   make able to work with phylogenetic trees? @project(someday/maybe)
  [x] should there be a certain class associated with this? like 'nex' (YES) or 'morph' (NO)?
  [x] missing data (?s) should be converted, maybe to NAs
  [x] include character states names
