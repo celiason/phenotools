@@ -239,56 +239,72 @@ final <- allnex2
 tomatch <- str_extract(final$charlab, ".*?(\\,|\\:|$)")
 tomatch <- tomatch[final$charpartition %in% c("axial", "pectoral", "forelimb", "pelvic", "hindlimb", "skull")]
 names(tomatch) <- which(final$charpartition %in% c("axial", "pectoral", "forelimb", "pelvic", "hindlimb", "skull"))
+```
 
-# load REGEX search terms
-# terms <- read.csv("data/phenome_terms.csv", as.is=TRUE)
+load set of REGEX search terms
+
+```{r}
 terms <- read_excel("data/phenome terms.xlsx", sheet=1)
+```
 
-# read_excel("data/phenome terms.xlsx", sheet=2)
+find which character labels have a given search term
 
-matches <- lapply(terms$search.term, grep, x = tomatch, perl = TRUE)
+```{r}
+matches <- lapply(terms$"search term", grep, x = tomatch, perl = TRUE)
+
 length(unlist(matches))/length(tomatch)
-length(tomatch[-unlist(matches)])  # 145/2021, ~8% not matched
 
-# get list of non-matches
+length(tomatch[-unlist(matches)])  # number of characters not matched
+```
+
+get list of non-matches
+
+```{r}
 id <- as.numeric(names(tomatch)[-unlist(matches)])
 cat(paste0("------\n\n", final$charlabel[id], "\n\n", final$state[id]), sep="\n\n")
+# output
 cat(tomatch[-unlist(matches)], sep="\n", file="output/unmatchedcharacters.txt")
+```
 
-# sort by :
-# order in matched terms
+sort by order in matched terms
+
+```{r}
 sortid <- sapply(seq_along(matches), function(x) {names(tomatch[matches[[x]]])})
 sortid <- as.numeric(unlist(sortid))
 sortid <- sortid[!duplicated(sortid)]  # remove dups
+```
 
-# order in original dataset
-# charid <- final$charnum
-# final <- final[, order(final$charpart, dup)]
-nistid <- which(!1:ncol(final$data) %in% as.numeric(names(tomatch)))
+sort by order in original dataset
 
-# last in charpartition (if can't be found with match)
-# final$charpart[id]
+```{r}
+nistid <- which(!1:ncol(final$data) %in% as.numeric(names(tomatch)))  # nist - non-integumentary characters
+```
+
+last in charpartition (if can't be found with match)
+
+```{r}
 missid <- which(!1:ncol(final$data) %in% c(sortid, nistid))
+```
 
-#combine ids
+combine ids and reorder dataset based on these IDs
+
+```{r}
 id <- c(sortid,nistid,missid)
-# which(is.na(final$charpart))
-# final[, sortid]$charlab
-# charpartid <- final$charpart
 
-# all.equal(length(charpartid), length(id), length(dupid))
-
-# reorder by bone
+# reorder dataset
 final <- final[, id]
+```
 
-# reorder by character partition
+
+now reorder by character partition
+
+```{r}
 final$charpartition <- factor(final$charpartition, levels=c("skull", "hyolingual", "axial", "pectoral", "forelimb", "pelvic", "hindlimb", "integument", "muscle", "eggs", "auditory", "digestive", "respiratory", "pericardium", "chromosomes", "urogenital", "cardiovascular", "lymphatic", "nervous", "brain", "metabolism", "reproductive", "behavior", "sensory"))
 
 # add dataset to characters
 final$charlabels <- paste(final$charlabels, ' [', final$file, ' character ', final$charnums, ']', sep="")
 
 # reorder based on character partitions
-
 final <- final[, order(final$charpart)]
 
 final
