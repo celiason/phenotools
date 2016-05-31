@@ -5,7 +5,6 @@
 ```{r}
 setwd("/Users/chadeliason/Documents/UT/projects/phenome")
 
-
 # load packages
 devtools::load_all('~/github/nexustools')
 
@@ -170,22 +169,9 @@ allnex2 <- remove.invar(allnex)
 
 
 # add blank rows for species w/genomic data but missing from phenome
-newtax <- setdiff(c(ingenome, "Diogenornis_fragilis", "Opistodactylus_patagonicus"), allnex2$taxlabels)
-allnex2$data <- rbind(allnex2$data, matrix(NA, nrow=length(newtax), ncol=ncol(allnex2$data)))
-allnex2$taxlabels <- c(allnex2$taxlabels, newtax)
 
-# plot(allnex2, fill="file", legend.pos="top", fsize=6)
 
-# sort and subset the final nexus dataset
-allnex.genome <- subset(allnex2, taxlabels %in% c(ingenome, outgroups, fossils, newtax))
-
-# remove "combined" lithornithid taxa from Nesbitt et al. (2015)
-allnex.genome <- allnex.genome[-grep("combined", allnex.genome$tax), ]
-
-# allnex.genome <- collapse(allnex.genome, map = list("Lithornis" = "Lithornis_spp", "Dinornis_sp" = "Dinornis_spp", "Dinornithidae" = "Dinornithiformes", "Aepyornis" = "Aepyornis_spp", "Ichthyornis_spp" = "Ichthyornis"))
-allnex.genome
 ```
-
 
 Make some plots
 
@@ -231,7 +217,7 @@ rownames(clades) <- NULL
 
 
 
-## Sorting based on body region (uses REGEX searching)
+## Interleave/sort characters based on body region and REGEX searching of trait terms (e.g., humerus)
 
 ```{r}
 final <- allnex2
@@ -274,13 +260,13 @@ sortid <- as.numeric(unlist(sortid))
 sortid <- sortid[!duplicated(sortid)]  # remove dups
 ```
 
-sort by order in original dataset
+sort integumentary and other soft-tissue characters by original order in the dataset
 
 ```{r}
 nistid <- which(!1:ncol(final$data) %in% as.numeric(names(tomatch)))  # nist - non-integumentary characters
 ```
 
-last in charpartition (if can't be found with match)
+sort characters at end of group/character partition if they can't be found with REGEX match
 
 ```{r}
 missid <- which(!1:ncol(final$data) %in% c(sortid, nistid))
@@ -309,6 +295,7 @@ final <- final[, order(final$charpart)]
 
 final
 
+# and finally, plot:
 plot(final, fill="charpartition")
 ```
 

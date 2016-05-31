@@ -1,6 +1,13 @@
 # TODO: interleave data based on bone/body region
 
-# i need to write a read.chars function for reading from a PDF
+
+# this script now searches for similar words in different characters and groups them based on how similar they are
+
+# so a lot like the duplicate finder function I've got
+
+# might be better to have this use a trait ontology that is read in and searched on..??
+
+# TODO write a read.chars function for reading from a PDF
 
 # pattern:
 
@@ -10,7 +17,7 @@
 #	COMMENT/NOTE TEXT
 # Character 2: ...
 
-pdffile <- "/Users/chadeliason/Downloads/monograph\ charlist\ public.pdf"
+pdffile <- "/Users/chadeliason/Downloads/TWiG monograph\ charlist\ public.pdf"
 
 first = 1
 last = 74
@@ -34,7 +41,6 @@ system(paste("rm '", txtfile, "'", sep=""))
 # charlabels <- charmatches[[1]][,3]
 
 raw2 <- do.call(paste0, list(raw, collapse="\n"))
-
 
 tmp <- str_match_all(raw2, regex("Character\\s(\\d+)(.*)", multiline=TRUE, dotall=FALSE))
 
@@ -80,17 +86,24 @@ uniwords <- sort(unique(unlist(words_clean)))
 
 uniwords
 
-# match words using regular expressions:
+
+
+
+# match words using REGEX and termlist for birds:
 
 setwd("/Users/chadeliason/Documents/UT/projects/phenome")
 
-termlist <- read.csv("data/phenome_terms.csv")
+termlist <- read_excel("data/phenome terms.xlsx", sheet=1)
 
 head(termlist)
 
 # grep(as.character(tomatch$search.term)[15], uniwords, value=TRUE)
 
-tomatch <- lapply(as.character(termlist$search.term), grep, uniwords, perl=TRUE, value=TRUE)
+tomatch <- lapply(as.character(termlist$"search term"), grep, uniwords, ignore.case=TRUE, perl=TRUE, value=TRUE)
+
+# tomatch <- lapply(as.character(termlist$"search term"), grep, charnames_clean, ignore.case=TRUE, perl=TRUE, value=TRUE)
+
+tomatch
 
 # tomatch <- list('pelvis' = grep("ili|isch", uniwords, value=TRUE),
 # 	'axial' = grep("verte|fem", uniwords, value=TRUE),
@@ -112,9 +125,10 @@ dim(res)
 
 image(res)
 
+table(res)
 
-
-
+# proportion of characters found to be matches based on the bird termlist:
+sum(sapply(tomatch, length)>0) / length(tomatch)
 
 
 # option B: figure out all unique words, and which characters have the words in the name
