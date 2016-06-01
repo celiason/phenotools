@@ -88,7 +88,7 @@ system(paste("rm '", txtfile, "'", sep=""))
 
 ####### START OF THIS NEW STUFF ############
 
-raw2 <- do.call(paste0, list(raw, collapse="\n"))
+# raw2 <- do.call(paste0, list(raw, collapse="\n"))
 
 
 
@@ -104,6 +104,10 @@ raw2 <- do.call(paste0, list(raw, collapse="\n"))
 # Genus a b a a b (spaces between alphanumeric data)
 tmp <- str_match_all(raw, "([A-Z][a-z]+)[\\s\\t]+([a-z0-9\\-\\?^,]+.+)$")
 
+tmp <- do.call(rbind, tmp)
+
+
+
 # Genus 0 1 1 1 0 1 0 0 1 (spaces between numeric data)
 
 # Genus 011101001 01111210 (chunks of data greater than 3 long, separated by spaces)
@@ -112,9 +116,12 @@ tmp <- str_match_all(raw, "([A-Z][a-z]+)[\\s\\t]+([a-z0-9\\-\\?^,]+.+)$")
 # really want to find all consecutive numbers/sep. by up to one space, and with/without
 # period after words, at start of line, proceeded by numbers:
 
+
+
+
 # in progress..
-tmp <- str_match_all(raw2, regex("([A-Za-z\\.]*).*?(([0-9\\?\\[\\]\\-]{3,}\\s*)+)", dotall=TRUE, multiline=FALSE))
-tmp <- str_match_all(raw2, regex("([A-Z].*?(?=\\s[A-Z])).*?(([0-9\\?\\[\\]\\-]{3,}\\s*)+)", dotall=TRUE))
+# tmp <- str_match_all(raw2, regex("([A-Za-z\\.]*).*?(([0-9\\?\\[\\]\\-]{3,}\\s*)+)", dotall=TRUE, multiline=FALSE))
+# tmp <- str_match_all(raw2, regex("([A-Z].*?(?=\\s[A-Z])).*?(([0-9\\?\\[\\]\\-]{3,}\\s*)+)", dotall=TRUE))
 
 
 
@@ -131,17 +138,15 @@ tmp <- str_match_all(raw2, regex("([A-Z].*?(?=\\s[A-Z])).*?(([0-9\\?\\[\\]\\-]{3
 
 
 # this works! don't change!
-tmp <- str_match_all(raw2, regex("([A-Z][a-z]+[\\.]?\\s[a-z]+[\\.]?).*?(([0-9\\?\\[\\]\\-]{3,}\\s*)+)", dotall=TRUE, multiline=FALSE))
+# tmp <- str_match_all(raw2, regex("([A-Z][a-z]+[\\.]?\\s[a-z]+[\\.]?).*?(([0-9\\?\\[\\]\\-]{3,}\\s*)+)", dotall=TRUE, multiline=FALSE))
 
+
+# not sure what this one does
 # tmp <- str_match_all(raw, "([A-Z][a-z]+\\s[a-z]+[\\.]?)[\\s\\t]+(([0-9\\-\\?\\[\\]]{3,}[\\s\\t\\z]*)+)")
 
+taxlabels <- tmp[, 2]
 
-
-
-
-taxlabels <- tmp[[1]][, 2]
-
-datamatrix <- tmp[[1]][, 3]
+datamatrix <- tmp[, 3]
 
 names(datamatrix) <- taxlabels
 
@@ -164,6 +169,16 @@ untaxlabels <- unique(na.omit(unlist(taxlabels)))
 # remove spaces in data
 datamatrix <- gsub("\\s", "", datamatrix)
 
+class(datamatrix)
+
+# remove ones with too many characters
+
+length(datamatrix)
+
+sd(str_length(datamatrix))
+
+
+
 # merge data for same species in multiple rows/lines of the text
 datamatrix <- sapply(untaxlabels, function(x) {paste0(datamatrix[which(names(datamatrix) %in% x)], collapse="")})
 
@@ -177,8 +192,7 @@ datamatrix <- sapply(seq_along(datamatrix), function(x) {datamatrix[[x]][1:nchar
 colnames(datamatrix) <- untaxlabels
 
 # remove cases of NAs (probably not real characters)
-datamatrix <- t(datamatrix[, !apply(datamatrix, 2, anyNA)])
-
+# datamatrix <- t(datamatrix[, !apply(datamatrix, 2, anyNA)])
 
 # checks
 if (! ntax == nrow(datamatrix) & nchar == ncol(datamatrix) ) {
