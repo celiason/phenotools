@@ -1,17 +1,24 @@
+devtools::load_all('~/github/nexustools')
+
 # test character list
+
 test <- c("Brain, cerebrum, shape", "Hindlimb, tarsometatarsus, length", "Brain, cerebellum", "Cerebellum elongated", "Tarsometatarsus, distal part", "Hindlimb")
+
+# test <- nexs[[11]]$charlabel
+# test <- twig$charlabel
+
+test <- cleantext(test, comma=FALSE)
 
 # locate characters with terms separated by comma
 test.com <- test[grepl(",", test)]
-
 terms <- strsplit(test.com, ",")
 terms <- lapply(terms, gsub, pattern="^ ", replacement="")
 terms <- lapply(terms, tolower)
-terms
+head(terms)
 
 # generate user/file-based trait ontology
 
-# create edge list:
+# create edge list
 edges <- list()
 for (i in seq_along(terms)) {
 	tt <- terms[[i]]
@@ -21,16 +28,16 @@ for (i in seq_along(terms)) {
 edges <- matrix(unlist(edges), ncol=2, byrow=TRUE)
 edges
 
+# create and plot trait ontology
 g <- graph_from_edgelist(edges)
+V(g)$name <- schinke(V(g)$name)
 
-plot(g, layout = -layout.reingold.tilford(g)[,2:1])
+plot(g, layout = -layout.reingold.tilford(g)[,2:1], vertex.size=0, edge.arrow.size=0)
 
 
 # search for terms not in ontology
-
 test.nocom <- test[!grepl(",", test)]
 test.nocom <- tolower(test.nocom)
-
 
 # create groups of words based on trait ontology/tree
 # find root and leaves
@@ -45,8 +52,7 @@ traversal <- lapply(seq_along(roots), function(x) {
 	sapply(paths, function(vs) paste(V(g)[vs]$name, collapse="->"))
 })
 
-
-# locate matches
+# locate matches...
 matches <- sapply(V(g)$name, grep, test.nocom)
 
 id <- which(matches>=1)
@@ -56,5 +62,4 @@ lapply(id, get.all.shortest.paths, graph=g, to=roots, mode="in")
 
 
 # sort??? interleave???
-
 

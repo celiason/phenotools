@@ -1,9 +1,6 @@
-Inbox:
+Misc:
  [ ] locate characters with absence plus 'present but variable' states - recode to two characters: 1) presence/absence of the feature and 2) values/states of the feature
  [ ] locate compound characters, consider whether to recode as separate characters
-     (e.g., Livezey (2006) character 2795: 'Scapus pennae (=central shaft of feather), vexillum pennae (=feather vane), barba pennae (=feather barb), barbula rami (=barbule), forma generalis definitivum (sensu four diagnostic aspects)' (overall = form of barbules). 1) ``eutrophic''-possessing differentiated (i) vexillae barbae proximales et distales (=differentiated proximal and distal barbules), (ii) basis et stylosa (=stylet barbule? - small, stiff, slender barbule with few or no projections), (iii) rugae dorsales et ventrales (=series of ridges on each side of armus of pennaceous barbs where barbules attach), and (iv) hamuli barbulae (=hooklets)', 2) 'hypotrophic'--lacking differentiated (i) vexillae barbae proximales et distales, (ii) basis et stylosa, (iii) rugae dorsales et ventrales, and (iv) hamuli barbulae' -- _I'm not sure i like using 'differentiated proximal and distal barbules' as a character b/c it doesn't tell you what is changing (probably the distal barbules?). it is like using sexual dichromatism as a character in evolutionary analyses._
- [ ] reword (in basic english?) the livezey characters, other datasets? maybe make a function to do this? access google translate perhaps?
- [ ]  find absence/presence characters (should be relatively rare, in most cases they are probably just lazy coding or absence of a zone, not a bone/structure)
  
 duplicated.nex:
 this is tricky. in many cases, new characters may differ from original ones (e.g., 0-1-2 instead of 0-1, even though they are scoring the same thing. how can we deal with this?)
@@ -12,7 +9,6 @@ this is tricky. in many cases, new characters may differ from original ones (e.g
  [ ]  maybe create a function merge.nex with a `what` argument (either taxa or characters)?
  [ ]  create a separate find duplicates function that returns a map of old-new characters for use with merge.nex
  [ ]  benchmark ability to automatically find duplicates
-
   this function needs some work. it should return the user input (e.g., which characters were suspected duplicates, for further use, maybe with the 'map' argument in duplicated.nex). also, it should maybe do something such as, if a newer character scoring differs but is more complete than an old one (i.e. covers all old taxa), then just drop the old character rather than try to merge the two characters.
 
 buildnex:
@@ -24,12 +20,10 @@ subset.nex:
 
 plot.nex:
  [ ]  it would be cool if the colors allowed for polymorphisms in plotting colors (maybe split tiles?)
- [ ]  give a plotting error if you don't have character labels in the nexus file
+ [ ]  function is giving a plotting error if you don't have character labels in the nexus file
 
 merge.nex:
  [ ]   how handle missing state labels?
-
-collapse.nex:
 
 read.nex:
  [ ]  add ability to write character sets/partitions
@@ -39,19 +33,20 @@ read.nex:
 
 write.nex:
  [ ]  output a nexus object with some state, character labels NA
- [ ]  output character sets, partitions
+ [ ]  add ability to output character sets, partitions in NEXUS file
 
 testing:
- [ ]  need to add a bunch of checks to ensure format of file is kosher
- [ ]  benchmark against Rnexml reading capabilities
+ [ ] need to add a bunch of checks to ensure format of file is kosher
+ [ ] benchmark against Rnexml reading capabilities
 
 someday/maybe:
  [ ]  add ability to work with NEXML files
- [ ]  make a way to scrape text from PDF files?
  [ ]  add a more general function to prune matrix (e.g., remove invariant characters, duplicates, etc.)
 
 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
 Archive:
+ [x]  make a way to scrape text from PDF files? @project(someday/maybe)
+ [x]  find absence/presence characters (should be relatively rare, in most cases they are probably just lazy coding or absence of a zone, not a bone/structure) @done (16-06-01 12:52) @project(Inbox)
  [x] remove repeated absence characters (i.e. duplicates) @done (15-08-29 12:27) @project(Inbox)
  [x]  add other ways to color data matrix (file, charpartition, charset, etc.) @done (15-08-29 12:26) @project(plot.nex)
  [x]  add ability to plot data matrix alongside phylogeny @done (15-07-02 22:03) @project(plot.nex)
@@ -73,6 +68,7 @@ Archive:
  [x] Add ability to sort/subset characters based on charsets or grep @done (15-05-08 17:26)
  [x] Add a way to merge taxa (code overlapping, different scorings as polymorphisms?) @done (15-05-08 17:26)
  [x] add ability to sort @done (15-05-08 17:25)
+ [-] reword (in basic english?) the livezey characters, other datasets? maybe make a function to do this? access google translate perhaps? @project(Misc)
  [-]   make able to work with phylogenetic trees? @project(someday/maybe)
  [x] should there be a certain class associated with this? like 'nex' (YES) or 'morph' (NO)?
  [x] missing data (?s) should be converted, maybe to NAs

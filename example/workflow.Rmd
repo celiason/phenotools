@@ -28,7 +28,6 @@ files <- list.files('~/Documents/UT/projects/phenome/data', pattern='\\.nex', fu
 
 system.time(nexs <- lapply(files, read.nex))
 
-# system.time(read.nex(files[10]))
 # system.time(nexs2 <- lapply(files, ReadMorphNexus))
 
 # 3 seconds for my function, 25+ seconds for Claddis ReaDMorphNexus function
