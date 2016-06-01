@@ -49,6 +49,12 @@ any(unlist(sapply(terms2, "==", "")))
 # terms2 <- lapply(seq_along(terms2), function(x) {terms2[[x]][terms2[[x]]!=""]})
 # any(unlist(sapply(terms2, "==", "")))
 
+pdf(file = "figure/twig stem word cloud.pdf", width=5, height=5)
+wordcloud::wordcloud(unlist(terms2))
+dev.off()
+
+
+
 # list of unique stem words
 terms3 <- unique(unlist(terms2))
 length(terms3)  # number of unique terms
@@ -117,8 +123,11 @@ lapply(id, all_shortest_paths, graph=tree2, to=roots, mode="in")
 
 
 
+################################################################################
+# alternative method - characters matched to stems taked from non-hierarchical
+# termlist
+################################################################################
 
-# stems matched to terms
 termstem <- lapply(terms2, match, terms3)
 
 names(termstem) <- paste0("term", seq_along(terms2))
@@ -149,66 +158,23 @@ E(g)
 plot(induced_subgraph(g, subcomponent(g, V(g)$name=="char26", mode="in")))
 
 
+# distances...maybe find ones closest to term?
 
-
-# V(g)$name
-
-# plot(g)
-
+# character vertices
 charvert <- grep("char", V(g)$name)
 
+# term vertices
 termvert <- grep("term", V(g)$name)
 
+# distance matrix calculation
 d <- distances(g, charvert, termvert)
-
-class(d)
-
 dim(d)
-
-range(d)
-image(d)
-
-plot(d[1, ])
-
-
-
-
-
+head(d)
 
 # the only question I want to know is:
 # for each character, which term does it overlap with the most?
-
-termstem
-
-stemchar
-
-edge_connectivity(g, termvert[2], charvert[2])
-
-
-# term vertices
-grep("term", V(g)$name)
-
-# character vertices
-grep("char", V(g)$name)
-
-# plot(g)
-
-unique(unlist(stemchar))
-
-pdf(file = "figure/twig stem word cloud.pdf", width=5, height=5)
-wordcloud::wordcloud(unlist(terms2))
-dev.off()
+edge_connectivity(g, termvert[55], charvert[200])
 
 # i want to find which characters have the most stems matched to a given term
 
-
-
 #### WORK ON THIS
-
-
-
-
-
-
-
-
