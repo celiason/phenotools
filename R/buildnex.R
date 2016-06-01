@@ -56,7 +56,9 @@ buildnex <- function(pdffile, ntax, nchar, first, last, missing = '?', gap = '-'
 
 syscall <- paste("pdftotext -layout -f ", first, " -l ", last, " '", pdffile, "'", sep="")
 
-syscall <- paste("pdftotext -f ", first, " -l ", last, " '", pdffile, "'", sep="")
+# might need to give option for this in case it doesn't read well
+# turning off `-layout` can help
+# syscall <- paste("pdftotext -f ", first, " -l ", last, " '", pdffile, "'", sep="")
 
 # removing layout was a better option for Livezey and Zusi (2006)
 
@@ -86,7 +88,6 @@ system(paste("rm '", txtfile, "'", sep=""))
 
 ####### START OF THIS NEW STUFF ############
 
-
 raw2 <- do.call(paste0, list(raw, collapse="\n"))
 
 
@@ -101,7 +102,7 @@ raw2 <- do.call(paste0, list(raw, collapse="\n"))
 
 
 # Genus a b a a b (spaces between alphanumeric data)
-# tmp <- str_match_all(raw, "([A-Z][a-z]+)[\\s\\t]+([a-z0-9\\-\\?^,]+.+)$")
+tmp <- str_match_all(raw, "([A-Z][a-z]+)[\\s\\t]+([a-z0-9\\-\\?^,]+.+)$")
 
 # Genus 0 1 1 1 0 1 0 0 1 (spaces between numeric data)
 
