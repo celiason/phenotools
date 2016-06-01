@@ -4,9 +4,6 @@ devtools::load_all('~/github/nexustools')
 
 test <- c("Brain, cerebrum, shape", "Hindlimb, tarsometatarsus, length", "Brain, cerebellum", "Cerebellum elongated", "Tarsometatarsus, distal part", "Hindlimb")
 
-# test <- nexs[[11]]$charlabel
-# test <- twig$charlabel
-
 test <- cleantext(test, comma=FALSE)
 
 # locate characters with terms separated by comma
@@ -39,18 +36,7 @@ plot(g, layout = -layout.reingold.tilford(g)[,2:1], vertex.size=0, edge.arrow.si
 test.nocom <- test[!grepl(",", test)]
 test.nocom <- tolower(test.nocom)
 
-# create groups of words based on trait ontology/tree
-# find root and leaves
-leaves <- which(degree(g, v = V(g), mode = "out")==0, useNames = T)
 roots <- which(degree(g, v = V(g), mode = "in")==0, useNames = T)
-
-# traverse tree and get all combinations of characters along trait ontology
-reachable <- lapply(roots, function(x) {which(shortest.paths(g, x, mode="out") != Inf)})
-terminal.nodes <- lapply(reachable, function(x) {x[which(degree(g, x, mode="out") == 0)]})
-traversal <- lapply(seq_along(roots), function(x) {
-	paths <- get.all.shortest.paths(graph=g, from=roots[x], to=terminal.nodes[[x]], mode="out")$res
-	sapply(paths, function(vs) paste(V(g)[vs]$name, collapse="->"))
-})
 
 # locate matches...
 matches <- sapply(V(g)$name, grep, test.nocom)
@@ -58,8 +44,6 @@ matches <- sapply(V(g)$name, grep, test.nocom)
 id <- which(matches>=1)
 
 # locate all paths in ontology connected to a certain character
-lapply(id, get.all.shortest.paths, graph=g, to=roots, mode="in")
-
+lapply(id, all_shortest_paths, graph=g, to=roots, mode="in")
 
 # sort??? interleave???
-
