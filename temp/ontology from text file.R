@@ -14,8 +14,6 @@ tree <- simplify(tree, edge.attr.comb = "first")
 # stem latin words in ontology
 V(tree)$name <- schinke(V(tree)$name)
 
-E(tree)$sort
-
 # plot a subtree
 subtree <- induced_subgraph(tree, subcomponent(tree, grep("tarsometat", V(tree)$name), mode="out"))
 
@@ -23,27 +21,6 @@ pdf(file = "figure/ontology.pdf", width=9, height=8)
 par(mar=c(0,0,0,0))
 plot(subtree, layout=-layout.reingold.tilford(subtree)[,2:1], vertex.size=0, edge.arrow.size=0)
 dev.off()
-
-# order of terms??
-
-
-
-################################################################################
-# one option for testing similarity/presence of term in character list:
-################################################################################
-
-library(stringdist)
-# res <- matrix(NA, nrow=length(twig$charlabels), ncol=length(terms))
-# for (i in seq_along(terms)) {
-# 	for (j in seq_along(terms))
-# 	stringdist(twig$charlab, terms[[j]], method="lcs")
-#   # res[, i] <- str_detect(twig$charlab, paste0(terms[[i]], collapse="|"))
-# }
-# dim(res)
-# image(res)
-# twig$charlab[which(res)]
-
-
 
 
 
