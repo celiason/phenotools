@@ -30,7 +30,7 @@ dev.off()
 ################################################################################
 
 # terms <- V(tree)$name
-terms <- schinke(V(tree)$name)
+terms <- V(tree)$name
 
 terms2 <- str_split(terms, "->|\\s")
 terms2 <- sapply(terms2, unique)
@@ -58,16 +58,6 @@ terms3
 
 # stem searcher
 
-# match each stem to each character using REGEX
-stemchar <- sapply(terms3, grep, twig$charlab)
-
-# this takes really long:
-# for (i in seq_along(twig$charlab)) {
-# 	for (j in seq_along(terms2)) {
-# 		sum(sapply(terms2[[j]], str_detect, twig$charlab[i]))
-# 	}
-# }
-
 # only at beginning of word
 system.time(stemchar <- lapply(paste0("\\b", terms3), grep, tolower(twig$charlab)))
 length(stemchar)
@@ -75,7 +65,7 @@ names(stemchar) <- terms3
 tail(sort(sapply(stemchar, length)))
 # number of unmatched characters
 twig$charlab[setdiff(seq_along(twig$charlab), unique(unlist(stemchar)))]
-107/477 # 22% unmatched
+119/477 # 25% unmatched
 
 
 # not much slower to do all stems in every term of ontology
@@ -115,8 +105,6 @@ plot(induced_subgraph(tree2, subcomponent(tree2, V(tree2)$name=="char24", mode="
 id <- which(V(tree2)$name=="char2")
 
 roots <- which(degree(tree2, v = V(tree2), mode = "in")==0, useNames = T)
-
-
 
 lapply(id, all_shortest_paths, graph=tree2, to=roots, mode="in")
 
