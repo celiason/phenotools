@@ -70,6 +70,9 @@ txtfile <- gsub('pdf', 'txt', pdffile)
 
 raw <- scan(txtfile, what="", sep="\n")
 
+# remove whitespace at beginning of lines
+raw <- gsub("^\\s+", "", raw)
+
 # remove/clean up exported text files
 
 system(paste("rm '", txtfile, "'", sep=""))
@@ -88,8 +91,7 @@ system(paste("rm '", txtfile, "'", sep=""))
 
 ####### START OF THIS NEW STUFF ############
 
-# raw2 <- do.call(paste0, list(raw, collapse="\n"))
-
+raw2 <- do.call(paste0, list(raw, collapse="\n"))
 
 
 # how to find the data matrix?
@@ -98,20 +100,32 @@ system(paste("rm '", txtfile, "'", sep=""))
 # patterns to search for:
 
 # Genus species 00110101011001000010010002003020 (continuous string of data)
-# tmp <- str_match_all(raw, "([A-Z][a-z]+\\s[a-z]+)[\\s\\t]+([0-9\\-\\?]+.+)$")
+tmp <- str_match_all(raw, "([A-Z][a-z]+\\s[a-z]+)[\\s\\t]*([0-9\\-\\?]+.+)$")
+
+
+
+tmp <- str_match_all(raw2, "([A-Za-z]+[\\._\\s]*[a-z]*[\\.]*)\\s+([0-9\\?\\-]{1}(?![a-z]).+)")
+
+# Bertelli et al. (2014) issue
+# problem is that there is a new line after the taxon name (Crypturellus undulatus)
+# want to be able to "eat" through text in front of this until reaching a pattern, like 00011010 100100220 2003000
+
+# Fix??
+# maybe - if subsequent lines have all text (no numbers) remove one line??
+
+# str_match_all(raw2, regex("\\n([A-Z][a-z]+\\s[a-z]+).*?([0-9\\-\\?]+.+)", multiline=F, dotall=F))
+
 
 
 # Genus a b a a b (spaces between alphanumeric data)
-tmp <- str_match_all(raw, "([A-Z][a-z]+)[\\s\\t]+([a-z0-9\\-\\?^,]+.+)$")
+# tmp <- str_match_all(raw, "([A-Z][a-z]+)[\\s\\t]+([a-z0-9\\-\\?^,]+.+)$")
 
 tmp <- do.call(rbind, tmp)
-
 
 
 # Genus 0 1 1 1 0 1 0 0 1 (spaces between numeric data)
 
 # Genus 011101001 01111210 (chunks of data greater than 3 long, separated by spaces)
-
 
 # really want to find all consecutive numbers/sep. by up to one space, and with/without
 # period after words, at start of line, proceeded by numbers:
@@ -144,8 +158,10 @@ tmp <- do.call(rbind, tmp)
 # not sure what this one does
 # tmp <- str_match_all(raw, "([A-Z][a-z]+\\s[a-z]+[\\.]?)[\\s\\t]+(([0-9\\-\\?\\[\\]]{3,}[\\s\\t\\z]*)+)")
 
+# extract taxon labels
 taxlabels <- tmp[, 2]
 
+# get data matrix
 datamatrix <- tmp[, 3]
 
 names(datamatrix) <- taxlabels
@@ -154,6 +170,7 @@ names(datamatrix) <- taxlabels
 
 # datamatrix <- lapply(tmp, "[", 3)
 
+# unique taxon labels
 untaxlabels <- unique(na.omit(unlist(taxlabels)))
 
 # nums <- table(unlist(taxlabels))  # these should all be equal
@@ -162,34 +179,35 @@ untaxlabels <- unique(na.omit(unlist(taxlabels)))
 # 	names(nums)[[which(nums %in% which.min(table(nums)))]]
 # }
 
-# problem is that there is a new line after the taxon name
-# want to be able to "eat" through text in front of this until reaching a pattern, like 00011010 100100220 2003000
+
 
 
 # remove spaces in data
 datamatrix <- gsub("\\s", "", datamatrix)
 
-class(datamatrix)
-
-# remove ones with too many characters
-
-length(datamatrix)
-
-sd(str_length(datamatrix))
-
-
-
 # merge data for same species in multiple rows/lines of the text
 datamatrix <- sapply(untaxlabels, function(x) {paste0(datamatrix[which(names(datamatrix) %in% x)], collapse="")})
 
-# find character states
-datamatrix <- str_extract_all(datamatrix, '\\d{1}|[\\(\\[\\{]\\d{1,4}[\\)\\]\\}]|\\-|\\?|\\w')  # extract scorings
+# extract character states
+datamatrix <- str_extract_all(datamatrix, '\\d{1}|[\\(\\[\\{]\\d{1,4}[\\)\\]\\}]|\\-|\\–|\\?|\\w')  # extract scorings
 nchars <- sapply(datamatrix, length)
+
+# check - all same number of characters?
+all(diff(nchars)==0)
+
+# same number of characters as specified in input?
+nchars==nchar
+
+names(datamatrix) <- taxlabels
+
+# only keep correct number of characters
+datamatrix <- datamatrix[nchars==nchar]
+
 
 # get first 1:nchar characters
 datamatrix <- sapply(seq_along(datamatrix), function(x) {datamatrix[[x]][1:nchar]})
 
-colnames(datamatrix) <- untaxlabels
+colnames(datamatrix) <- untaxlabels[nchars==nchar]
 
 # remove cases of NAs (probably not real characters)
 # datamatrix <- t(datamatrix[, !apply(datamatrix, 2, anyNA)])
@@ -199,11 +217,14 @@ if (! ntax == nrow(datamatrix) & nchar == ncol(datamatrix) ) {
 	warning("Number of rows in data matrix does not equal number of input taxa")
 }
 
-rownames(datamatrix) <- gsub(" ", "_", rownames(datamatrix))
+# rownames(datamatrix) <- gsub(" ", "_", rownames(datamatrix))
 
-dim(datamatrix)
+# dim(datamatrix)
 
-datamatrix[1:5, 1:10]
+res <- t(datamatrix)
+
+head(res)
+
 
 
 
@@ -232,7 +253,6 @@ matstart <- grep('table|data [set]|character|matrix', x, ignore.case=TRUE)[1]
 
 # or search for TAXON LABEL - CHAR DATA
 
-
 mat <- x[(matstart+1):length(x)]
 
 mat <- gsub('^\\s+', '', mat)
@@ -256,7 +276,6 @@ mat <- paste0(mat, collapse="\n")
 
 # find all cases where taxa...
 datamatches <- str_match_all(mat, regex('\\n([A-Za-z]+[\\._\\s]*[a-z]*[\\.]*)\\s+([A-Z0-9\\?\\-]{1}(?![a-z]).+)'))
-
 
 # Option 2: inputting taxon names maybe as the function argument (e.g., Bledsoe 1988 PDF document)
 # datamatches <- str_match_all(mat, regex('\\n([A-Za-z]+[\\._\\s]*[a-z]*[\\.]*)\\s+([A-Z0-9\\?\\-]{1}(?![a-z]).+)'))
@@ -464,7 +483,6 @@ class(res) <- c('nex', 'list')
 res
 
 }
-
 
 
 # tmp <- buildnex(pdffile = '/Users/chadeliason/github/nexustools/example/Bledsoe_1988.pdf', ntax=9, nchar=83, first = 17, last = 17)
