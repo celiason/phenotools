@@ -168,8 +168,20 @@ allnex2 <- remove.invar(allnex)
 
 
 # add blank rows for species w/genomic data but missing from phenome
+newtax <- setdiff(c(ingenome, "Diogenornis_fragilis", "Opistodactylus_patagonicus"), allnex2$taxlabels)
+allnex2$data <- rbind(allnex2$data, matrix(NA, nrow=length(newtax), ncol=ncol(allnex2$data)))
+allnex2$taxlabels <- c(allnex2$taxlabels, newtax)
 
+# plot(allnex2, fill="file", legend.pos="top", fsize=6)
 
+# sort and subset the final nexus dataset
+allnex.genome <- subset(allnex2, taxlabels %in% c(ingenome, outgroups, fossils, newtax))
+
+# remove "combined" lithornithid taxa from Nesbitt et al. (2015)
+allnex.genome <- allnex.genome[-grep("combined", allnex.genome$tax), ]
+
+# allnex.genome <- collapse(allnex.genome, map = list("Lithornis" = "Lithornis_spp", "Dinornis_sp" = "Dinornis_spp", "Dinornithidae" = "Dinornithiformes", "Aepyornis" = "Aepyornis_spp", "Ichthyornis_spp" = "Ichthyornis"))
+allnex.genome
 ```
 
 Make some plots
@@ -346,8 +358,13 @@ head(dup)
 
 
 # plot biggest and representative smallest (n=2) clique
+pdf(file = "figure/dupclique_big.pdf")
 plot(induced_subgraph(g, v=com$membership==which.max(com$csize)))
+dev.off()
+
+pdf(file = "figure/dupclique_small.pdf")
 plot(induced_subgraph(g, v=com$membership==which.min(com$csize)))
+dev.off()
 
 # par(mfrow=c(4,6), mar=c(0,0,0,0), mex=.5, ps=6)
 # for (i in seq_along(com$csize)) {
