@@ -93,3 +93,8 @@ head.nex <- function(x) {
   # rownames(res) <- x$taxlabels[i]
   # colnames(res) <- sapply(x$charlabels[j], substring, first=1, last=8)
 }
+
+# is a nexus file
+is.nex <- function(x) {
+  inherits(x, "nex")
+}

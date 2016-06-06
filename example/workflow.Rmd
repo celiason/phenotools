@@ -384,7 +384,7 @@ ggplot(dfsum, aes(x = n)) +
   xlim(2, NA) +
   # geom_vline(xintercept = c(2,3)) +
   labs(x = "Number of duplicate characters within clique", y = "Number of cliques") +
-  # theme_bw() +
+  theme_bw() +
   theme(strip.background=element_blank())
 
 ggsave("figure/dupcliques.pdf")

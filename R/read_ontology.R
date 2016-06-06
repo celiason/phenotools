@@ -1,5 +1,13 @@
 # function to create network graph from tab-based text file
-treechart <- function(file){
+# file = path to text file containing trait ontology
+# e.g.,
+# feather
+# 	rachis
+#		barb
+# 		barbule
+# 			hooklet
+#
+read_ontology <- function(file){
 	library(psych)
 	library(zoo)
 	library(igraph)
@@ -29,16 +37,22 @@ treechart <- function(file){
 			})))
 
 	edges <- as.matrix(edges)
+	
 	# create graph
 	g <- graph_from_edgelist(edges[, 1:2])
+	
+	# sort attribute for sorting characters that match to a given term
 	edge.attributes(g)$sort <- edges[, 3]
 	
-	# new vertex labels
+	# make new vertex labels
 	verts <- V(g)$name
 	verts <- tolower(verts)
 	verts <- strsplit(verts, "->")
-	verts <- sapply(seq_along(verts), function(x) tail(verts[[x]],1))
+	verts <- sapply(seq_along(verts), function(x) tail(verts[[x]], 1))
 	verts <- gsub("^ ", "", verts)
 	V(g)$name <- verts
+
+	# return graph
 	g
+
 }

@@ -1,14 +1,15 @@
 setwd("/Users/chadeliason/Documents/UT/projects/phenome")
 
+# load libraries
+library(GGally)
 devtools::load_all('~/github/nexustools')  # load packages
 
+# load data
 twig <- read.nex("data/theropods/Turner_etal_2012.nex")  # load data
-
 file <- "baumel ontology.txt"  # trait ontology, text file
 
-# USING TEXT (TAB-BASED) ONTOLOGY
-tree <- treechart(file="/Users/chadeliason/Documents/UT/projects/phenome/baumel ontology.txt")
-
+# create trait ontology from tabbed text file
+tree <- read_ontology(file="/Users/chadeliason/Documents/UT/projects/phenome/baumel ontology.txt")
 tree <- simplify(tree, edge.attr.comb = "first")
 
 # stem latin words in ontology
@@ -19,8 +20,13 @@ subtree <- induced_subgraph(tree, subcomponent(tree, grep("tarsometat", V(tree)$
 
 pdf(file = "figure/ontology.pdf", width=9, height=8)
 par(mar=c(0,0,0,0))
-plot(subtree, layout=-layout.reingold.tilford(subtree)[,2:1], vertex.size=0, edge.arrow.size=0)
+plot(subtree, layout=-layout.reingold.tilford(subtree)[,2:1], vertex.size=0, edge.arrow.size=0,
+	vertex.label.cex=.5)
 dev.off()
+
+ggnet(subtree, label.nodes=T, label.size=2, size=2, arrow.size=.35)
+ggsave(file = "figure/ontology_ggnet.pdf")
+
 
 
 
@@ -29,94 +35,37 @@ dev.off()
 # with stem words
 ################################################################################
 
-# terms <- V(tree)$name
-terms <- V(tree)$name
-
-terms2 <- str_split(terms, "->|\\s")
-terms2 <- sapply(terms2, unique)
-# remove dots
-terms2 <- lapply(seq_along(terms2), function(x) {
-	res <- terms2[[x]]
-	res[!grepl("\\.", res)]
-})
-# remove single, two letter words
-terms2 <- lapply(seq_along(terms2), function(x) {
-	res <- terms2[[x]]
-	res[grepl("\\w{3,}", res)]
-})
-# remove empties
-any(unlist(sapply(terms2, "==", "")))
-# terms2 <- lapply(seq_along(terms2), function(x) {terms2[[x]][terms2[[x]]!=""]})
-# any(unlist(sapply(terms2, "==", "")))
-
 pdf(file = "figure/twig stem word cloud.pdf", width=5, height=5)
-wordcloud::wordcloud(unlist(terms2))
+wordcloud::wordcloud(unlist(V(tree)$name))
 dev.off()
 
 
 
-# list of unique stem words
-terms3 <- unique(unlist(terms2))
-length(terms3)  # number of unique terms
-terms3
+tree2 <- stem_search(tree=tree, x = twig)
 
 
+pdf(file = "figure/trait_ont_1.pdf", width=5, height=5)
+par(mar=rep(0, 4))
+plot(induced_subgraph(tree2, subcomponent(tree2, V(tree2)$name=="char2", mode="in")),
+	vertex.color="gray", vertex.label.color="black", vertex.label.cex=.5)
+dev.off()
 
-# stem searcher
-
-# only at beginning of word
-system.time(stemchar <- lapply(paste0("\\b", terms3), grep, tolower(twig$charlab)))
-length(stemchar)
-names(stemchar) <- terms3
-tail(sort(sapply(stemchar, length)))
-# number of unmatched characters
-twig$charlab[setdiff(seq_along(twig$charlab), unique(unlist(stemchar)))]
-119/477 # 25% unmatched
-
-
-# not much slower to do all stems in every term of ontology
-system.time(stemchar2 <- lapply(paste0("\\b", unlist(terms2)), grep, tolower(twig$charlab)))
-names(stemchar2) <- rep(seq_along(terms2), times=sapply(terms2, length))
-
-
-# create links from terms to characters, weighted by number of matches
-# TODO - weights for each character??
-# remove zero length list elements
-stemchar2 <- stemchar2[!lapply(stemchar2, length)==0]
-
-# create links between terms and characters
-x <- sapply(seq_along(stemchar2), function(x) {
-	paste0(names(stemchar2[x]), "--", stemchar2[[x]])
-})
-names(x) <- names(stemchar2)
-edges <- do.call(rbind, strsplit(unlist(x), "--"))
-edges[, 2] <- paste0("char", edges[, 2])
-edges[, 1] <- V(tree)$name[as.numeric(edges[, 1])]
-newverts <- unique(edges[, 2])
-
-# create new network with characters added in
-tree2 <- add_vertices(tree, nv=length(newverts), name=newverts) 
-# add new edges
-tree2 <- add_edges(tree2, apply(edges, 1, "c"))
-# tree2 <- add_edges(tree2, sapply(1:nrow(edges), function(x) { c(edges[x,1], edges[x,2])  }))
-tree2
-
-plot(induced_subgraph(tree2, subcomponent(tree2, V(tree2)$name=="char2", mode="in")))
-plot(induced_subgraph(tree2, subcomponent(tree2, V(tree2)$name=="char5", mode="in")))
-# plot(induced_subgraph(tree2, subcomponent(tree2, V(tree2)$name=="char8", mode="in")))
-plot(induced_subgraph(tree2, subcomponent(tree2, V(tree2)$name=="char10", mode="in")))
-# plot(induced_subgraph(tree2, subcomponent(tree2, V(tree2)$name=="char21", mode="in")))
-plot(induced_subgraph(tree2, subcomponent(tree2, V(tree2)$name=="char24", mode="in")))
+pdf(file = "figure/trait_ont_2.pdf", width=5, height=5)
+par(mar=rep(0, 4))
+plot(induced_subgraph(tree2, subcomponent(tree2, V(tree2)$name=="char24", mode="in")),
+	vertex.color="gray", vertex.label.color="black", vertex.label.cex=.5)
+dev.off()
 
 id <- which(V(tree2)$name=="char2")
 
-roots <- which(degree(tree2, v = V(tree2), mode = "in")==0, useNames = T)
+roots <- which(igraph::degree(tree2, v = V(tree2), mode = "in")==0, useNames = T)
 
+# what is a given character most connect to..?
 lapply(id, all_shortest_paths, graph=tree2, to=roots, mode="in")
 
 
 
-# what is a given character most connect to..?
+
 
 
 
