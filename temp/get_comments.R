@@ -1,54 +1,90 @@
 # work with markup comments on chars
 
+# how characters are characterized
+# DD = duplicate
+# KK = keep
+# KKM = keep and modify wording
+# XX = cut
+
+setwd("/Users/chadeliason/Documents/UT/projects/phenome")
+
 file <- "/Users/chadeliason/Dropbox/phenome dataset/data/2015-09-02/modified/final_reorderedJAC+CME.txt"
 
+# read text
 txt <- readLines(file)
-
 txt <- paste0(txt, collapse="\n")
+txt <- str_trim(txt)
 
 # find actions, comments associated with characters
-
 tmp <- str_match_all(txt, regex("\n([A-Z\\?]+)(\\d+)", multiline=TRUE, dotall=TRUE))
-
-todo <- tmp[[1]][,2]
-charnum <- as.numeric(tmp[[1]][,3])
-
-todo
-
-charnum
-
-
-
-
-
-
-
-
-str_match_all(txt, regex("\n([A-Z\\?]+)(\\d+)\\..*?\\{(.*?)\\}", multiline=TRUE, dotall=TRUE))
-
-# tmp <- str_match_all(txt, regex("\\{(.*?)\\}", multiline=TRUE, dotall=TRUE))
 tmp <- tmp[[1]]
-todo <- tmp[!is.na(tmp[,2]),2] # todo (e.g., DD - duplicated, XX - cut, KKM - keep and modify...)
-charnum <- tmp[!is.na(tmp[,3]),3] # charnum
-comments <- tmp[!is.na(tmp[,3]),5] # comments
+todo <- tmp[,2]
+charnum <- as.numeric(tmp[,3])
+matches <- tmp[, 1]
 
-todo
+# find comments
+locs <- str_locate(txt, fixed(matches))
+comments <- list()
+for (i in seq_along(matches)) {
+	start <- locs[i, 1]
+	if (i == length(matches)){
+		end <- str_locate(txt, "$")[2]
+	} else {
+		end <- locs[(i+1), 1]	
+	}
+	newtext <- substr(txt, start, end)	
+	comments[[i]] <- str_extract_all(newtext, "(?<=\\{)(.*?)(?=\\})")[[1]]
+}
+names(comments) <- charnum
+comments <- setNames(unlist(comments, use.names=F), rep(charnum, times = sapply(comments, length)))
 
-charnum
+# merge
+res1 <- data.frame(charnum = as.numeric(names(comments)), comment = comments)
+res2 <- data.frame(charnum = charnum, todo = todo)
+res <- dplyr::left_join(res2, res1, by = "charnum")
 
-comments
-
-# charnum
-# todo
-# comments
-
-write.csv(data.frame(charnum, todo, comments), file = "/Users/chadeliason/Dropbox/Chad/phenome/data/2015-09-02/modified/regex_extracted.csv")
+# output
+write.csv(res, file = "output/regex_extracted.csv")
 
 
+# extract duplicate characters from comments
 
-# length(charnum)
+# str_match_all(as.character(res1$comment), "(\\bduplic|overlap).*?(\\d+[;,\\s]?.*?(?=[a-z]+))")[27]
 
-# tmp <- str_match_all(txt, regex("\\{(.*?)\\}", multiline=TRUE, dotall=TRUE))
+# first match duplicate, overlaps
+dups <- str_match_all(as.character(res1$comment), "(\\bdupl|overl).*?(\\d+(?:[;,]\\s\\d+)*)")
 
-# txt[str_detect(txt, "\\{.*\\}")]
+# duplicate or overlap, etc.
+
+# types <- sapply(dups, "[", i=2)
+
+dups <- lapply(dups, "[", , 3)
+
+dups <- sapply(dups, strsplit, split = "[;,]")
+
+dups <- sapply(dups, unlist)
+
+dups <- sapply(dups, gsub, pattern = "^ ", replacement = "")
+
+names(dups) <- res1$charnum
+
+dups <- na.omit(setNames(unlist(dups, use.names=F), rep(names(dups), times = sapply(dups, length))))
+
+dups <- data.frame(target = names(dups), duplicate = dups)
+
+write.csv(dups, file = "output/regex_duplicates.csv")
+
+
+
+# plotting
+
+# library(igraph)
+
+# g <- graph_from_edgelist(as.matrix(dups), directed=FALSE)
+
+# g <- simplify(g)
+
+# par(mar=c(0,0,0,0))
+# plot(g, vertex.color = "lightblue", vertex.label.cex = .8, vertex.size = 0, edge.width = .5, edge.arrow.size=.5)
+
 
