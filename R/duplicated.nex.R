@@ -30,7 +30,8 @@
 # TODO: [x] paste together character labels and state labels, look for distances between them
 # TODO: [ ] add text output/progress bar to give user feedback
 #
-duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = TRUE, cutoff = 0.35, method = c("jw", "cosine")) {
+duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = TRUE,
+  cutoff = 0.35, method = c("jw", "cosine"), within_dataset = TRUE) {
 
   library(stringdist)
   library(tm)
@@ -75,9 +76,12 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = TRUE, c
 
     # only want comparisons BETWEEN datasets/character types, not within:
     file <- x$file
-    id <- file[pairids[1, ]] != file[pairids[2, ]]
-    pairids <- pairids[, id]
-
+    
+    if (!within_dataset) {  
+      id <- file[pairids[1, ]] != file[pairids[2, ]]
+      pairids <- pairids[, id]
+    }
+    
     # only look within character partitions:
     if (!is.null(x$charpartition) & length(unique(x$charpartition)) > 1) {
       charpart <- x$charpartition
@@ -184,7 +188,7 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = TRUE, c
 
   # drop and merge of characters
 
-  # [ ] need to have this output what characters are duplicated, retained, etc.
+  # [x] need to have this output what characters are duplicated, retained, etc.
 
   res <- x
 

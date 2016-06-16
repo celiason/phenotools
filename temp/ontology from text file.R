@@ -18,10 +18,10 @@ V(tree)$name <- schinke(V(tree)$name)
 # plot a subtree
 subtree <- induced_subgraph(tree, subcomponent(tree, grep("tarsometat", V(tree)$name), mode="out"))
 
-pdf(file = "figure/ontology.pdf", width=9, height=8)
+pdf(file = "figs/ontology.pdf", width=9, height=8)
 par(mar=c(0,0,0,0))
 plot(subtree, layout=-layout.reingold.tilford(subtree)[,2:1], vertex.size=0, edge.arrow.size=0,
-	vertex.label.cex=.5)
+	vertex.label.cex=1, vertex.label.color = "black")
 dev.off()
 
 ggnet(subtree, label.nodes=T, label.size=2, size=2, arrow.size=.35)

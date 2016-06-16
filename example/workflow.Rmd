@@ -28,7 +28,7 @@ files <- list.files('~/Documents/UT/projects/phenome/data', pattern='\\.nex', fu
 
 system.time(nexs <- lapply(files, read.nex))
 
-system.time(nexs2 <- lapply(files[1], ReadMorphNexus))
+# system.time(nexs2 <- lapply(files[1], ReadMorphNexus))
 
 # 3 seconds for my function, 25+ seconds for Claddis ReaDMorphNexus function
 # this is because Claddis is reading in data as factors and I'm using character data
@@ -189,7 +189,7 @@ Make some plots
 ```{r, eval=FALSE}
 plot(na.omit(allnex.genome), fill='file', legend.pos="top")
 
-pdf("figure/allnex2plot.pdf", width=8, height=8)
+pdf("figs/allnex2plot.pdf", width=8, height=8)
 plot(na.omit(allnex2), fill='file', legend.pos="top", fsize=6)
 dev.off()
 ```
@@ -236,66 +236,40 @@ final <- allnex2
 tomatch <- str_extract(final$charlab, ".*?(\\,|\\:|$)")
 tomatch <- tomatch[final$charpartition %in% c("axial", "pectoral", "forelimb", "pelvic", "hindlimb", "skull")]
 names(tomatch) <- which(final$charpartition %in% c("axial", "pectoral", "forelimb", "pelvic", "hindlimb", "skull"))
-```
 
-load set of REGEX search terms
-
-```{r}
+# load set of REGEX search terms
 terms <- read_excel("data/phenome terms.xlsx", sheet=1)
-```
 
-find which character labels have a given search term
-
-```{r}
+# find which character labels have a given search term
 matches <- lapply(terms$"search term", grep, x = tomatch, perl = TRUE)
-
 length(unlist(matches))/length(tomatch)
-
 length(tomatch[-unlist(matches)])  # number of characters not matched
-```
 
-get list of non-matches
-
-```{r}
+#get list of non-matches
 id <- as.numeric(names(tomatch)[-unlist(matches)])
 cat(paste0("------\n\n", final$charlabel[id], "\n\n", final$state[id]), sep="\n\n")
+
 # output
 cat(tomatch[-unlist(matches)], sep="\n", file="output/unmatchedcharacters.txt")
-```
 
-sort by order in matched terms
-
-```{r}
+#sort by order in matched terms
 sortid <- sapply(seq_along(matches), function(x) {names(tomatch[matches[[x]]])})
 sortid <- as.numeric(unlist(sortid))
 sortid <- sortid[!duplicated(sortid)]  # remove dups
-```
 
-sort integumentary and other soft-tissue characters by original order in the dataset
-
-```{r}
+# sort integumentary and other soft-tissue characters by original order in the dataset
 nistid <- which(!1:ncol(final$data) %in% as.numeric(names(tomatch)))  # nist - non-integumentary characters
-```
 
-sort characters at end of group/character partition if they can't be found with REGEX match
-
-```{r}
+# sort characters at end of group/character partition if they can't be found with REGEX match
 missid <- which(!1:ncol(final$data) %in% c(sortid, nistid))
-```
 
-combine ids and reorder dataset based on these IDs
-
-```{r}
+#combine ids and reorder dataset based on these IDs
 id <- c(sortid,nistid,missid)
 
 # reorder dataset
 final <- final[, id]
-```
 
-
-now reorder by character partition
-
-```{r}
+# now reorder by character partition
 final$charpartition <- factor(final$charpartition, levels=c("skull", "hyolingual", "axial", "pectoral", "forelimb", "pelvic", "hindlimb", "integument", "muscle", "eggs", "auditory", "digestive", "respiratory", "pericardium", "chromosomes", "urogenital", "cardiovascular", "lymphatic", "nervous", "brain", "metabolism", "reproductive", "behavior", "sensory"))
 
 # add dataset to characters
@@ -358,11 +332,11 @@ head(dup)
 
 
 # plot biggest and representative smallest (n=2) clique
-pdf(file = "figure/dupclique_big.pdf")
+pdf(file = "figs/dupclique_big.pdf")
 plot(induced_subgraph(g, v=com$membership==which.max(com$csize)))
 dev.off()
 
-pdf(file = "figure/dupclique_small.pdf")
+pdf(file = "figs/dupclique_small.pdf")
 plot(induced_subgraph(g, v=com$membership==which.min(com$csize)))
 dev.off()
 
@@ -377,17 +351,18 @@ dfsum <- df %>% group_by(group,charpart) %>% summarize(n=length(char)) %>% arran
 dfsum$charpart <- factor(dfsum$charpart)
 dfsum$charpart <- droplevels(dfsum$charpart)
 dfsum$charpart <- factor(dfsum$charpart, levels = levels(dfsum$charpart)[rev(order(aggregate(n~charpart, dfsum, length)$n))])
+dfsum$charpart <- factor(dfsum$charpart, levels = c("skull", "axial", "pectoral", "forelimb", "pelvic", "hindlimb", "muscle"))
 
-ggplot(dfsum, aes(x = n)) +
+ggplot(filter(dfsum, charpart != "muscle"), aes(x = n)) +
   geom_histogram(binwidth = 1) +
   facet_wrap(~charpart) +
   xlim(2, NA) +
   # geom_vline(xintercept = c(2,3)) +
   labs(x = "Number of duplicate characters within clique", y = "Number of cliques") +
   theme_bw() +
-  theme(strip.background=element_blank())
+  theme(strip.background=element_blank(), strip.text = element_blank())
 
-ggsave("figure/dupcliques.pdf")
+ggsave("figs/dupcliques.pdf", width = 6, height = 4)
 
 # find screwed up (character paritions not the same):
 
@@ -402,7 +377,6 @@ length(x)
 x
 
 # reorder so duplicates are close together...
-
 ```
 
 
@@ -431,14 +405,113 @@ df$group <- reorder(df$group, match(df$group, names(sorting)))
 
 df$group <- factor(df$group, levels = df[order(df$year), "group"])
 
+df <- filter(df, charpart != "muscle")
+
 ggplot(data=NULL) +
-  geom_point(data=df, aes(year, group, color = charpart)) +
-  geom_path(data=df, aes(year, group, color = charpart)) +
+  geom_point(data=df, aes(year, group, color = charpart), cex=1) +
+  geom_path(data=df, aes(year, group, color = charpart), alpha = 0.5) +
   facet_wrap(~charpart, scales="free_y") +
   theme_bw() +
-  theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(), panel.grid = element_blank(), legend.position = "none")
+  theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(), panel.grid = element_blank(), legend.position = "none", strip.background = element_blank(), strip.text = element_blank()) +
+  labs(x = "Year", y = "Duplicated character")
 
-ggsave("figure/character_fate.pdf", width=8, height=6)
+ggsave("figs/character_fate.pdf", width=6, height=3.5)
+
+
+
+
+# df2 <- df %>% group_by(charpart, group) %>% mutate(fad = min(year), lad = max(year))
+
+df2 <- df %>% group_by(charpart, group) %>% summarize(fad = min(year), lad = max(year))
+df2$charpart <- droplevels(df2$charpart)
+df2$group <- droplevels(df2$group)
+df2 <- filter(df2, charpart != "muscle")
+
+# to make a phylogeny, we would want to pick earliest characters in each 'clique'
+# use that as the ancestor
+# descendents would then be duplicates (again, ordered by time)
+
+fad <- as.matrix(table(df2$fad, df2$charpart))
+
+lad <- as.matrix(table(df2$lad, df2$charpart))
+
+dt.fad <- diff(as.numeric(rownames(fad)))
+dt.lad <- diff(as.numeric(rownames(lad)))
+
+# speciation rates
+sp.rate <- setNames(sapply(1:ncol(fad), function(x) {mean(fad[-1, x] / dt.fad)}),
+    colnames(fad))
+
+ex.rate <- setNames(sapply(1:ncol(lad), function(x) {mean(lad[-1, x] / dt.lad)}),
+    colnames(lad))
+
+charpart <- factor(colnames(fad), levels = levels(df2$charpart))
+
+ex.rate
+sp.rate
+
+ggplot(data = NULL, aes(x = ex.rate, y = sp.rate, fill = charpart)) +
+  geom_point(pch = 21, cex = 3) +
+  geom_abline(slope=1, intercept=0, lty = 2) +
+  labs(x = "'Extinction rate' (characters per year)", y = "'Speciation rate' (characters per year)") +
+  theme(legend.position = "none")
+
+ggsave(file = "figs/characters_speciation_rates.pdf", width = 4, height = 4)
+
+
+
+
+
+
+
+# time series plots of characters
+
+df <- data.frame(char=as.numeric(as.character(final$charnum)), charpart = final$charpart,
+  year = as.numeric(str_extract(final$file, "\\d{4,4}$")))
+
+df <- df[!is.na(df$year), ]
+
+df$type <- ifelse(df$charpart %in% c('forelimb', 'pectoral', 'axial', 'hindlimb', 'pelvic', 'skull'), 'bone', 'notbone')
+
+df <- subset(df, type=="bone")
+
+df$charpart <- droplevels(df$charpart)
+
+library(ggdendro)
+library(gridExtra)
+
+ts <- as.matrix(table(df$year, df$charpart))
+ts <- cbind(year=as.numeric(rownames(ts)), ts)
+# log transform non-zeros
+ts[,-1][ts[,-1]>0] <- log(ts[,-1][ts[,-1]>0])
+# ts[, -1] <- ts[, -1]^.25  # scale because of livezey zusi 2006
+ts[, -1] <- scale(ts[, -1])
+
+hc <- hclust(dist(t(ts[,-1])))
+hcdata <- dendro_data(hc)
+names_order <- hcdata$labels$label
+
+df2 <- as.data.frame(cbind(time=ts[,1], ts[, rev(as.character(names_order))]))
+
+df2 <- melt(df2, id.var="time")
+
+p1 <- ggdendrogram(hcdata, rotate=TRUE, leaf_labels=FALSE) + theme(text = element_text(size = 10))
+
+p2 <- ggplot(data=df2, aes(x = time, y = value)) +
+  facet_wrap(~ variable, ncol=1, scales="free_y") +
+  geom_line() +
+  geom_point(pch=1) +
+  geom_smooth(se=FALSE, lwd=.5) +
+  theme_bw() +
+  theme(axis.text = element_text(size = 7), axis.title = element_text(size = 10),
+    legend.position = "none", strip.background = element_blank(),
+    strip.text = element_blank(), panel.grid=element_blank(),
+    axis.text.y = element_blank()) +
+  labs(x = "Year", y = "Number of characters")
+
+pdf(file = "figs/character time series.pdf", width = 6, height = 5)
+grid.arrange(p2, p1, nrow=1, widths = c(3, 2))
+dev.off()
 ```
 
 
