@@ -59,8 +59,12 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = TRUE,
 
   # provide map of duplicated characters
   if (!is.null(map)) {
+    if (class(map)=="list") {
+      dups <- matrix(unlist(map), ncol = length(map))  
+    } else {
     # pairids <- matrix(unlist(map), ncol=length(map))
-    dups <- matrix(unlist(map), ncol = length(map))
+    dups <- t(map)
+    }
   }
 
   # automated discovery of duplicate characters

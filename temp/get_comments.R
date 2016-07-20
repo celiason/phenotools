@@ -1,5 +1,7 @@
 # work with markup comments on chars
 
+devtools::load_all('~/github/nexustools')
+
 # how characters are characterized
 # DD = duplicate
 # KK = keep
@@ -8,10 +10,15 @@
 
 setwd("/Users/chadeliason/Documents/UT/projects/phenome")
 
-file <- "/Users/chadeliason/Dropbox/phenome dataset/data/2015-09-02/modified/final_reorderedJAC+CME.txt"
+oldfile <- read.nex("~/Dropbox/phenome dataset/data/2015-09-02/original/final_reordered.nex")
+newfile <- read.nex("/Users/chadeliason/Dropbox/phenome dataset/matrix updated 6 8 16.nex")
+
+read.nex("/Users/chadeliason/Desktop/matrix updated 6 8 16 TEST.nex")
+
+commentfile <- "/Users/chadeliason/Dropbox/phenome dataset/data/2015-09-02/modified/final_reorderedJAC+CME.txt"
 
 # read text
-txt <- readLines(file)
+txt <- readLines(commentfile)
 txt <- paste0(txt, collapse="\n")
 txt <- str_trim(txt)
 
@@ -70,7 +77,8 @@ names(dups) <- res1$charnum
 
 dups <- na.omit(setNames(unlist(dups, use.names=F), rep(names(dups), times = sapply(dups, length))))
 
-dups <- data.frame(target = names(dups), duplicate = dups)
+dups <- data.frame(target = as.numeric(names(dups)), duplicate = as.numeric(dups))
+
 
 write.csv(dups, file = "output/regex_duplicates.csv")
 
@@ -87,4 +95,16 @@ write.csv(dups, file = "output/regex_duplicates.csv")
 # par(mar=c(0,0,0,0))
 # plot(g, vertex.color = "lightblue", vertex.label.cex = .8, vertex.size = 0, edge.width = .5, edge.arrow.size=.5)
 
+
+# do stuff to matrix
+
+drops <- res$charnum[grep("^XX$", res$todo)]
+
+fixed 
+table(is.na(oldfile$data))
+table(is.na(oldfile[, -drops]$data))
+# 268662/(40838+268662)
+
+table(is.na(duplicated(oldfile, map = dups)$data))
+# 270173/(41077+270173)
 

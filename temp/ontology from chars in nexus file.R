@@ -9,11 +9,16 @@ library(igraph)
 # palaeognathae character list
 final <- read.nex("/Users/chadeliason/Documents/UT/projects/phenome/output/final_reordered.nex")
 
-tree <- generate_ontology(final)
+res <- generate_ontology(final)
+tree <- res$tree
+training <- res$training
+test <- res$test
 
-searchtree(graph=tree, pattern="mandib", vertex.label.cex=.5, vertex.color = "black", vertex.size=0, edge.arrow.size=.5, vertex.label.color = "darkblue")
+tree2 <- delete_vertices(tree, which(igraph::degree(tree)==1))
+tree2 <- simplify(tree2)
 
-searchtree(graph=tree, pattern="femur", vertex.label.cex=.5, vertex.color = "black", vertex.size=0, edge.arrow.size=.5, vertex.label.color = "darkblue")
+
+searchtree(graph=tree2, pattern="femur", vertex.label.cex=.5, vertex.color = "black", vertex.size=0, edge.arrow.size=.5, vertex.label.color = "darkblue")
 
 subtree <- searchtree(graph=tree, pattern="extremit proximal carpometacarp", plot=FALSE)
 
@@ -25,8 +30,23 @@ V(subtree)$name <- gsub(" ", "\n", V(subtree)$name)
 
 pdf(file = "figure/ontology_autogen_tarsometatars.pdf")
 # plot(subtree, vertex.label.cex=.5, vertex.color = "black", vertex.size=0, edge.arrow.size=.5, vertex.label.color = "darkblue")
-plot(subtree, layout = -layout_as_tree(subtree)[,2:1], vertex.label.cex=.5, vertex.color = "black", vertex.size=0, edge.arrow.size=.5, vertex.label.color = "darkblue")
+plot(subtree, layout = -layout_as_tree(subtree)[,2:1], vertex.label.cex=.5,
+	vertex.color = "black", vertex.size=0, edge.arrow.size=.5,
+	vertex.label.color = "darkblue")
 dev.off()
+
+
+
+# find number of characters linked to TO
+system.time(res <- stem_search(tree=tree2, x=test))
+table(igraph::degree(graph=res, v=grep("char", names(V(res))), mode="in")>1)
+# 624/(624+28)
+plot(induced_subgraph(res, subcomponent(res, V(res)$name=="char5", mode="in")),
+	vertex.color="gray", vertex.label.color="black", vertex.label.cex=.5)
+
+
+
+
 
 
 # visualize unique terms

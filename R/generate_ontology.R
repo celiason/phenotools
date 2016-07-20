@@ -2,34 +2,44 @@
 # x = nexus file
 generate_ontology <- function(x) {
 
+
 	library(igraph)
 
 	if (is.nex(x)) {
-		x <- x$charlabels
+		charlabs <- x$charlabels
 	}
 
 	# remove punctuation, comments in brackets, etc. (see cleantext.R function)
-	test <- cleantext(x, comma=FALSE)
+	charlabs <- cleantext(charlabs, comma=FALSE)
 
 	# fix muscule and nerve abbreviations
-	test <- gsub("m\\.", "musculus", test)
-	test <- gsub("n\\.", "nerve", test)
+	charlabs <- gsub("m\\.", "musculus", charlabs)
+	charlabs <- gsub("n\\.", "nerve", charlabs)
 
 	# locate characters with terms separated by comma
-	test.com <- test[grepl(",", test)]
+	# shouldn't be followed by and, with, eg, ie
+	ss <- grepl(",", charlabs, perl=TRUE) & !grepl(",\\s*(and|with)", charlabs, perl=TRUE)
+	
+	x.com <- charlabs[ss]
+
+	training <- x[, ss]
+	
+	test <- x[, !ss]
+
+	# x.com <- x[grepl(",", x)]
 
 	# In some cases, at the end of the character there is a description or
 	# comment following a period. This will search for that patterna and
 	# truncate the character name.
-	test.com <- gsub("\\s\\w{2,}\\.\\s\\w+.*", "", test.com)
+	x.com <- gsub("\\s\\w{2,}\\.\\s\\w+.*", "", x.com)
 
 	# remove comma followed by 'and', 'with'
-	test.com <- gsub(", and", " and", test.com)
-	test.com <- gsub(", with", " with", test.com)
-	test.com <- gsub(", e.g.", " eg", test.com)
-	test.com <- gsub(", i.e.", " ie", test.com)
+	x.com <- gsub(", and", " and", x.com)
+	x.com <- gsub(", with", " with", x.com)
+	x.com <- gsub(", e.g.", " eg", x.com)
+	x.com <- gsub(", i.e.", " ie", x.com)
 
-	terms <- strsplit(test.com, ",")
+	terms <- strsplit(x.com, ",")
 
 	terms <- lapply(terms, gsub, pattern="^ ", replacement="")
 
@@ -91,6 +101,6 @@ generate_ontology <- function(x) {
 	# use latin stemmer on terms
 	V(g)$name <- schinke(V(g)$name)
 
-	g
+	list(tree=g, training=training, test=test)
 
 }

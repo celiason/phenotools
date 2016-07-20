@@ -419,7 +419,6 @@ ggsave("figs/character_fate.pdf", width=6, height=3.5)
 
 
 
-
 # df2 <- df %>% group_by(charpart, group) %>% mutate(fad = min(year), lad = max(year))
 
 df2 <- df %>% group_by(charpart, group) %>% summarize(fad = min(year), lad = max(year))
@@ -457,8 +456,6 @@ ggplot(data = NULL, aes(x = ex.rate, y = sp.rate, fill = charpart)) +
   theme(legend.position = "none")
 
 ggsave(file = "figs/characters_speciation_rates.pdf", width = 4, height = 4)
-
-
 
 
 
@@ -521,6 +518,7 @@ dev.off()
 
 ```{r}
 write.nex(final, file = "output/final_reordered.nex", format="nexus")
+
 # write.nex(allnex.genome, 'output/palaeognath_genomes.nex')
 
 test <- data.frame(char=names(com$membership), group=com$membership) %>% arrange(group) %>% dplyr::select(group, char)
