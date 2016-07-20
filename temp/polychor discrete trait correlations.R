@@ -55,5 +55,27 @@ plot(test[, c(450, 452)], legend.pos="right")
 
 # i need to see how many of these are real duplicates identified from our work
 
+truedup <- read.csv("output/regex_duplicates.csv")
+id1 <- paste0(pmin(truedup[,"target"], truedup[,"duplicate"]), "--", pmax(truedup[,"target"], truedup[,"duplicate"]))
+id1 <- unique(id1)
 
+# subset chars we have assessed thus far: 1856 - 2027
+test2 <- test[, test$charnum %in% 1856:2027]
+
+# keep very highly correlated characters
+picks <- which(res > 0.99 | res < -.99)
+
+# create unique sets of potential duplicates
+sets <- pairids[, picks]
+dups <- cbind(test$charnum[sets[1, ]], test$charnum[sets[2, ]])
+dups <- dups[dups[,1] %in% 1856:2027 & dups[,2] %in% 1856:2027, ]
+id2 <- paste0(pmin(dups[,1], dups[,2]), "--", pmax(dups[,1], dups[,2]))
+id2 <- unique(id2)
+
+# compute precision and recall
+fneg <- sum(!id1 %in% id2)  # false negs
+tpos <- sum(id2 %in% id1)  # true pos
+fpos <- sum(!id2 %in% id1) # false pos
+tpos / (tpos + fpos)  # precision
+tpos / (tpos + fneg)  # recall
 

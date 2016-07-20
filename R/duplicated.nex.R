@@ -23,15 +23,15 @@
 #' @author Chad Eliason \email{chad_eliason@@utexas.edu}
 #'
 #'
-# x <- allnex2
-# x <- subset(allnex2, charpartition=="hindlimb")
-# x
-# TODO: [x] look for duplicates within character names (e.g., 'From Bourdon et al. (2009a: char. 66)') 
-# TODO: [x] paste together character labels and state labels, look for distances between them
-# TODO: [ ] add text output/progress bar to give user feedback
-#
+#' x <- allnex2
+#' x <- subset(allnex2, charpartition=="hindlimb")
+#' x
+#' TODO: [x] look for duplicates within character names (e.g., 'From Bourdon et al. (2009a: char. 66)') 
+#' TODO: [x] paste together character labels and state labels, look for distances between them
+#' TODO: [ ] add text output/progress bar to give user feedback
+#'
 duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = TRUE,
-  cutoff = 0.35, method = c("jw", "cosine"), within_dataset = TRUE) {
+  cutoff = 0.35, method = c("jw", "cosine"), within_dataset = TRUE, plot = TRUE) {
 
   library(stringdist)
   library(tm)
@@ -139,6 +139,10 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = TRUE,
       ss <- sapply(seq(0, cutoff, length=n), function(z) {
         which.min(abs(sscut - z))
       })
+      if (length(ss) < n) {
+        warning("Number of pairs to assess is less than specified. Try increasing cutoff.")
+      }
+      ss <- unique(ss)
       sstrain <- sscut[ss]
       sset.dist <- sstrain
       sset <- as.numeric(names(sset.dist))
@@ -153,12 +157,13 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = TRUE,
       # matchid <- as.numeric(names(pred$posterior[, 2][pred$posterior[, 2] > 0.5]))
       dups <- pairids[, matchid]
 
-      plot(predict(lda1, df)$posterior[,2]~df[,2], type='b', col=df[,1]+1, pch=16, xlab="String distance", ylab="P(duplicate)")
-      legend("topright", pch=16, col=c("black", "red"), legend=c("not dup", "dup"), bty="n")
-      # predict(lda1, df)$posterior[,2]>0.5
-      abline(h=0.5, lty=2)
-      title("LDA training results")
-
+      if (plot) {
+        plot(predict(lda1, df)$posterior[,2]~df[,2], type='b', col=df[,1]+1, pch=16, xlab="String distance", ylab="P(duplicate)")
+        legend("topright", pch=16, col=c("black", "red"), legend=c("not dup", "dup"), bty="n")
+        # predict(lda1, df)$posterior[,2]>0.5
+        abline(h=0.5, lty=2)
+        title("LDA training results")  
+      }
     }
 
     if (!train) {

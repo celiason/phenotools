@@ -13,7 +13,7 @@ setwd("/Users/chadeliason/Documents/UT/projects/phenome")
 oldfile <- read.nex("~/Dropbox/phenome dataset/data/2015-09-02/original/final_reordered.nex")
 newfile <- read.nex("/Users/chadeliason/Dropbox/phenome dataset/matrix updated 6 8 16.nex")
 
-read.nex("/Users/chadeliason/Desktop/matrix updated 6 8 16 TEST.nex")
+# read.nex("/Users/chadeliason/Desktop/matrix updated 6 8 16 TEST.nex")
 
 commentfile <- "/Users/chadeliason/Dropbox/phenome dataset/data/2015-09-02/modified/final_reorderedJAC+CME.txt"
 
@@ -99,6 +99,10 @@ write.csv(dups, file = "output/regex_duplicates.csv")
 # do stuff to matrix
 
 drops <- res$charnum[grep("^XX$", res$todo)]
+
+dups
+
+
 
 fixed 
 table(is.na(oldfile$data))
