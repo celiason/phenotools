@@ -375,15 +375,74 @@
 			"file": "example/workflow.Rmd",
 			"settings":
 			{
-				"buffer_size": 33797,
+				"buffer_size": 37916,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "/Users/chadeliason/Documents/UT/projects/phenome/test ontology regex search.R",
+			"file": "/Users/chadeliason/Documents/UT/projects/phenome/analyses/2016-06-22/foot_phylos.R",
 			"settings":
 			{
-				"buffer_size": 3300,
+				"buffer_size": 4039,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "R/addmeta.R",
+			"settings":
+			{
+				"buffer_size": 2183,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "# work with markup comments on chars\n\ndevtools::load_all('~/github/nexustools')\n\n# how characters are characterized\n# DD = duplicate\n# KK = keep\n# KKM = keep and modify wording\n# XX = cut\n\nsetwd(\"/Users/chadeliason/Documents/UT/projects/phenome\")\n\noldfile <- read.nex(\"~/Dropbox/phenome dataset/data/2015-09-02/original/final_reordered.nex\")\nnewfile <- read.nex(\"/Users/chadeliason/Dropbox/phenome dataset/matrix updated 6 8 16.nex\")\n\n# read.nex(\"/Users/chadeliason/Desktop/matrix updated 6 8 16 TEST.nex\")\n\ncommentfile <- \"/Users/chadeliason/Dropbox/phenome dataset/data/2015-09-02/modified/final_reorderedJAC+CME.txt\"\n\n# read text\ntxt <- readLines(commentfile)\ntxt <- paste0(txt, collapse=\"\\n\")\ntxt <- str_trim(txt)\n\n# find actions, comments associated with characters\ntmp <- str_match_all(txt, regex(\"\\n([A-Z\\\\?]+)(\\\\d+)\", multiline=TRUE, dotall=TRUE))\ntmp <- tmp[[1]]\ntodo <- tmp[,2]\ncharnum <- as.numeric(tmp[,3])\nmatches <- tmp[, 1]\n\n# find comments\nlocs <- str_locate(txt, fixed(matches))\ncomments <- list()\nfor (i in seq_along(matches)) {\n	start <- locs[i, 1]\n	if (i == length(matches)){\n		end <- str_locate(txt, \"$\")[2]\n	} else {\n		end <- locs[(i+1), 1]	\n	}\n	newtext <- substr(txt, start, end)	\n	comments[[i]] <- str_extract_all(newtext, \"(?<=\\\\{)(.*?)(?=\\\\})\")[[1]]\n}\nnames(comments) <- charnum\ncomments <- setNames(unlist(comments, use.names=F), rep(charnum, times = sapply(comments, length)))\n\n# merge\nres1 <- data.frame(charnum = as.numeric(names(comments)), comment = comments)\nres2 <- data.frame(charnum = charnum, todo = todo)\nres <- dplyr::left_join(res2, res1, by = \"charnum\")\n\n# output\nwrite.csv(res, file = \"output/regex_extracted.csv\")\n\n\n# extract duplicate characters from comments\n\n# str_match_all(as.character(res1$comment), \"(\\\\bduplic|overlap).*?(\\\\d+[;,\\\\s]?.*?(?=[a-z]+))\")[27]\n\n# first match duplicate, overlaps\ndups <- str_match_all(as.character(res1$comment), \"(\\\\bdupl|overl).*?(\\\\d+(?:[;,]\\\\s\\\\d+)*)\")\n\n# duplicate or overlap, etc.\n\n# types <- sapply(dups, \"[\", i=2)\n\ndups <- lapply(dups, \"[\", , 3)\n\ndups <- sapply(dups, strsplit, split = \"[;,]\")\n\ndups <- sapply(dups, unlist)\n\ndups <- sapply(dups, gsub, pattern = \"^ \", replacement = \"\")\n\nnames(dups) <- res1$charnum\n\ndups <- na.omit(setNames(unlist(dups, use.names=F), rep(names(dups), times = sapply(dups, length))))\n\ndups <- data.frame(target = as.numeric(names(dups)), duplicate = as.numeric(dups))\n\n\nwrite.csv(dups, file = \"output/regex_duplicates.csv\")\n\n\n\n# plotting\n\n# library(igraph)\n\n# g <- graph_from_edgelist(as.matrix(dups), directed=FALSE)\n\n# g <- simplify(g)\n\n# par(mar=c(0,0,0,0))\n# plot(g, vertex.color = \"lightblue\", vertex.label.cex = .8, vertex.size = 0, edge.width = .5, edge.arrow.size=.5)\n\n\n# do stuff to matrix\n\ndrops <- res$charnum[grep(\"^XX$\", res$todo)]\n\ndups\n\n\n\nfixed \ntable(is.na(oldfile$data))\ntable(is.na(oldfile[, -drops]$data))\n# 268662/(40838+268662)\n\ntable(is.na(duplicated(oldfile, map = dups)$data))\n# 270173/(41077+270173)\n\n",
+			"file": "temp/get_comments.R",
+			"file_size": 2935,
+			"file_write_time": 131110377300000000,
+			"settings":
+			{
+				"buffer_size": 2945,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "R/duplicated.nex.R",
+			"settings":
+			{
+				"buffer_size": 10622,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "temp/ontology from chars in nexus file.R",
+			"settings":
+			{
+				"buffer_size": 2373,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "temp/ontology from text file.R",
+			"settings":
+			{
+				"buffer_size": 3687,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/chadeliason/Documents/UT/projects/phenome/moredups.R",
+			"settings":
+			{
+				"buffer_size": 4945,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/chadeliason/Documents/UT/projects/phenome/calculate precision and recall.R",
+			"settings":
+			{
+				"buffer_size": 2015,
 				"line_ending": "Unix"
 			}
 		}
@@ -395,13 +454,37 @@
 	"build_varint": "",
 	"command_palette":
 	{
-		"height": 207.0,
-		"last_filter": "renam",
+		"height": 392.0,
+		"last_filter": "",
 		"selected_items":
 		[
 			[
+				"r",
+				"Set Syntax: R"
+			],
+			[
+				"mark",
+				"Set Syntax: Markdown GFM"
+			],
+			[
+				"plain",
+				"Set Syntax: Plain Text"
+			],
+			[
+				"wrap",
+				"Word Wrap: Toggle"
+			],
+			[
+				"delet",
+				"File: Delete"
+			],
+			[
 				"renam",
 				"File: Rename"
+			],
+			[
+				"move",
+				"File: Move"
 			],
 			[
 				"ren",
@@ -410,14 +493,6 @@
 			[
 				"brow",
 				"Preferences: Browse Packages"
-			],
-			[
-				"plain",
-				"Set Syntax: Plain Text"
-			],
-			[
-				"r",
-				"Set Syntax: R"
 			],
 			[
 				"e",
@@ -432,16 +507,8 @@
 				"Set Syntax: Markdown GFM"
 			],
 			[
-				"mark",
-				"Set Syntax: Markdown GFM"
-			],
-			[
 				"send",
 				"SendTextPlus: Choose Program"
-			],
-			[
-				"wrap",
-				"Word Wrap: Toggle"
 			],
 			[
 				"nexu",
@@ -902,17 +969,9 @@
 			[
 				"rmakw",
 				"Set Syntax: Rmarkdown"
-			],
-			[
-				"sweave",
-				"Set Syntax: SWeave"
-			],
-			[
-				"swe",
-				"Set Syntax: SWeave"
 			]
 		],
-		"width": 449.0
+		"width": 467.0
 	},
 	"console":
 	{
@@ -934,16 +993,47 @@
 	"expanded_folders":
 	[
 		"/Users/chadeliason/github/nexustools",
+		"/Users/chadeliason/github/nexustools/R",
 		"/Users/chadeliason/github/nexustools/temp",
 		"/Users/chadeliason/Documents/UT/projects/phenome"
 	],
 	"file_history":
 	[
+		"/Users/chadeliason/Documents/UT/projects/phenome/analyses/2016-06-22/exactsol.run",
 		"/Users/chadeliason/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/Users/chadeliason/github/nexustools/R/write.nex.R",
+		"/Users/chadeliason/github/nexustools/R/read.nex.R",
+		"/Users/chadeliason/github/nexustools/R/stem_search.R",
+		"/Users/chadeliason/github/nexustools/R/generate_ontology.R",
+		"/Users/chadeliason/Dropbox/phenome dataset/data/2015-09-02/original/final_reordered.nex",
+		"/Users/chadeliason/Dropbox/phenome dataset/data/2015-09-02/modified/final_reorderedJAC+CME.txt",
+		"/Users/chadeliason/Desktop/matrix updated 6 8 16 TEST.nex",
+		"/Users/chadeliason/Desktop/test_addmeta.nex",
+		"/Users/chadeliason/Documents/UT/projects/phenome/data/theropods/Turner_etal_2012 copy.nex",
+		"/Users/chadeliason/github/nexustools/temp/ontology from text file.R",
+		"/Users/chadeliason/Dropbox/Lagerstattenfolder/lagerstatte_final_analysis.Rmd",
+		"/Users/chadeliason/github/nexustools/R/duplicated.nex.R",
+		"/Users/chadeliason/github/nexustools/R/findrefs.R",
+		"/Users/chadeliason/Documents/UT/projects/phenome/anatomy term list.txt",
 		"/Users/chadeliason/github/nexustools/temp/get_comments.R",
+		"/Users/chadeliason/github/nexustools/temp/ontology from chars in nexus file.R",
+		"/Users/chadeliason/Documents/UT/projects/phenome/scripts/palaoegnath dataset rescoring diffs.R",
+		"/Users/chadeliason/github/nexustools/example/bertelli data matrix.txt",
+		"/Users/chadeliason/github/nexustools/example/bertelli character list.txt",
+		"/Users/chadeliason/github/nexustools/R/buildnex.R",
+		"/Users/chadeliason/github/nexustools/R/read_ontology.R",
+		"/Users/chadeliason/github/nexustools/R/internal.R",
+		"/Users/chadeliason/github/nexustools/R/searchtree.R",
+		"/Users/chadeliason/github/nexustools/R/plot.nex.R",
+		"/Users/chadeliason/github/nexustools/temp/buildnex (old).R",
+		"/Users/chadeliason/github/nexustools/TODO",
+		"/Users/chadeliason/github/nexustools/R/cleantext.R",
+		"/Users/chadeliason/github/nexustools/R/findpaths.R",
+		"/Users/chadeliason/github/nexustools/R/treechart.R",
+		"/Users/chadeliason/Documents/UT/projects/phenome/baumel ontology.txt",
+		"/Users/chadeliason/github/nexustools/TMP/ontology from text file.R",
 		"/Users/chadeliason/github/nexustools/temp/user generated ontology.R",
 		"/Users/chadeliason/Documents/UT/projects/phenome/twig analysis.R",
-		"/Users/chadeliason/Documents/UT/projects/phenome/baumel ontology.txt",
 		"/Users/chadeliason/Documents/UT/projects/phenome/how charaparser works.txt",
 		"/Users/chadeliason/github/nexustools/R/schinke.R",
 		"/Users/chadeliason/Library/Application Support/Sublime Text 3/Packages/User/Material Theme.sublime-package copy/schemes/Material-Theme.tmTheme",
@@ -951,8 +1041,6 @@
 		"/Users/chadeliason/Desktop/purple_martin/kk.raw",
 		"/Users/chadeliason/github/nexustools/temp/interleave_chars.R",
 		"/Users/chadeliason/Desktop/baumel ontology.txt",
-		"/Users/chadeliason/github/nexustools/R/duplicated.nex.R",
-		"/Users/chadeliason/github/nexustools/TODO",
 		"/Users/chadeliason/Documents/UT/projects/phenome/potential workflow.txt",
 		"/Users/chadeliason/Documents/UT/projects/phenome/make trait ontology.txt",
 		"/Users/chadeliason/Documents/UT/projects/phenome/data/theropods/Turner_etal_2012.nex",
@@ -961,11 +1049,8 @@
 		"/Users/chadeliason/github/nexustools/R/collapse.nex.R",
 		"/Users/chadeliason/Documents/UT/projects/phenome/scripts/bertelli clustering.R",
 		"/Users/chadeliason/Documents/UT/projects/phenome/analysis1.R",
-		"/Users/chadeliason/Documents/UT/projects/phenome/scripts/palaoegnath dataset rescoring diffs.R",
-		"/Users/chadeliason/github/nexustools/R/read.nex.R",
 		"/Users/chadeliason/github/nexustools/R/merge.nex.R",
 		"/Users/chadeliason/Dropbox/Chad/phenome/data/2015-09-02/modified/final_reorderedJAC+CME.txt",
-		"/Users/chadeliason/github/nexustools/R/buildnex.R",
 		"/Users/chadeliason/github/nexustools/R/read_chars_from_pdf.R",
 		"/Users/chadeliason/Documents/UT/projects/phenome/translate characters.R",
 		"/Users/chadeliason/Documents/UT/projects/phenome/data/TEMP/brain_matrix.nex",
@@ -1042,7 +1127,7 @@
 	],
 	"find":
 	{
-		"height": 70.0
+		"height": 35.0
 	},
 	"find_in_files":
 	{
@@ -1057,6 +1142,62 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"treeRatchet1",
+			"Laurasiatherian",
+			"tnt",
+			"newfile1",
+			"sort",
+			"newfile1",
+			"newfile",
+			"clique",
+			"tnt",
+			"tree2",
+			"text",
+			"x",
+			"x.com",
+			"test",
+			"occip",
+			"\\d+\\..*?occip.+",
+			"file",
+			"`",
+			"charlabels",
+			"newcharlabs",
+			"matches[, 3]",
+			"dup",
+			"fad",
+			"missing",
+			"figure",
+			",2",
+			",1",
+			"file",
+			"(dupl|overl).+(\\d+[;,\\s]?)+",
+			"{",
+			"\\{",
+			"remove state",
+			"is.nex",
+			"twig",
+			"terms2",
+			"remove",
+			"and",
+			"final",
+			"genome",
+			"continent",
+			"-",
+			"sapply(untaxlabels, function(x) {paste0(datamatrix[which(names(datamatrix) %in% x)], collapse=\"\")})",
+			"\\\\n([A-Z][a-z]+\\s[a-z]+).*?([0-9\\\\-\\\\?]+.+)",
+			"([0-9\\\\-\\\\?]+.+)",
+			"Bertelli",
+			"reing",
+			"tree",
+			"remove",
+			"leaves",
+			"inter",
+			"cleantext",
+			"tree$g",
+			"tree",
+			"termstem",
+			"stemterm",
+			"matches",
 			"2C3E43",
 			"terms",
 			"\\bill",
@@ -1128,63 +1269,7 @@
 			"glarma",
 			"se",
 			"ppp",
-			"revell",
-			"final",
-			"stat_smooth",
-			"sea",
-			"x",
-			"dat",
-			"final",
-			"lat",
-			"z",
-			"lat",
-			"nique(as.character(dat$country))",
-			"age2",
-			"age1",
-			"mods",
-			"[x]",
-			"25",
-			"exp(final$cortex)",
-			"obs.a",
-			"$a",
-			"vm1",
-			"tcs1",
-			"vm1",
-			"ggplot(filter(final, extinct==\"no\"), aes(leng, diam)) +\n	theme_bw() +\n	geom_abline(intercept = 0, slope = 1, lty=2) +\n	geom_density2d(col='black', lwd=.25, bins = 4) +\n	geom_point(data = para %>% select(color, leng, diam) %>% filter(!grepl(\"regular|omit|nna\", color)),\n	           pch=16, cex=.5, col=yulongcol, alpha=.15) +\n	labs(x = \"Length (nm)\", y = \"Diameter (nm)\") +\n	facet_wrap(~group2, nrow = 3) +\n	theme(text = element_text(size = 8), legend.position = \"none\", panel.grid = element_blank()) +\n	theme(strip.background = element_rect(fill=NA, color=NA))",
-			"flat",
-			"flattened",
-			"anchio\\\\.pdf",
-			"anchio",
-			"overlap",
-			"bin1",
-			"approx",
-			"match",
-			"deposition",
-			"glm1",
-			"co2",
-			"outsum",
-			"world",
-			"dat",
-			"⁄",
-			"bin1",
-			"color",
-			"color2",
-			"x <- ",
-			"violin",
-			"x <- ",
-			"violin",
-			"0, 1",
-			"ylim",
-			"^1",
-			"^2",
-			"efields.h5",
-			"ez",
-			"lty=2",
-			"datx",
-			"dat",
-			"datx",
-			"dat",
-			"Overlap"
+			"revell"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1288,7 +1373,7 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
@@ -1297,15 +1382,46 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 33797,
+						"buffer_size": 37916,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								23542,
+								23542
+							]
+						],
+						"settings":
+						{
+							"r_box_status": false,
+							"syntax": "Packages/knitr/knitr-Markdown.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 10826.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/Users/chadeliason/Documents/UT/projects/phenome/analyses/2016-06-22/foot_phylos.R",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4039,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1548,
+								1548
 							]
 						],
 						"settings":
@@ -1313,16 +1429,15 @@
 							"WordCount":
 							{
 								"changes": 0,
-								"count": 1500,
+								"count": 209,
 								"modified": false,
 								"selection": false,
 								"status": -1,
 								"syntax": "plain text"
 							},
 							"r_box_status": false,
-							"syntax": "Packages/knitr/knitr-Markdown.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"word_wrap": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -1332,12 +1447,190 @@
 					"type": "text"
 				},
 				{
-					"buffer": 1,
-					"file": "/Users/chadeliason/Documents/UT/projects/phenome/test ontology regex search.R",
+					"buffer": 2,
+					"file": "R/addmeta.R",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3300,
+						"buffer_size": 2183,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								483,
+								483
+							]
+						],
+						"settings":
+						{
+							"r_box_status": false,
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "temp/get_comments.R",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2945,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2764,
+								2764
+							]
+						],
+						"settings":
+						{
+							"r_box_status": false,
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 1473.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "R/duplicated.nex.R",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 10622,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2676,
+								2676
+							]
+						],
+						"settings":
+						{
+							"r_box_status": false,
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 552.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "temp/ontology from chars in nexus file.R",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2373,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1525,
+								1525
+							]
+						],
+						"settings":
+						{
+							"r_box_status": false,
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 286.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "temp/ontology from text file.R",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3687,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2166,
+								2166
+							]
+						],
+						"settings":
+						{
+							"r_box_status": false,
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 660.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "/Users/chadeliason/Documents/UT/projects/phenome/moredups.R",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4945,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2152,
+								2152
+							]
+						],
+						"settings":
+						{
+							"r_box_status": false,
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 582.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "/Users/chadeliason/Documents/UT/projects/phenome/calculate precision and recall.R",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2015,
 						"regions":
 						{
 						},
@@ -1350,24 +1643,14 @@
 						],
 						"settings":
 						{
-							"WordCount":
-							{
-								"changes": 0,
-								"count": 134,
-								"modified": false,
-								"selection": false,
-								"status": -1,
-								"syntax": "plain text"
-							},
 							"r_box_status": false,
-							"syntax": "Packages/R-Box/syntax/R Extended.sublime-syntax",
-							"translate_tabs_to_spaces": false
+							"syntax": "Packages/Text/Plain text.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 8,
 					"type": "text"
 				}
 			]
@@ -1375,7 +1658,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 26.0
+		"height": 24.0
 	},
 	"input":
 	{
@@ -1424,7 +1707,7 @@
 	"project": "nexustools.sublime-project",
 	"replace":
 	{
-		"height": 48.0
+		"height": 44.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -1434,8 +1717,68 @@
 		"selected_items":
 		[
 			[
+				"gener",
+				"nexustools/R/generate_ontology.R"
+			],
+			[
+				"stem",
+				"nexustools/R/stem_search.R"
+			],
+			[
+				"onto",
+				"nexustools/temp/ontology from chars in nexus file.R"
+			],
+			[
+				"duplic",
+				"nexustools/R/duplicated.nex.R"
+			],
+			[
+				"read.nex",
+				"nexustools/R/read.nex.R"
+			],
+			[
+				"ontol",
+				"nexustools/temp/ontology from text file.R"
+			],
+			[
+				"write",
+				"nexustools/R/write.nex.R"
+			],
+			[
 				"duplica",
 				"nexustools/R/duplicated.nex.R"
+			],
+			[
+				"search",
+				"nexustools/R/searchtree.R"
+			],
+			[
+				"plot.ne",
+				"nexustools/R/plot.nex.R"
+			],
+			[
+				"read_on",
+				"nexustools/R/read_ontology.R"
+			],
+			[
+				"treechar",
+				"nexustools/R/treechart.R"
+			],
+			[
+				"dup",
+				"phenome/moredups.R"
+			],
+			[
+				"build",
+				"nexustools/R/buildnex.R"
+			],
+			[
+				"todo",
+				"nexustools/TODO"
+			],
+			[
+				"treech",
+				"nexustools/R/treechart.R"
 			],
 			[
 				"collapse",
@@ -1444,10 +1787,6 @@
 			[
 				"merge.ne",
 				"nexustools/R/merge.nex.R"
-			],
-			[
-				"read.nex",
-				"nexustools/R/read.nex.R"
 			],
 			[
 				"dups",
@@ -1460,10 +1799,6 @@
 			[
 				"read.ne",
 				"nexustools/R/read.nex.R"
-			],
-			[
-				"duplic",
-				"nexustools/R/duplicated.nex.R"
 			],
 			[
 				"dupli",
@@ -1528,14 +1863,6 @@
 			[
 				"merge.n",
 				"R/merge.nex.R"
-			],
-			[
-				"plot.ne",
-				"R/plot.nex.R"
-			],
-			[
-				"write",
-				"R/write.nex.R"
 			],
 			[
 				"merge",
@@ -1903,9 +2230,13 @@
 	"select_project":
 	{
 		"height": 500.0,
-		"last_filter": "",
+		"last_filter": "lag",
 		"selected_items":
 		[
+			[
+				"lag",
+				"~/Dropbox/Lagerstattenfolder/lagerstatten.sublime-project"
+			],
 			[
 				"",
 				"~/Documents/UT/projects/phenome/phenome.sublime-workspace"
@@ -1925,10 +2256,6 @@
 			[
 				"me",
 				"~/Desktop/Methods class - in prep/methods_class.sublime-project"
-			],
-			[
-				"lag",
-				"~/Dropbox/Lagerstattenfolder/lagerstatten.sublime-project"
 			]
 		],
 		"width": 380.0
@@ -1949,8 +2276,8 @@
 	"show_minimap": false,
 	"show_open_files": true,
 	"show_tabs": true,
-	"side_bar_visible": true,
-	"side_bar_width": 210.0,
+	"side_bar_visible": false,
+	"side_bar_width": 215.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{
