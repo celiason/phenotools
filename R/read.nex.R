@@ -20,6 +20,11 @@
 # files <- list.files('~/Documents/UT/projects/phenome/data', pattern='\\.nex', full.names = TRUE)
 # file <- files[10]
 
+# file <- "~/Desktop/test.nex"
+# file <- "/Users/chadeliason/Documents/UT/projects/phenome/data/nesbitt_2015.nex"
+# file <- "/Users/chadeliason/Documents/UT/projects/phenome/data/mckitrick_1991.nex"
+# file <- "/Users/chadeliason/Documents/UT/projects/phenome/data/livezey_2006.nex"
+
 read.nex <- function(file, missing = '?', gap = '-') {
 
   	x <- scan(file = file, what = "", sep = "\n")
@@ -51,7 +56,13 @@ read.nex <- function(file, missing = '?', gap = '-') {
 	if (length(taxlabels)!=ntax){
 		taxlabels <- strsplit(taxlabels, split="\\s")[[1]]
 	}
-	
+
+
+	# remove apostrophes at start and end
+	# taxlabels <- gsub("^'|'$", "", taxlabels)
+	# maybe TODO?? add apostrophes around taxon labels if not there already
+	# taxlabels <- ifelse(str_detect(taxlabels, "'.*'"), taxlabels, paste0("'", taxlabels, "'"))
+
 	# extract data matrix
 	matstart <- grep('MATRIX$', x, ignore.case=TRUE) + 1
 	ends <- grep('\\;', x)
@@ -62,7 +73,7 @@ read.nex <- function(file, missing = '?', gap = '-') {
 	
 	# convert to single string of text (causing problems downstream?)
 	mat <- x[matstart:matend]
-	mat <- gsub("^(\t)", "", mat)
+	mat <- gsub("^(\t|\\s)+", "", mat)
 	mat <- paste0(mat, collapse="\n")
 	mat <- paste0("\n", mat)
 	# FIX UP TAXON LABELS
@@ -75,16 +86,33 @@ read.nex <- function(file, missing = '?', gap = '-') {
 	# 	txt
 	# }
 
-# gsub("\\s\\+\\s", "+", taxlabels[31])
-
-# taxlabels <- cleantext(taxlabels)
+	# taxlabels <- cleantext(taxlabels)
 
 	# add word boundaries for taxa without (is this needed???)
-	if (is.na(any(str_locate(pattern="\\s", fixed(taxlabels))))) {
-		locs <- str_locate(mat, paste0("\\b", taxlabels, "\\b", sep=""))
-	} else {
-		locs <- str_locate(mat, fixed(paste0("\n", taxlabels)))
-	}
+	# use word boundaries if there are spaces before/after words in the nexus file
+
+	# any(as.vector(str_locate(pattern="\\s", fixed(taxlabels))))
+
+	# see if any taxa have spaces in the names
+	# if (is.na(any(str_locate(pattern="\\s", fixed(taxlabels))))) {
+	# if (any(is.na(str_locate(pattern="\\s", fixed(taxlabels))))) {
+		# locs <- str_locate(mat, paste0("\\b", taxlabels, "\\b", sep=""))
+	# } else {
+		# find taxon labels
+		# locs <- str_locate(mat, fixed(paste0("\n", taxlabels)))
+	# }
+
+# locs <- str_locate(mat, fixed(paste0("\n", taxlabels)))
+
+taxlabels <- gsub('\"', "", taxlabels)
+mat <- gsub('\"', "", mat)
+
+# locs <- str_locate(mat, paste0("\n", taxlabels, "\\b"))
+# locs <- str_locate(mat, fixed(paste0("\n", taxlabels)))
+# locs <- str_locate(mat, paste0("\n", taxlabels, "\\b"))
+
+locs <- str_locate(mat, paste0("\n", taxlabels, "(\\b|\\t)"))
+
 
 # Two formats:
 # Genus_species
@@ -112,8 +140,7 @@ read.nex <- function(file, missing = '?', gap = '-') {
 
 	taxlabels <- gsub(' ', '_', taxlabels)
 	taxlabels <- gsub("'", "", taxlabels)
-	# taxlabels <- gsub('"', '', taxlabels)
-
+	taxlabels <- gsub('"', '', taxlabels)
 
 	# checks
 	if (length(mat)!=ntax) {
@@ -156,7 +183,8 @@ read.nex <- function(file, missing = '?', gap = '-') {
 		charmatch <- str_match_all(charpart, '(\\w+):[\\s]*(\\d+[\\-\\s]*[\\d+]*)')[[1]]
 		charpartsets <- charmatch[,2]
 		charpartranges <- charmatch[,3]
-		# I got this here - http://r.789695.n4.nabble.com/convert-delimited-strings-with-ranges-to-numeric-td4673763.html
+		# Function to go from this "2,5-7,10,12-15" to this "c(2,5,6,7,10,12,13,14,15)"
+		# http://r.789695.n4.nabble.com/convert-delimited-strings-with-ranges-to-numeric-td4673763.html
 		text2numeric <- function(xx) {
 			xx <- gsub('\\s|,\\s', ',', xx)
 			xx <- gsub('\\-', ':', xx)
@@ -179,7 +207,7 @@ read.nex <- function(file, missing = '?', gap = '-') {
 		res$charpartition <- rep("''", ncol(mat))
 	}
 
-		# get character names and numbers
+	# get character names and numbers
 	if (length(grep('\\bCHARLABELS', x, ignore.case=TRUE)) > 0) {
 		charlabelsstart <- grep('\\bCHARLABELS', x, ignore.case=TRUE) + 1
 		charlabelsend <- grep('\\;$', x[charlabelsstart:length(x)])[1] + charlabelsstart - 2	
