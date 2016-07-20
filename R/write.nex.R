@@ -15,7 +15,15 @@
 #'
 #' @author Chad Eliason \email{chad_eliason@@utexas.edu}
 #'
-write.nex <- function(x, file, missing=NULL, gap=NULL, mrbayes=FALSE, ngen=NULL, phy=NULL, run=FALSE, format=c("nexus", "tnt")) {
+write.nex <- function(x, file, missing=NULL, gap=NULL, mrbayes=FALSE, ngen=NULL,
+  phy=NULL, run=FALSE, format=c("nexus", "tnt")) {
+
+# testing zone
+# format <- "nexus"
+# missing <- "?"
+# gap <- "-"
+# file <- "~/Desktop/testnexus.nex"
+# x <- final
 
     format <- match.arg(format)
 
@@ -34,7 +42,45 @@ write.nex <- function(x, file, missing=NULL, gap=NULL, mrbayes=FALSE, ngen=NULL,
     
     # file concat function from read.nexus.data in the ape package
     fcat <- function(..., file = zz, sep = '') cat(..., file = file, sep = sep, append = TRUE)
-    
+  
+  # Write character partitions
+
+  if (!all(x$charpart=="''")) {
+
+      test <- x$charpart
+
+      test <- factor(test)
+
+      # Function for finding starts and lengths of string/number sequences
+      seqle <- function(x,incr=1) { 
+        if(!is.numeric(x)) x <- as.numeric(x) 
+        n <- length(x)  
+        y <- x[-1L] != x[-n] + incr 
+        i <- c(which(y|is.na(y)),n) 
+        list(lengths = diff(c(0L,i)),
+             values = x[head(c(0L,i)+1L,-1L)]) 
+      } 
+
+      # Find sequence locations and lengths
+      xx <- lapply(levels(test), function(x) {
+          seqle(which(test==x))
+        }
+      )
+
+      # Paste starts and ends of sequences
+      res <- sapply(seq_along(xx), function(i) {
+        starts <- xx[[i]]$values
+        len <- xx[[i]]$lengths
+        res <- ifelse(len>1, paste0(starts, "-", starts+(len-1)), starts)
+        paste0(res, collapse=" ")
+      })
+
+      names(res) <- levels(test)
+
+      charpart <- res
+
+    }
+
   if (format=="nexus") {
 
     if (mrbayes) {
@@ -97,10 +143,14 @@ write.nex <- function(x, file, missing=NULL, gap=NULL, mrbayes=FALSE, ngen=NULL,
         # write data matrix
         sapply(1:ntax, function(z) { fcat("\t\t\t", "'", x$taxlabels[z], "'", "\t\t", dat[z,], "\n") })
         fcat('\t;\nEND;\n')
+
+        # write character partitions
+        fcat('BEGIN SETS;\n')
+        fcat('\tCHARPARTITION set1=', paste0(names(charpart), ":", charpart, collapse=","), ';\n')
+        fcat('END;\n')
         close(zz)
       }
   }
-
 
   if (format == "tnt") {
 
