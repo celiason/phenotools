@@ -26,12 +26,13 @@
 #' x <- allnex2
 #' x <- subset(allnex2, charpartition=="hindlimb")
 #' x
-#' TODO: [x] look for duplicates within character names (e.g., 'From Bourdon et al. (2009a: char. 66)') 
-#' TODO: [x] paste together character labels and state labels, look for distances between them
-#' TODO: [ ] add text output/progress bar to give user feedback
 #'
+
+# x <- dat2
+
 duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = TRUE,
-  cutoff = 0.35, method = c("jw", "cosine"), within_dataset = TRUE, plot = TRUE) {
+  cutoff = 0.35, method = c("jw", "cosine"), within_dataset = TRUE, plot = TRUE,
+  drop = FALSE) {
 
   library(stringdist)
   library(tm)
@@ -98,7 +99,8 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = TRUE,
     # create progress bar
     pb <- txtProgressBar(min = 0, max = ncol(pairids), style = 3)
 
-#### WORK ON OPTIMIZING THIS PART
+    
+    #### WORK ON OPTIMIZING THIS PART
     
     # calculate text distances (takes ~200 seconds for 2.2M comparisons):
     
@@ -115,7 +117,7 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = TRUE,
       setTxtProgressBar(pb, i)
     }
 
-###### 71 seconds with for loop
+    ###### 71 seconds with for loop
 
     close(pb)
 
@@ -124,10 +126,6 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = TRUE,
     sset.dist <- sort(stringdists)
 
     sset <- as.numeric(names(stringdists))
-
-# train <- TRUE
-# cutoff = 0.35
-# n <- 10
 
     if (train) {
       sscut <- stringdists[stringdists < cutoff]
@@ -167,23 +165,12 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = TRUE,
     }
 
     if (!train) {
-      # not sure what cutoff to use for text distances..
-      sset <- sset[sset.dist < cutoff]  # try 0.3
-      sset.dist <- round(sset.dist[sset.dist < cutoff], 4)  # is this needed?
+      sset <- as.numeric(names(which(sset.dist < cutoff)))
       if (length(sset) == 0) {
         stop('No putative matches found.')
       }
-      # return number of matches and wait for user input
-      cat('Found ', length(sset), ' putative matches. Continue with user matching (y/n)?\n')
-      continue <- scan(n=1, what='character')
-      if (continue=='n') {
-        stop('Function terminated by user')
-      }
-      # run the loop
-      answer <- sapply(sset, matchfun)
-      dups <- pairids[, sset[answer=='y']]
+      dups <- pairids[, sset]
     }
-
   }
 
     # answer <- character(length = length(sset))
@@ -194,100 +181,83 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = TRUE,
     # sset = integers corresponding to row of pairids as possible matches
     # sset.dist = string distances
 
-
-  # drop and merge of characters
-
+  # dropping and merging characters:
   # [x] need to have this output what characters are duplicated, retained, etc.
-
   res <- x
-
-  drops <- numeric(length = ncol(dups))
-
-  for (i in 1:ncol(dups)) {
-
-    id <- dups[, i]
-
-    # get character scorings
-    scores <- x$data[, id]
-    scores1 <- scores[,1]
-    scores2 <- scores[,2]
-    
-    # create reverse scores (in the case where someone scores 0 & 1 and someone else 1 & 0 for the same structure)
-    scores2rev <- factor(scores2)
-    levels(scores2rev) <- rev(levels(scores2rev))
-    scores2rev <- as.character(scores2rev)
-    scorings <- colSums(!is.na(scores))
-    cc <- complete.cases(scores)
-    n.overlap <- nrow(na.omit(scores))  # number of taxa scored for both traits
-    
-    # Case 1 - Same number of taxa scored
-    if (diff(scorings) == 0 & n.overlap > 0) {
-    
-      # if both traits have scored the same taxa the same keep older/newer?
-      if (all(scores1[cc] == scores2[cc], na.rm=TRUE)) {   
-        newscores <- scores[,1]
-        drops[i] <- id[1]
-        message('Scores identical; dropping character ', id[1])
+  drops2 <- rep(TRUE, ncol(res$data))
+  if (drop) {
+    drops <- numeric(length = ncol(dups))
+    for (i in 1:ncol(dups)) {
+      id <- dups[, i]
+      # get character scorings
+      scores <- x$data[, id]
+      scores1 <- scores[,1]
+      scores2 <- scores[,2]
+      # create reverse scores (in the case where someone scores 0 & 1 and someone else 1 & 0 for the same structure)
+      scores2rev <- factor(scores2)
+      levels(scores2rev) <- rev(levels(scores2rev))
+      scores2rev <- as.character(scores2rev)
+      scorings <- colSums(!is.na(scores))
+      cc <- complete.cases(scores)
+      n.overlap <- nrow(na.omit(scores))  # number of taxa scored for both traits
+      # Case 1: Same number of taxa scored
+      if (diff(scorings) == 0 & n.overlap > 0) {
+        # if both traits have scored the same taxa the same keep older/newer?
+        if (all(scores1[cc] == scores2[cc], na.rm=TRUE)) {   
+          newscores <- scores[,1]
+          drops[i] <- id[1]
+          message('Scores identical; dropping character ', id[1])
+        }
+        # if both traits have scored the same taxa, but scores differ either keep (if just reversed scores) or leave alone
+        if (all(scores1[cc] == scores2rev[cc], na.rm=TRUE)) {
+          newscores <- scores1
+          drops[i] <- id[1]
+          message('Scores differ systematically (reversed values); dropping trait ', id[1], '; check state labels to confirm')
+        }
+        if (!all(scores1[cc] == scores2[cc]) & !all(scores1[cc] == scores2rev[cc])) {
+          warning('Traits differ in their scorings. Keeping both.')
+        }
       }
-    
-      # if both traits have scored the same taxa, but scores differ either keep (if just reversed scores) or leave alone
-      if (all(scores1[cc] == scores2rev[cc], na.rm=TRUE)) {
-        newscores <- scores1
-        drops[i] <- id[1]
-        message('Scores differ systematically (reversed values); dropping trait ', id[1], '; check state labels to confirm')
+      # Case 2: Different number of taxa scores, some overlapping scores
+      if (diff(scorings) != 0 & n.overlap > 0) {
+        # if trait 1 scores more taxa, overlapping scores same - keep character with more scorings
+        if (all(scores1[cc] == scores2[cc], na.rm=TRUE)) {
+          drops[i] <- id[which.min(scorings)]  # drop trait with fewer scorings
+          message('Score overlap identical; keeping character with more scorings and dropping character ', id[which.min(scorings)])
+        }
+        # if trait 1 scores more taxa, overlapping scores different - if reversed keep:
+        if (all(scores1[cc] == scores2rev[cc], na.rm=TRUE)) {
+          drops[i] <- id[which.min(scorings)]
+          warning('Assuming characters are equivalent (reversed scorings) and dropping character with fewer scorings (', id[2], '); check state labels to confirm')
+        }
+        # otherwise do nothing:
+        if (!all(scores[cc,1] == scores[cc,2]) & !all(scores[cc,1] == rev(scores[cc,2]))) {
+          warning('Traits differ in their scorings; keeping both')
+        }
       }
-      if (!all(scores1[cc] == scores2[cc]) & !all(scores1[cc] == scores2rev[cc])) {
-        warning('Traits differ in their scorings. Keeping both.')
-      }
+      # Case 3: trait 1 scores non-overlapping with trait 2 scores; merge characters
+      if (n.overlap == 0) {
+        newscores <- pmin(scores[,1], scores[,2], na.rm=TRUE)
+        res$data[, id[2]] <- newscores  # replace values
+        drops[i] <- id[1]  # drop trait with fewer scorings
+        warning('Merging non-overlapping character scorings; dropping character ', id[1], '; check state labels to confirm')
+      }  
     }
 
-    # Case 2 - Different number of taxa scores, some overlapping scores
-    if (diff(scorings) != 0 & n.overlap > 0) {
-      # if trait 1 scores more taxa, overlapping scores same - keep character with more scorings
-      if (all(scores1[cc] == scores2[cc], na.rm=TRUE)) {
-        drops[i] <- id[which.min(scorings)]  # drop trait with fewer scorings
-        message('Score overlap identical; keeping character with more scorings and dropping character ', id[which.min(scorings)])
-      }
+  drops2[drops] <- FALSE
 
-      # if trait 1 scores more taxa, overlapping scores different - if reversed keep:
-      if (all(scores1[cc] == scores2rev[cc], na.rm=TRUE)) {
-        drops[i] <- id[which.min(scorings)]
-        warning('Assuming characters are equivalent (reversed scorings) and dropping character with fewer scorings (', id[2], '); check state labels to confirm')
-      }
-
-      # otherwise do nothing:
-      if (!all(scores[cc,1] == scores[cc,2]) & !all(scores[cc,1] == rev(scores[cc,2]))) {
-        warning('Traits differ in their scorings; keeping both')
-      }
-    }
-
-    # Case 3 - trait 1 scores non-overlapping with trait 2 scores; merge characters:
-    if (n.overlap == 0) {
-      newscores <- pmin(scores[,1], scores[,2], na.rm=TRUE)
-      res$data[, id[2]] <- newscores  # replace values
-      drops[i] <- id[1]  # drop trait with fewer scorings
-      warning('Merging non-overlapping character scorings; dropping character ', id[1], '; check state labels to confirm')
-    }  
   }
 
-  # final drop of characters:
-  res$data <- res$data[, -na.omit(drops)]
-  
-  # drop character labels:
-  res$charlabels <- res$charlabels[-na.omit(drops)]
-  
-  # drop state labels:
-  res$statelabels <- res$statelabels[-na.omit(drops)]
+  # drop duplicated characters, labels:
+  res$data <- res$data[, drops2]
+  res$charlabels <- res$charlabels[drops2]
+  res$statelabels <- res$statelabels[drops2]
+  res$charset <- res$charset[drops2]
+  res$charnums <- res$charnums[drops2]
+  res$charpartition <- res$charpartition[drops2]
 
-  # TODO [ ] drop character sets, charpartitions,etc...
-
-  res$charset <- res$charset[-na.omit(drops)]
-  
-  res$charnums <- res$charnums[-na.omit(drops)]
-  
-  res$charpartition <- res$charpartition[-na.omit(drops)]
-
-  res$dups <- data.frame("char1"=dups[1, ], "char2"=dups[2, ])
+  res$dups <- data.frame("char1" = dups[1, ], "charnum1" = x$charnum[dups[1, ]],
+    "char2" = dups[2, ], "charnum2" = x$charnum[dups[2, ]])
 
   return(res)
 

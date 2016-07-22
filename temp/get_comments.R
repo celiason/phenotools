@@ -11,6 +11,7 @@ devtools::load_all('~/github/nexustools')
 setwd("/Users/chadeliason/Documents/UT/projects/phenome")
 
 oldfile <- read.nex("~/Dropbox/phenome dataset/data/2015-09-02/original/final_reordered.nex")
+
 newfile <- read.nex("/Users/chadeliason/Dropbox/phenome dataset/matrix updated 6 8 16.nex")
 
 # read.nex("/Users/chadeliason/Desktop/matrix updated 6 8 16 TEST.nex")
@@ -59,9 +60,10 @@ write.csv(res, file = "output/regex_extracted.csv")
 # str_match_all(as.character(res1$comment), "(\\bduplic|overlap).*?(\\d+[;,\\s]?.*?(?=[a-z]+))")[27]
 
 # first match duplicate, overlaps
-dups <- str_match_all(as.character(res1$comment), "(\\bdupl|overl).*?(\\d+(?:[;,]\\s\\d+)*)")
+# dups <- str_match_all(as.character(res1$comment), "(\\bdupl|overl).*?(\\d+(?:[;,]\\s\\d+)*)")
 
-# duplicate or overlap, etc.
+# just duplicates
+dups <- str_match_all(as.character(res1$comment), "(\\bdupl).*?(\\d+(?:[;,]\\s\\d+)*)")
 
 # types <- sapply(dups, "[", i=2)
 
@@ -79,6 +81,7 @@ dups <- na.omit(setNames(unlist(dups, use.names=F), rep(names(dups), times = sap
 
 dups <- data.frame(target = as.numeric(names(dups)), duplicate = as.numeric(dups))
 
+dups
 
 write.csv(dups, file = "output/regex_duplicates.csv")
 
@@ -111,4 +114,3 @@ table(is.na(oldfile[, -drops]$data))
 
 table(is.na(duplicated(oldfile, map = dups)$data))
 # 270173/(41077+270173)
-
