@@ -1,6 +1,6 @@
 # convert string of scorings to a matrix
 text2mat <- function(x) {
-	if (grep("[Mm]atrix", x)>=1) {
+	if (any(str_detect(x, "[Mm]atrix"))) {
 		x <- x[!grepl("[Mm]atrix", x)]
 	}
 	# scorings have to be separated from taxon names by either a tab or 2+ spaces (as in Xu et al. 2011)
@@ -21,15 +21,21 @@ text2mat <- function(x) {
 # get character labels from text
 text2charlabels <- function(x) {
 	# matches <- str_match(x, "^(Character|[\\s\\t]*)(\\d+)[\\.]?(.*)(\\[\\[\\]\\])(.*)")
-	# for Xu 2011
-	matches <- str_match(x, "^(Character\\s*)?(\\d*)[\\.]?[\\:]?[\\s]?(.*)")
-	# for Brusatte 2014
-	# matches <- str_match(x, "Character\\s*(\\d*)\\:\\s(.*)")
-	# matches[, 2]
-	# matches[, 3]
-	charnums <- as.numeric(matches[, 3])
-	charlabs <- matches[, 4]
+	if (any(str_detect(x, "^[Cc]haracter"))) {
+		# for Brusatte 2014
+		matches <- str_match(x, "Character\\s*(\\d*)\\:\\s(.*)")	
+		charnums <- as.numeric(matches[, 2])
+		charlabs <- matches[, 3]	
+	} else {
+		# for Xu 2011
+		matches <- str_match(x, "^(Character\\s*)?(\\d*)[\\.]?[\\:]?[\\s]?(.*)")	
+		charnums <- as.numeric(matches[, 3])
+		charlabs <- matches[, 4]
+	} 
 	res <- setNames(charlabs, charnums)
 	res <- res[!is.na(res)]
 	res
 }
+
+# TODO
+# work with Brusatte format to get state labels included with character labels

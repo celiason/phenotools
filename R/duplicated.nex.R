@@ -39,6 +39,10 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = TRUE,
 
 # x <- twig2
 # map <- NULL
+# train = F
+# cutoff=.25
+# n = 25
+# method = "jw"
 
   matchfun <- function(sset) {
     id1 <- pairids[1, sset]
@@ -75,6 +79,7 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = TRUE,
   if (is.null(map)) {
     oldcharnames <- x$charlabels
     oldstatenames <- x$statelabels
+
     # clean up character names
     newstatenames <- cleantext(oldstatenames)
     newcharnames <- cleantext(oldcharnames)
@@ -106,8 +111,6 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = TRUE,
     #### WORK ON OPTIMIZING THIS PART
     
     # calculate text distances (takes ~200 seconds for 2.2M comparisons):
-
-# method = "jw"
 
     for (i in 1:ncol(pairids)) {
       # Sys.sleep(0.1)
@@ -160,6 +163,9 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = TRUE,
       # matchid <- as.numeric(names(pred$posterior[, 2][pred$posterior[, 2] > 0.5]))
       dups <- pairids[, matchid]
 
+      # check this?
+      stringdists.output <- stringdists[, matchid]
+
       if (plot) {
         plot(predict(lda1, df)$posterior[,2]~df[,2], type='b', col=df[,1]+1, pch=16, xlab="String distance", ylab="P(duplicate)")
         legend("topright", pch=16, col=c("black", "red"), legend=c("not dup", "dup"), bty="n")
@@ -175,6 +181,7 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = TRUE,
         stop('No putative matches found.')
       }
       dups <- pairids[, sset]
+      stringdists.output <- stringdists[sset]
     }
   }
 
@@ -262,10 +269,15 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = TRUE,
   res$charpartition <- res$charpartition[drops2]
 
   res$dups <- data.frame("char1" = dups[1, ], "charnum1" = x$charnum[dups[1, ]],
-    "char2" = dups[2, ], "charnum2" = x$charnum[dups[2, ]])
+    "char2" = dups[2, ], "charnum2" = x$charnum[dups[2, ]], stringdist = stringdists.output)
 
   return(res)
 
 }
 
 # system.time(tmp <- duplicated(allnex2, n=25))
+
+
+# TODO: should have this output the string distances as well in the dup data frame @done
+
+
