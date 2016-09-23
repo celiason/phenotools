@@ -1,8 +1,12 @@
 cleantext <- function(x, comma=TRUE) {
-  x <- str_replace_all(x, "[\\s]*[\\[\\(].+[\\]\\)][\\s]*", "")  # remove comments in square brackets
-  x <- sapply(x, tolower)  # make lowercase
-  x <- gsub("\\s{2,}", " ", x)  # remove extra spaces
-  x <- gsub("^\\s", "", x)  # take out beginning spaces
+  # remove comments in square brackets
+  x <- str_replace_all(x, "[\\s]*[\\[\\(].*?[\\]\\)][\\s]*", "")
+  # make lowercase
+  x <- sapply(x, tolower)
+  # remove extra spaces
+  x <- gsub("\\s{2,}", " ", x)
+  # take out beginning spaces
+  x <- gsub("^\\s", "", x)
   x <- gsub("\\:", " ", x)
   x <- gsub("\\s$", "", x)
   # x <- removePunctuation(x)  # might work better not doing this??
@@ -14,7 +18,8 @@ cleantext <- function(x, comma=TRUE) {
   x <- gsub("\\bin\\b", "", x)
   x <- gsub("\\bat\\b", "", x)
   x <- gsub("\\ba\\b", "", x)
-  # x <- removeWords(x, stopwords("english"))  # take out common words (if, to, the...)
+  # take out common words (if, to, the...)
+  # x <- removeWords(x, stopwords("english"))
   names(x) <- NULL
   x
-  }
+}

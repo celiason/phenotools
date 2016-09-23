@@ -27,11 +27,8 @@
 #' x <- subset(allnex2, charpartition=="hindlimb")
 #' x
 #'
-
-# x <- dat2
-
 duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = TRUE,
-  cutoff = 0.35, method = c("jw", "cosine"), within_dataset = TRUE, plot = TRUE,
+  cutoff = 0.35, method = c("jw", "cosine"), within_dataset = FALSE, plot = TRUE,
   drop = FALSE) {
 
   library(stringdist)
@@ -39,6 +36,9 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = TRUE,
   library(MASS)
 
   method <- match.arg(method)
+
+# x <- twig2
+# map <- NULL
 
   matchfun <- function(sset) {
     id1 <- pairids[1, sset]
@@ -58,7 +58,9 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = TRUE,
     answer
   }
 
-  # provide map of duplicated characters
+
+  # IF provide map of duplicated characters:
+  
   if (!is.null(map)) {
     if (class(map)=="list") {
       dups <- matrix(unlist(map), ncol = length(map))  
@@ -68,7 +70,8 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = TRUE,
     }
   }
 
-  # automated discovery of duplicate characters
+  # IF no map, then do automated discovery of duplicate characters:
+
   if (is.null(map)) {
     oldcharnames <- x$charlabels
     oldstatenames <- x$statelabels
@@ -82,7 +85,7 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = TRUE,
     # only want comparisons BETWEEN datasets/character types, not within:
     file <- x$file
     
-    if (!within_dataset) {  
+    if (within_dataset) {  
       id <- file[pairids[1, ]] != file[pairids[2, ]]
       pairids <- pairids[, id]
     }
@@ -103,7 +106,9 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = TRUE,
     #### WORK ON OPTIMIZING THIS PART
     
     # calculate text distances (takes ~200 seconds for 2.2M comparisons):
-    
+
+# method = "jw"
+
     for (i in 1:ncol(pairids)) {
       # Sys.sleep(0.1)
       str1a <- newcharnames[pairids[1,i]]
@@ -264,4 +269,3 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = TRUE,
 }
 
 # system.time(tmp <- duplicated(allnex2, n=25))
-

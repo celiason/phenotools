@@ -1,6 +1,6 @@
 #' code for combining character lists and data matrices
 #' x = nexus file (.nex object in R)
-#' file = text file with character list
+#' file = text file with character list (numbered)
 #'
 addmeta <- function(x, file) {
 

@@ -12,7 +12,7 @@ setwd("/Users/chadeliason/Documents/UT/projects/phenome")
 
 oldfile <- read.nex("~/Dropbox/phenome dataset/data/2015-09-02/original/final_reordered.nex")
 
-newfile <- read.nex("/Users/chadeliason/Dropbox/phenome dataset/matrix updated 6 8 16.nex")
+# newfile <- read.nex("/Users/chadeliason/Dropbox/phenome dataset/matrix updated 6 8 16.nex")
 
 # read.nex("/Users/chadeliason/Desktop/matrix updated 6 8 16 TEST.nex")
 
@@ -50,6 +50,12 @@ comments <- setNames(unlist(comments, use.names=F), rep(charnum, times = sapply(
 res1 <- data.frame(charnum = as.numeric(names(comments)), comment = comments)
 res2 <- data.frame(charnum = charnum, todo = todo)
 res <- dplyr::left_join(res2, res1, by = "charnum")
+
+ss <- res$charnum
+
+ss
+
+res
 
 # output
 write.csv(res, file = "output/regex_extracted.csv")
