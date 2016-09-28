@@ -100,7 +100,7 @@ if (is.null(map)) {
   part3 <- gsub(tocut, "", part3)
 
   # remove vague terms
-  tocut <- c("form", "process", "state", "view", "margin", "shape", "placed")
+  tocut <- c("form", "process", "state", "view", "margin", "shape", "placed", "recess")
   tocut <- paste0("\\b", tocut, "\\b", collapse="|")
   # newcharnames <- gsub(tocut, "", newcharnames)
   part1 <- gsub(tocut, "", part1)
@@ -141,7 +141,8 @@ if (is.null(map)) {
 
   # generate all possible pairs of character combinations
   pairids <- combn(seq_along(part1), m=2)
-  # only want comparisons BETWEEN datasets/character types, not within:
+  
+  # only comparisons BETWEEN datasets/character types, not within:
   file <- x$file
   if (within_dataset) {  
     id <- file[pairids[1, ]] != file[pairids[2, ]]
@@ -154,6 +155,7 @@ if (is.null(map)) {
     pairids <- pairids[, id]
   }
   stringdists <- numeric(length = ncol(pairids))
+  
   # create progress bar
   pb <- txtProgressBar(min = 0, max = ncol(pairids), style = 3)
 

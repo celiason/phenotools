@@ -20,12 +20,6 @@ text2mat <- function(x) {
 
 # get character labels from text
 text2charlabels <- function(x) {
-
-
-# x <- chartext
-# x[1]
-
-# x <- chartext
 	# matches <- str_match(x, "^(Character|[\\s\\t]*)(\\d+)[\\.]?(.*)(\\[\\[\\]\\])(.*)")
 	if (any(str_detect(x, "^[Cc]haracter"))) {
 		# for Brusatte 2014

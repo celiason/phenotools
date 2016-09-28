@@ -22,7 +22,7 @@ cleantext <- function(x, comma=TRUE) {
   x <- gsub("\\:", " ", x)
   x <- gsub("\\s$", "", x)
   # remove extra spaces
-  x <- gsub("\\s{2,}", " ", x)
+  x <- gsub("\t|\\s{2,}", " ", x)
   # output
   names(x) <- NULL
   x
