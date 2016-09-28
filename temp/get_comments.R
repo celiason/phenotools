@@ -55,8 +55,6 @@ ss <- res$charnum
 
 ss
 
-res
-
 # output
 write.csv(res, file = "output/regex_extracted.csv")
 
@@ -109,12 +107,16 @@ write.csv(dups, file = "output/regex_duplicates.csv")
 
 drops <- res$charnum[grep("^XX$", res$todo)]
 
+drops
+
 dups
 
 
 
 fixed 
+
 table(is.na(oldfile$data))
+
 table(is.na(oldfile[, -drops]$data))
 # 268662/(40838+268662)
 

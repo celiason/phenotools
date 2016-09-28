@@ -1018,6 +1018,3 @@ sort(table(ss[, order(ss$charpartition)]$charpart))
 
 na.omit(subset(ss, charpartition=="integument"))$data
 ```
-
-
-

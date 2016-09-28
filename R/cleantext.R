@@ -17,12 +17,12 @@ cleantext <- function(x, comma=TRUE) {
   x <- gsub("\\ba\\b", "", x)
   # take out common words (if, to, the...)
   # x <- removeWords(x, stopwords("english"))
-  # remove extra spaces
-  x <- gsub("\\s{2,}", " ", x)
   # take out beginning and ending spaces
   x <- gsub("^\\s", "", x)
   x <- gsub("\\:", " ", x)
   x <- gsub("\\s$", "", x)
+  # remove extra spaces
+  x <- gsub("\\s{2,}", " ", x)
   # output
   names(x) <- NULL
   x

@@ -20,22 +20,59 @@ text2mat <- function(x) {
 
 # get character labels from text
 text2charlabels <- function(x) {
+
+
+# x <- chartext
+# x[1]
+
+# x <- chartext
 	# matches <- str_match(x, "^(Character|[\\s\\t]*)(\\d+)[\\.]?(.*)(\\[\\[\\]\\])(.*)")
 	if (any(str_detect(x, "^[Cc]haracter"))) {
 		# for Brusatte 2014
-		matches <- str_match(x, "Character\\s*(\\d*)\\:\\s(.*)")	
-		charnums <- as.numeric(matches[, 2])
-		charlabs <- matches[, 3]	
+		matches <- str_match(x, "Character\\s*(\\d*)\\:\\s(.*)")
+		charnums <- as.numeric(matches[, 2])		
+		# id <- which(!is.na(as.numeric(matches[, 2])))
+		# charnums <- na.omit(as.numeric(matches[, 2]))
+		# seqs <- sapply(seq_along(id), function(i) {
+		# 	if (id[i] == max(id) ) {
+		# 		id[i]:length(x)
+		# 	} else {
+		# 		id[i]:(id[i+1]-1)
+		# 	}
+		# })
+		# charlabs <- sapply(seq_along(seqs), function(i) {
+		# 	paste0(x[seqs[[i]]], collapse=" ")
+		# })
+		charlabs <- matches[, 3]
 	} else {
 		# for Xu 2011
-		matches <- str_match(x, "^(Character\\s*)?(\\d*)[\\.]?[\\:]?[\\s]?(.*)")	
+		matches <- str_match(x, "^(Character\\s*)?(\\d*)[\\.]?[\\:]?[\\s]?(.*)")
 		charnums <- as.numeric(matches[, 3])
 		charlabs <- matches[, 4]
-	} 
+	}
 	res <- setNames(charlabs, charnums)
 	res <- res[!is.na(res)]
 	res
 }
+
+# account for character states between character labels in pasted text
+# x <- chartext[1:10]
+# x <- chartext
+# nums <- as.numeric(str_match(x, "([Cc]haracter\\s)?(\\d+)")[, 3])
+# nums[diff(nums) != 1]
+# nums[200:220]
+# min(head(nums))+1
+# max(tail(nums))
+# grep(853, nums)[1]
+
+
+# plot(nums)
+# plot(diff(diff(nums)))
+# # nums <- na.omit(nums)
+# # diff(cumsum(nums))
+
+# plot(c(1,0,1,2,0,1,3,0,1,2,4,0,1,2,3), type='l')
+
 
 # TODO
 # work with Brusatte format to get state labels included with character labels
