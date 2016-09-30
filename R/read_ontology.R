@@ -47,12 +47,12 @@ read_ontology <- function(file){
 	# make new vertex labels
 	verts <- V(g)$name
 	verts <- tolower(verts)
+	vertsold <- verts
 	verts <- strsplit(verts, "->")
 	verts <- sapply(seq_along(verts), function(x) tail(verts[[x]], 1))
 	verts <- gsub("^ ", "", verts)
 	V(g)$name <- verts
-
+	# V(g)$names <- vertsold
 	# return graph
 	g
-
 }
