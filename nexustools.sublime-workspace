@@ -371,62 +371,6 @@
 	},
 	"buffers":
 	[
-		{
-			"file": "example/workflow.Rmd",
-			"settings":
-			{
-				"buffer_size": 37914,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "temp/polychor discrete trait correlations.R",
-			"settings":
-			{
-				"buffer_size": 2131,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/Users/chadeliason/Documents/UT/projects/phenome/calculate precision and recall.R",
-			"settings":
-			{
-				"buffer_size": 5741,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "# toy program to work through a dataset\ncharlabels <- dat2$charlabel\n\n\nchars <- grep(\"tarso\", charlabels, value=T)\n\nchars\n\n?stringdist\n\nx <- stringdistmatrix(chars, chars, method=\"cosine\")\n\nx\n\nimage(x)\nplot(as.dist(x))\nwhich.min(as.dist(x))\n\ndat2\n\ni <- 1\n\ncat(\"\\n\\n\", dat2$charlab[i], \"\\n\\n\", dat2$statelab[i], \"\\n\")\n\n",
-			"settings":
-			{
-				"buffer_size": 318,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "temp/get_comments.R",
-			"settings":
-			{
-				"buffer_size": 3059,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "# plot datasets as nodes\n\nfile <- str_match(dat$charlab, \"\\\\[(\\\\w+\\\\_\\\\d+)\\\\.nex\")[,2]\n\ng2 <- graph_from_data_frame(cbind(file[truedup$target], file[truedup$duplicate]), directed=FALSE)\n\nE(g2)$weight <- 1\n\ng2 <- simplify(g2, edge.attr.comb=list(weight=\"sum\"))\n\nplot(g2)\n\nplot(g2, edge.width=E(g2)$weight)\n\nwc <- cluster_walktrap(g2)\n\npdf(file = \"figs/dataset_dup_cluster.pdf\", width=6, height=6)\npar(mar=rep(0,4))\nset.seed(1980)\nplot(g2, edge.width=E(g2)$weight)\ndev.off()\n\npdf(file = \"figs/dataset_dup_cluster_colors.pdf\", width=6, height=6)\npar(mar=rep(0,4))\nset.seed(1980)\nplot(wc, g2, edge.width=E(g2)$weight)\ndev.off()\n\n",
-			"settings":
-			{
-				"buffer_size": 625,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "R/duplicated.nex.R",
-			"settings":
-			{
-				"buffer_size": 10171,
-				"line_ending": "Unix"
-			}
-		}
 	],
 	"build_system": "Packages/LaTeXing/LaTeX.sublime-build",
 	"build_system_choices":
@@ -455,37 +399,65 @@
 	"build_varint": "",
 	"command_palette":
 	{
-		"height": 354.0,
-		"last_filter": "r",
+		"height": 207.0,
+		"last_filter": "reveal",
 		"selected_items":
 		[
 			[
-				"r",
-				"Set Syntax: R"
-			],
-			[
-				"plain",
-				"Set Syntax: Plain Text"
+				"reveal",
+				"File: Reveal"
 			],
 			[
 				"wrap",
 				"Word Wrap: Toggle"
 			],
 			[
-				"markdo",
+				"r",
+				"Set Syntax: R"
+			],
+			[
+				"markd",
+				"Set Syntax: Markdown"
+			],
+			[
+				"sendt",
+				"SendTextPlus: Choose Program"
+			],
+			[
+				"markdown",
+				"Set Syntax: Markdown"
+			],
+			[
+				"gfm",
 				"Set Syntax: Markdown GFM"
+			],
+			[
+				"plain",
+				"Set Syntax: Plain Text"
 			],
 			[
 				"mark",
 				"Set Syntax: Markdown GFM"
 			],
 			[
-				"delet",
-				"File: Delete"
-			],
-			[
 				"renam",
 				"File: Rename"
+			],
+			[
+				"rena",
+				"File: Rename"
+			],
+			[
+				"reve",
+				"File: Reveal"
+			],
+			[
+				"markdo",
+				"Set Syntax: Markdown GFM"
+			],
+			[
+				"delet",
+				"File: Delete"
 			],
 			[
 				"move",
@@ -506,10 +478,6 @@
 			[
 				"task",
 				"Set Syntax: Tasks"
-			],
-			[
-				"gfm",
-				"Set Syntax: Markdown GFM"
 			],
 			[
 				"send",
@@ -536,16 +504,8 @@
 				"File: Duplicate"
 			],
 			[
-				"rena",
-				"File: Rename"
-			],
-			[
 				"java",
 				"Set Syntax: Java"
-			],
-			[
-				"markdown",
-				"Set Syntax: Markdown"
 			],
 			[
 				"lisp",
@@ -558,10 +518,6 @@
 			[
 				"sort",
 				"Sort Lines"
-			],
-			[
-				"markd",
-				"Set Syntax: Markdown"
 			],
 			[
 				"rmark",
@@ -958,18 +914,6 @@
 			[
 				"mat",
 				"Set Syntax: MATLAB"
-			],
-			[
-				"rma",
-				"Set Syntax: Rmarkdown"
-			],
-			[
-				"rmak",
-				"Set Syntax: Rmarkdown"
-			],
-			[
-				"rmakw",
-				"Set Syntax: Rmarkdown"
 			]
 		],
 		"width": 467.0
@@ -995,37 +939,52 @@
 	[
 		"/Users/chadeliason/github/nexustools",
 		"/Users/chadeliason/github/nexustools/R",
-		"/Users/chadeliason/github/nexustools/temp",
-		"/Users/chadeliason/Documents/UT/projects/phenome"
+		"/Users/chadeliason/github/nexustools/temp"
 	],
 	"file_history":
 	[
+		"/Users/chadeliason/github/nexustools/example/workflow.Rmd",
+		"/Users/chadeliason/Documents/UT/projects/phenome/scripts/word cooccurrences.R",
+		"/Users/chadeliason/Documents/UT/projects/phenome/scripts/plot datasets as nodes.R",
+		"/Users/chadeliason/Documents/UT/projects/phenome/output/twig-potential duplicates.txt",
+		"/Users/chadeliason/Documents/UT/projects/phenome/twig analysis (Brusatte).R",
+		"/Users/chadeliason/Documents/UT/projects/phenome/twig analysis (Xu 2011).R",
+		"/Users/chadeliason/github/nexustools/R/duplicated.nex.R",
+		"/Users/chadeliason/github/nexustools/R/buildnex2.R",
+		"/Users/chadeliason/github/nexustools/R/text_convert_functions.R",
+		"/Users/chadeliason/Documents/UT/projects/phenome/data/theropods/xu2011_charlist.txt",
+		"/Users/chadeliason/Documents/UT/projects/phenome/data/theropods/brusatte2014_charlist.txt",
+		"/Users/chadeliason/github/nexustools/R/cleantext.R",
+		"/Users/chadeliason/Documents/UT/projects/phenome/calculate precision and recall.R",
+		"/Users/chadeliason/github/nexustools/temp/get_comments.R",
+		"/Users/chadeliason/Documents/UT/projects/phenome/data/clarke_2002.nex",
+		"/Users/chadeliason/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/Users/chadeliason/github/nexustools/temp/ontology from text file.R",
+		"/Users/chadeliason/github/nexustools/temp/polychor discrete trait correlations.R",
+		"/Users/chadeliason/github/nexustools/R/read.nex.R",
+		"/Users/chadeliason/Documents/UT/projects/phenome/data/theropods/xu2011_matrix.txt",
+		"/Users/chadeliason/github/nexustools/R/generate_ontology.R",
+		"/Users/chadeliason/github/nexustools/temp/text_convert_functions.R",
+		"/Users/chadeliason/github/nexustools/R/addmeta.R",
 		"/Users/chadeliason/Documents/jobs/latex/cv/cv.tex",
 		"/Users/chadeliason/Dropbox/hummingbirds/meep model/TODO",
 		"/Users/chadeliason/Desktop/meep model/runMeep.R",
 		"/Users/chadeliason/Desktop/meep model/hummer_meep.ctl",
 		"/Users/chadeliason/Dropbox/Chad/Caihong/caihong.sublime-project",
-		"/Users/chadeliason/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
 		"/Users/chadeliason/Documents/UT/projects/melanocolor/new comparative analyses.Rmd",
 		"/Users/chadeliason/Dropbox/Notes/Untitled Note.25.txt",
 		"/Users/chadeliason/Documents/UT/projects/melanocolor/color analysis.Rmd",
 		"/Users/chadeliason/Dropbox/phenome dataset/data/2015-09-02/modified/final_reorderedJAC+CME.txt",
 		"/Users/chadeliason/Documents/UT/projects/phenome/analyses/2016-06-22/foot_phylos.R",
-		"/Users/chadeliason/github/nexustools/R/addmeta.R",
 		"/Users/chadeliason/Documents/UT/projects/phenome/moredups.R",
-		"/Users/chadeliason/github/nexustools/temp/ontology from text file.R",
 		"/Users/chadeliason/github/nexustools/temp/ontology from chars in nexus file.R",
-		"/Users/chadeliason/github/nexustools/temp/get_comments.R",
-		"/Users/chadeliason/github/nexustools/R/duplicated.nex.R",
 		"/Users/chadeliason/Documents/UT/projects/phenome/data/bertelli_2014.nex",
-		"/Users/chadeliason/github/nexustools/R/read.nex.R",
 		"/Users/chadeliason/github/nexustools/R/write.nex.R",
 		"/Users/chadeliason/Documents/UT/projects/phenome/data/nesbitt_2015.nex",
 		"/Users/chadeliason/Desktop/test.nex",
 		"/Users/chadeliason/Documents/UT/projects/phenome/data/mckitrick_1991.nex",
 		"/Users/chadeliason/Documents/UT/projects/phenome/analyses/2016-06-22/exactsol.run",
 		"/Users/chadeliason/github/nexustools/R/stem_search.R",
-		"/Users/chadeliason/github/nexustools/R/generate_ontology.R",
 		"/Users/chadeliason/Dropbox/phenome dataset/data/2015-09-02/original/final_reordered.nex",
 		"/Users/chadeliason/Desktop/matrix updated 6 8 16 TEST.nex",
 		"/Users/chadeliason/Desktop/test_addmeta.nex",
@@ -1043,7 +1002,6 @@
 		"/Users/chadeliason/github/nexustools/R/plot.nex.R",
 		"/Users/chadeliason/github/nexustools/temp/buildnex (old).R",
 		"/Users/chadeliason/github/nexustools/TODO",
-		"/Users/chadeliason/github/nexustools/R/cleantext.R",
 		"/Users/chadeliason/github/nexustools/R/findpaths.R",
 		"/Users/chadeliason/github/nexustools/R/treechart.R",
 		"/Users/chadeliason/Documents/UT/projects/phenome/baumel ontology.txt",
@@ -1112,26 +1070,11 @@
 		"/Users/chadeliason/Box Sync/Lithornithidae/specimen notes.txt",
 		"/Users/chadeliason/Desktop/fantasy_football.R",
 		"/Users/chadeliason/Documents/jobs/applications/2014/ubc postdoc/cover.tex",
-		"/Users/chadeliason/Downloads/osteoderm practice data/Osteoderm pattern analysis.Rmd",
-		"/Users/chadeliason/Dropbox/shiny_red/color analysis.Rmd",
-		"/Users/chadeliason/Dropbox/shiny_red/doc/figures/final_figures.R",
-		"/Users/chadeliason/Dropbox/shiny_red/data/2011-08-01/spectra/Experiment 1/SPECULAR0007.ttt",
-		"/Users/chadeliason/Dropbox/shiny_red/data/2011-08-01/spectra/Experiment 1/DIFFUSE0001.TRM",
-		"/Users/chadeliason/Dropbox/shiny_red/data/2011-08-01/spectra/Experiment 1/DIFFUSE0001.ttt",
-		"/Users/chadeliason/Documents/UT/projects/melanocolor/doc/final figures/figs round 2.R",
-		"/Users/chadeliason/Box Sync/swift SEM/prep.R",
-		"/Users/chadeliason/Dropbox/Notes/iup interview prep.txt",
-		"/Users/chadeliason/Documents/UT/projects/phenome/data/new_integumentary_characters.nex",
-		"/Users/chadeliason/Desktop/palaeognaths.tre",
-		"/Users/chadeliason/Desktop/cervical.nex",
-		"/Users/chadeliason/Documents/UT/projects/phenome/data/worthy_2012.nex",
-		"/Users/chadeliason/Desktop/feather plots.R",
-		"/Users/chadeliason/Dropbox/Notes/email blurb.txt",
-		"/Users/chadeliason/Documents/UT/projects/phenome/livezey characters 1-241 translations in english.txt"
+		"/Users/chadeliason/Downloads/osteoderm practice data/Osteoderm pattern analysis.Rmd"
 	],
 	"find":
 	{
-		"height": 71.0
+		"height": 70.0
 	},
 	"find_in_files":
 	{
@@ -1146,6 +1089,59 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"read.tree",
+			"buildnex2",
+			"igraph::",
+			"twig",
+			"newcharnames",
+			"part2",
+			"part1",
+			"newstatenames",
+			"is.na(part1)",
+			"NA",
+			"todo",
+			"fossa",
+			"femoris",
+			"fem",
+			"femur",
+			"troch",
+			"graph_from",
+			"g <-",
+			"g \\<-",
+			"g \\<",
+			"g <-",
+			"igraph",
+			"text",
+			"\\\\b",
+			"x",
+			"dupsum",
+			"to",
+			"test2",
+			"res.cor",
+			"139",
+			"res.dup",
+			"81",
+			"198.",
+			"161.",
+			"cleantext",
+			"text2mat",
+			"xing",
+			"xu",
+			"bodypart",
+			"test",
+			"ontology",
+			"text2mat",
+			"tont",
+			"test2",
+			"res",
+			"test",
+			"dupid",
+			"max_cliques",
+			"max_",
+			"clique",
+			"commun",
+			"communi",
+			"communities",
 			"ld",
 			"res",
 			"intercondyl",
@@ -1220,60 +1216,7 @@
 			"cleantext",
 			"tree$g",
 			"tree",
-			"termstem",
-			"stemterm",
-			"matches",
-			"2C3E43",
-			"terms",
-			"\\bill",
-			"ill",
-			"ulnare",
-			"metatarsal",
-			"dat2",
-			"dat",
-			",3",
-			",2",
-			",1",
-			"dorsalis",
-			"g",
-			"df.g",
-			"g\\.",
-			"iig.",
-			"iig",
-			"nervos",
-			"\\.",
-			"ligarnen",
-			"\\d",
-			"\\d+",
-			"Th",
-			"premaxillare",
-			"femoris",
-			"collapse",
-			"library",
-			", value=TRUE",
-			"ontology",
-			"livezey",
-			"xx",
-			"file",
-			"wordcloud",
-			"2856",
-			"\\.\\*",
-			".*",
-			"(?<=\\d\\.\\]\\s).*",
-			"\\d+\\.",
-			"venn",
-			"Venn",
-			"venn",
-			"duplicat",
-			"circul",
-			"karate",
-			"wckarate",
-			"tmp",
-			"uniquemodels",
-			"10",
-			"words",
-			"x",
-			"taxlabels"
+			"termstem"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1377,257 +1320,14 @@
 	"groups":
 	[
 		{
-			"selected": 0,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "example/workflow.Rmd",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 37914,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								13568,
-								13955
-							]
-						],
-						"settings":
-						{
-							"WordCount":
-							{
-								"changes": -1,
-								"modified": false,
-								"selection": false,
-								"status": -1,
-								"syntax": "plain text"
-							},
-							"r_box_status": false,
-							"syntax": "Packages/knitr/knitr-Markdown.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "temp/polychor discrete trait correlations.R",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2131,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"WordCount":
-							{
-								"changes": 0,
-								"count": 140,
-								"modified": false,
-								"selection": false,
-								"status": -1,
-								"syntax": "plain text"
-							},
-							"r_box_status": false,
-							"syntax": "Packages/R-Box/syntax/R Extended.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "/Users/chadeliason/Documents/UT/projects/phenome/calculate precision and recall.R",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 5741,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1031,
-								1031
-							]
-						],
-						"settings":
-						{
-							"WordCount":
-							{
-								"changes": 0,
-								"count": 298,
-								"modified": false,
-								"selection": false,
-								"status": -1,
-								"syntax": "plain text"
-							},
-							"r_box_status": false,
-							"syntax": "Packages/R/R.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 318,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								318,
-								318
-							]
-						],
-						"settings":
-						{
-							"WordCount":
-							{
-								"changes": 0,
-								"count": 17,
-								"modified": false,
-								"selection": false,
-								"status": -1,
-								"syntax": "plain text"
-							},
-							"default_dir": "/Users/chadeliason/github/nexustools",
-							"r_box_status": false,
-							"syntax": "Packages/R/R.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "temp/get_comments.R",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3059,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2886,
-								2886
-							]
-						],
-						"settings":
-						{
-							"r_box_status": false,
-							"syntax": "Packages/R-Box/syntax/R Extended.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 1182.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 625,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"default_dir": "/Users/chadeliason/github/nexustools",
-							"r_box_status": false,
-							"syntax": "Packages/R/R.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "R/duplicated.nex.R",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 10171,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"r_box_status": false,
-							"syntax": "Packages/R-Box/syntax/R Extended.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				}
 			]
 		}
 	],
 	"incremental_find":
 	{
-		"height": 33.0
+		"height": 26.0
 	},
 	"input":
 	{
@@ -1676,7 +1376,7 @@
 	"project": "nexustools.sublime-project",
 	"replace":
 	{
-		"height": 62.0
+		"height": 48.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -1686,15 +1386,59 @@
 		"selected_items":
 		[
 			[
+				"xu",
+				"phenome/data/theropods/xu2011_charlist.txt"
+			],
+			[
+				"clean",
+				"nexustools/R/cleantext.R"
+			],
+			[
+				"duplicated",
+				"nexustools/R/duplicated.nex.R"
+			],
+			[
+				"brusatt",
+				"phenome/data/theropods/brusatte2014_charlist.txt"
+			],
+			[
+				"duplica",
+				"nexustools/R/duplicated.nex.R"
+			],
+			[
+				"brusa",
+				"phenome/data/theropods/brusatte2014_charlist.txt"
+			],
+			[
+				"buildne",
+				"nexustools/R/buildnex2.R"
+			],
+			[
+				"read.nex",
+				"nexustools/R/read.nex.R"
+			],
+			[
+				"genera",
+				"nexustools/R/generate_ontology.R"
+			],
+			[
+				"buildnex",
+				"nexustools/R/buildnex2.R"
+			],
+			[
+				"builndex2",
+				"nexustools/R/buildnex2.R"
+			],
+			[
+				"addme",
+				"nexustools/R/addmeta.R"
+			],
+			[
 				"duplicated.",
 				"nexustools/R/duplicated.nex.R"
 			],
 			[
 				"duplicated.ne",
-				"nexustools/R/duplicated.nex.R"
-			],
-			[
-				"duplica",
 				"nexustools/R/duplicated.nex.R"
 			],
 			[
@@ -1724,10 +1468,6 @@
 			[
 				"duplic",
 				"nexustools/R/duplicated.nex.R"
-			],
-			[
-				"read.nex",
-				"nexustools/R/read.nex.R"
 			],
 			[
 				"ontol",
@@ -2156,46 +1896,6 @@
 			[
 				"ttplo",
 				"R/ttplot.R"
-			],
-			[
-				"is.",
-				"R/is.rspec.R"
-			],
-			[
-				"ttpoint",
-				"R/ttpoints.R"
-			],
-			[
-				"ttvol",
-				"R/ttvol.R"
-			],
-			[
-				"is.r",
-				"R/is.rspec.R"
-			],
-			[
-				"as.rspec",
-				"R/as.rspec.r"
-			],
-			[
-				"smooth",
-				"R/plotsmooth.R"
-			],
-			[
-				"spec2rg",
-				"R/spec2rgb.R"
-			],
-			[
-				"explor",
-				"R/explorespec.R"
-			],
-			[
-				"summ",
-				"pavo/R/summary.rspec.R"
-			],
-			[
-				"summar",
-				"pavo/man/summary.rspec.Rd"
 			]
 		],
 		"width": 0.0
@@ -2235,12 +1935,12 @@
 	},
 	"select_symbol":
 	{
-		"height": 400.0,
+		"height": 392.0,
 		"last_filter": "",
 		"selected_items":
 		[
 		],
-		"width": 704.0
+		"width": 680.0
 	},
 	"selected_group": 0,
 	"settings":

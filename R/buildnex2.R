@@ -25,7 +25,7 @@ buildnex2 <- function(data, charlabels=NULL, charnums=NULL, statelabels=NULL, ta
 		charnums <- 1:ncol(data)
 	}
 	dimnames(data) <- NULL
-	res <- list(data = data, taxlabels = taxlabels, charlabels = charlabels, statelabels = statelabels, charnums = charnums, missing = "?")
+	res <- list(data = data, taxlabels = taxlabels, charlabels = charlabels, statelabels = statelabels, charnums = charnums, missing = "?", gap="-")
 	class(res) <- c("nex", "list")
 	res
 }

@@ -888,7 +888,11 @@ tre <- extract.clade(tre, getMRCA(tre, c("Struthio_camelus", "Tinamus_major")))
 
 integument <- na.omit(subset(allnex.genome, charpartition == 'integument'))
 
-plot(integument, phy = tre, bw = FALSE, fsize = 8)
+skull <- na.omit(subset(allnex2, charpartition == 'skull'))
+
+pdf(file="figs/skull_plus_phylo.pdf", width=6, height=4)
+plot(skull, phy = tre, bw = FALSE, fsize = 8, na.value = "gray")
+dev.off()
 
 # urogenital <- na.omit(subset(allnex.genome, charpartition == 'urogenital'))
 # plot(urogenital, phy = tre, bw = FALSE, fsize = 8)
