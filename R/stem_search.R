@@ -7,7 +7,7 @@
 stem_search <- function(tree, x) {
 
 	roots <- which(igraph::degree(tree, v = V(tree), mode = "in")==0, useNames = T)
-	notroots <- which(!V(g) %in% roots)
+	notroots <- which(!V(tree) %in% roots)
 	paths <- lapply(V(tree), all_shortest_paths, graph=tree, to=roots, mode="in")
 	paths <- sapply(paths, "[[", "res")
 	fullnames <- sapply(seq_along(paths), function(i) {paste0(names(paths[[i]]), collapse="->")})
