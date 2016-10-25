@@ -135,8 +135,8 @@ if (is.null(map)) {
   # @todo downweight based on commonness of term in dataset
 
 
-  # @done if state labels are absent/present (i.e. non-informative), then remove from duplicate matching
-  id <- grep("('present'\\s*'absent')|(present\\s*absent)|('absent'\\s*'present')|(absent\\s*present)", newstatenames)
+  # [x] if state labels are absent/present (i.e. non-informative), then remove from duplicate matching
+  id <- grep("('present'\\s*'absent')|(present\\s*absent)|('absent'\\s*'present')|(absent\\s*present)", part3)
   weighting[id, 3] <- 0
 
   # generate all possible pairs of character combinations
