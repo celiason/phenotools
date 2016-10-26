@@ -21,10 +21,15 @@ text2mat <- function(x) {
 # get character labels from text
 text2charlabels <- function(x) {
 	# matches <- str_match(x, "^(Character|[\\s\\t]*)(\\d+)[\\.]?(.*)(\\[\\[\\]\\])(.*)")
-	if (any(str_detect(x, "^[Cc]haracter"))) {
+	# DONE: make it so this selects all text on multiple lines
+	# TODO: make it so we can extract characters and character states separately (e.g., separated by a ":")
+	x <- paste0(x, collapse="\n")
+	if (any(str_detect(x, "\n[Cc]haracter"))) {
 		# for Brusatte 2014
-		matches <- str_match(x, "Character\\s*(\\d*)\\:\\s(.*)")
-		charnums <- as.numeric(matches[, 2])		
+		# matches <- str_match_all(x, regex("Character\\s*(\\d*)\\:\\s(.*?)", dotall=TRUE))
+		matches <- str_match_all(x, regex("Character\\s*(\\d*)\\:\\s(.+?)(?=Character\\s*\\d*\\:\\s|$)", dotall=TRUE))
+		matches <- matches[[1]]
+		charnums <- as.numeric(matches[, 2])
 		# id <- which(!is.na(as.numeric(matches[, 2])))
 		# charnums <- na.omit(as.numeric(matches[, 2]))
 		# seqs <- sapply(seq_along(id), function(i) {

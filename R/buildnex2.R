@@ -2,12 +2,6 @@
 # x = list containing, minimimally, data matrix (in matrix form)
 # data <- mat
 buildnex2 <- function(data, charlabels=NULL, charnums=NULL, statelabels=NULL, taxlabels=NULL) {
-# taxlabels <- NULL
-# data <- mat
-# statelabels = NULL
-# charnums = NULL
-# charlabels = NULL
-
 	if (is.null(taxlabels)) {
 		if (is.null(rownames(data))) {
 			taxlabels <- rep('', nrow(data))
@@ -29,3 +23,14 @@ buildnex2 <- function(data, charlabels=NULL, charnums=NULL, statelabels=NULL, ta
 	class(res) <- c("nex", "list")
 	res
 }
+
+
+
+# mattext <- readLines("data/theropods/brusatte2014_matrix.txt")
+# chartext <- readLines("data/theropods/brusatte2014_charlist.txt")
+# mat <- text2mat(mattext)
+# charlabs <- text2charlabels(chartext)
+
+# twig1 <- buildnex2(data=mat, charlabels=charlabs)
+
+
