@@ -7,7 +7,7 @@ duptree <- function(x, fac=10, plot=FALSE, ...) {
 		stop("No duplicated characters identified.")
 	}
 	dups <- x$dups
-	g <- graph_from_data_frame(dups[c('charnum1', 'charnum2')], directed=FALSE)
+	g <- graph_from_data_frame(dups[c('char1', 'char2')], directed=FALSE)
 	wts <- twig1.dup$dups$stringdist
 	# scale weights
 	wts <- 1 - (wts - min(wts)) / max(wts - min(wts))

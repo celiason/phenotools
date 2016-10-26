@@ -23,9 +23,9 @@ text2charlabels <- function(x) {
 	# matches <- str_match(x, "^(Character|[\\s\\t]*)(\\d+)[\\.]?(.*)(\\[\\[\\]\\])(.*)")
 	# DONE: make it so this selects all text on multiple lines
 	# TODO: make it so we can extract characters and character states separately (e.g., separated by a ":")
-	x <- paste0(x, collapse="\n")
-	if (any(str_detect(x, "\n[Cc]haracter"))) {
-		# for Brusatte 2014
+	# for Brusatte 2014
+	if (any(str_detect(x, "^[Cc]haracter"))) {
+		x <- paste0(x, collapse="\n")
 		# matches <- str_match_all(x, regex("Character\\s*(\\d*)\\:\\s(.*?)", dotall=TRUE))
 		matches <- str_match_all(x, regex("Character\\s*(\\d*)\\:\\s(.+?)(?=Character\\s*\\d*\\:\\s|$)", dotall=TRUE))
 		matches <- matches[[1]]
@@ -45,12 +45,13 @@ text2charlabels <- function(x) {
 		charlabs <- matches[, 3]
 	} else {
 		# for Xu 2011
-		matches <- str_match(x, "^(Character\\s*)?(\\d*)[\\.]?[\\:]?[\\s]?(.*)")
+		matches <- str_match(x, regex("(Character\\s*)?(\\d*)[\\.]?[\\:]?[\\s]?(.*?)$", dotall=TRUE))
 		charnums <- as.numeric(matches[, 3])
 		charlabs <- matches[, 4]
 	}
 	res <- setNames(charlabs, charnums)
 	res <- res[!is.na(res)]
+	res <- gsub("\n", " ", res)
 	res
 }
 

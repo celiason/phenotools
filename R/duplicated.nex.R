@@ -23,9 +23,8 @@
 #' @author Chad Eliason \email{chad_eliason@@utexas.edu}
 #'
 
-# @done should have this output the string distances as well in the dup data frame
-
-# @done exclude positional terms during matching
+# DONE should have this output the string distances as well in the dup data frame
+# DONE exclude positional terms during matching
 
 # Testing zone:
 # x <- read.nex("/Users/chadeliason/Documents/UT/projects/phenome/data/clarke_2002.nex")
@@ -35,14 +34,17 @@
 # n = 25
 # method = "jw"
 # within_dataset=FALSE
+# commasep = TRUE
+# x <- twig12
 
 duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = TRUE,
   cutoff = 0.35, method = c("jw", "cosine"), within_dataset = FALSE, plot = TRUE,
-  drop = FALSE) {
+  drop = FALSE, commasep = TRUE, ...) {
 
 library(stringdist)
 library(tm)
 library(MASS)
+
 method <- match.arg(method)
 
 matchfun <- function(sset) {
@@ -76,51 +78,71 @@ if (!is.null(map)) {
 # IF no map, then do automated discovery of duplicate characters:
 
 # Calculate text distances
+
 if (is.null(map)) {
+
   oldcharnames <- x$charlabels
+
   oldstatenames <- x$statelabels
 
-  # @done break apart character names into chunks (before comma, after comma)
-  matches <- str_match(oldcharnames, "^((.*),)?(.+)")
-  part1 <- matches[, 3]
-  part2 <- matches[, 4]
-  id <- is.na(part1)
-  part1[id] <- part2[id]
-  part2[id] <- NA
-  part3 <- oldstatenames
+  # DONE: break apart character names into chunks (before comma, after comma)
 
-  # newstatenames <- oldstatenames
-  # newcharnames <- oldcharnames
-  # remove short words
-  tocut <- c("to", "the", "and", "an", "a", "or", "of")
-  tocut <- paste0("\\b", tocut, "\\b", collapse="|")
-  # newcharnames <- gsub(tocut, "", newcharnames)
-  part1 <- gsub(tocut, "", part1)
-  part2 <- gsub(tocut, "", part2)
-  part3 <- gsub(tocut, "", part3)
+  # TODO: might want to make this an option in the function (sometimes the characters may have commas placed not to indicate hierarchical nature of homology)
 
-  # remove vague terms
-  tocut <- c("form", "process", "state", "view", "margin", "shape", "placed", "recess")
-  tocut <- paste0("\\b", tocut, "\\b", collapse="|")
-  # newcharnames <- gsub(tocut, "", newcharnames)
-  part1 <- gsub(tocut, "", part1)
-  part2 <- gsub(tocut, "", part2)
-  part3 <- gsub(tocut, "", part3)
+  if (commasep) {
 
-  # remove positional terms
-  tocut <- c("lateral", "distal", "ventral", "posterior", "anterior", "medial", "dors", "external")
-  tocut <- paste0("\\b", tocut, "(\\w*)?", collapse="|")
-  # newcharnames <- gsub(tocut, "", newcharnames)
-  part1 <- gsub(tocut, "", part1)
-  part2 <- gsub(tocut, "", part2)
-  part3 <- gsub(tocut, "", part3)
-  
-  # clean up character names:
-  # newstatenames <- cleantext(newstatenames)
-  # newcharnames <- cleantext(newcharnames)
-  part1 <- cleantext(part1)
-  part2 <- cleantext(part2)
-  part3 <- cleantext(part3)
+    matches <- str_match(oldcharnames, "^((.*?),)?(.*)")
+    part1 <- matches[, 3]
+    part2 <- matches[, 4]
+    id <- is.na(part1)
+    part1[id] <- part2[id]
+    part2[id] <- NA
+    part3 <- oldstatenames
+
+  } else {
+
+    part1 <- oldcharnames
+    part2 <- NA
+    part3 <- oldstatenames
+
+  }
+
+    # newstatenames <- oldstatenames
+    # newcharnames <- oldcharnames
+    # remove short words
+    tocut <- c("to", "the", "and", "an", "a", "or", "of")
+    tocut <- paste0("\\b", tocut, "\\b", collapse="|")
+    # newcharnames <- gsub(tocut, "", newcharnames)
+    part1 <- gsub(tocut, "", part1)
+    part2 <- gsub(tocut, "", part2)
+    part3 <- gsub(tocut, "", part3)
+
+    # remove vague terms
+    tocut <- c("absent", "present", "form", "process", "state", "view", "margin", "shape", "placed", "recess", "(UN)?ORDERED", "(un)?ordered")
+    tocut <- paste0("\\b", tocut, "\\b", collapse="|")
+    # newcharnames <- gsub(tocut, "", newcharnames)
+    part1 <- gsub(tocut, "", part1)
+    part2 <- gsub(tocut, "", part2)
+    part3 <- gsub(tocut, "", part3)
+
+    # remove positional terms
+    tocut <- c("lateral", "distal", "ventral", "posterior", "anterior", "medial", "dors", "external")
+    tocut <- paste0("\\b", tocut, "(\\w*)?", collapse="|")
+    # newcharnames <- gsub(tocut, "", newcharnames)
+    part1 <- gsub(tocut, "", part1)
+    part2 <- gsub(tocut, "", part2)
+    part3 <- gsub(tocut, "", part3)
+    
+    # clean up character names:
+    # newstatenames <- cleantext(newstatenames)
+    # newcharnames <- cleantext(newcharnames)
+    part1 <- cleantext(part1)
+    part2 <- cleantext(part2)
+    part3 <- cleantext(part3)
+
+    part1[part1==""] <- NA
+    part2[part2==""] <- NA
+    part3[part3==""] <- NA
 
   # Setup weightings
 
@@ -132,11 +154,12 @@ if (is.null(map)) {
   weighting[id, 2] <- 0.5
   weighting[is.na(part2), 2] <- 0
 
-  # @todo downweight based on commonness of term in dataset
+  # TODO: downweight based on commonness of term in dataset (??)
 
-
-  # [x] if state labels are absent/present (i.e. non-informative), then remove from duplicate matching
+  # DONE: if state labels are absent/present (i.e. non-informative), then remove from duplicate matching
+  
   id <- grep("('present'\\s*'absent')|(present\\s*absent)|('absent'\\s*'present')|(absent\\s*present)", part3)
+  
   weighting[id, 3] <- 0
 
   # generate all possible pairs of character combinations
@@ -144,23 +167,27 @@ if (is.null(map)) {
   
   # only comparisons BETWEEN datasets/character types, not within:
   file <- x$file
+
   if (within_dataset) {  
     id <- file[pairids[1, ]] != file[pairids[2, ]]
     pairids <- pairids[, id]
   }
+
   # only look within character partitions:
+
   if (!is.null(x$charpartition) & length(unique(x$charpartition)) > 1) {
     charpart <- x$charpartition
     id <- charpart[pairids[1, ]] == charpart[pairids[2, ]]
     pairids <- pairids[, id]
   }
+
   stringdists <- numeric(length = ncol(pairids))
   
   # create progress bar
   pb <- txtProgressBar(min = 0, max = ncol(pairids), style = 3)
 
   # calculate text distances (takes ~200 seconds for 2.2M comparisons):
-  # @TODO: WORK ON OPTIMIZING THIS PART
+  # TODO: WORK ON OPTIMIZING THIS PART
   for (i in 1:ncol(pairids)) {
     id1 <- pairids[1, i]
     id2 <- pairids[2, i]
@@ -173,9 +200,9 @@ if (is.null(map)) {
     wt1 <- sum(weighting[c(id1, id2), 1])
     wt2 <- sum(weighting[c(id1, id2), 2])
     wt3 <- sum(weighting[c(id1, id2), 3])
-    sd1 <- (1/wt1) * stringdist(str11, str21, method=method)
-    sd2 <- (1/wt2) * stringdist(str12, str22, method=method)
-    sd3 <- (1/wt3) * ifelse(any(weighting[c(id1, id2), 3]==0), NA, stringdist(str13, str23, method=method))
+    sd1 <- (1/wt1) * stringdist(str11, str21, method=method, ...)
+    sd2 <- (1/wt2) * stringdist(str12, str22, method=method, ...)
+    sd3 <- (1/wt3) * ifelse(any(weighting[c(id1, id2), 3]==0), NA, stringdist(str13, str23, method=method, ...))
     stringdists[i] <- sum(sd1, sd2, sd3, na.rm=TRUE)
     # str1a <- newcharnames[pairids[1,i]]
     # str1b <- newstatenames[pairids[1,i]]
@@ -186,15 +213,20 @@ if (is.null(map)) {
     # stringdists[i] <- stringdist1 + stringdist2
     setTxtProgressBar(pb, i)  # update progress bar
   }
+
   close(pb)
+
   names(stringdists) <- 1:length(stringdists)
+
   sset.dist <- sort(stringdists)
+
   sset <- as.numeric(names(stringdists))
+
 }
 
 
-
 # Training to identify duplicates
+
 if (train) {
   sscut <- stringdists[stringdists < cutoff]
   sscut <- sort(sscut)
@@ -231,15 +263,18 @@ if (train) {
     abline(h=0.5, lty=2)
     title("LDA training results")  
   }
-}
+} else {
 
-if (!train) {
   sset <- as.numeric(names(which(sset.dist < cutoff)))
+
   if (length(sset) == 0) {
     stop('No putative matches found.')
   }
-  dups <- pairids[, sset]
+
+  dups <- as.matrix(pairids[, sset])
+
   stringdists.output <- stringdists[sset]
+
 }
 
   # answer <- character(length = length(sset))
@@ -312,7 +347,9 @@ if (drop) {
       warning('Merging non-overlapping character scorings; dropping character ', id[1], '; check state labels to confirm')
     }  
   }
+
 drops2[drops] <- FALSE
+
 }
 
 # Output, drop duplicated characters, labels, etc.:
