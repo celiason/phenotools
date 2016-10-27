@@ -1,5 +1,8 @@
-# function to make duplicate network tree?
+# function to make duplicate network tree
+# x = a `nex` object with duplicated identified using `duplicated.nex`
 # fac = edge scaling factor
+# plot = whether to make a plot of the network
+# x <- twig12.d
 duptree <- function(x, fac=10, plot=FALSE, ...) {
 	library(igraph)
 	# x <- twig1.dup
@@ -8,7 +11,7 @@ duptree <- function(x, fac=10, plot=FALSE, ...) {
 	}
 	dups <- x$dups
 	g <- graph_from_data_frame(dups[c('char1', 'char2')], directed=FALSE)
-	wts <- twig1.dup$dups$stringdist
+	wts <- dups$stringdist
 	# scale weights
 	wts <- 1 - (wts - min(wts)) / max(wts - min(wts))
 	E(g)$weight <- fac * wts
