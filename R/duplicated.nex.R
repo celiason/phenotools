@@ -85,6 +85,10 @@ if (is.null(map)) {
 
   oldstatenames <- x$statelabels
 
+  # remove stop words
+  oldcharnames <- removeWords(oldcharnames, stopwords("en"))
+  oldstatenames <- removeWords(oldstatenames, stopwords("en"))
+
   # DONE: break apart character names into chunks (before comma, after comma)
 
   # TODO: might want to make this an option in the function (sometimes the characters may have commas placed not to indicate hierarchical nature of homology)
@@ -110,28 +114,35 @@ if (is.null(map)) {
     # newstatenames <- oldstatenames
     # newcharnames <- oldcharnames
     # remove short words
-    tocut <- c("to", "the", "and", "an", "a", "or", "of")
+    tocut <- c("with", "than", "then", "those", "with", "to", "the", "and", "an", "a", "or", "of", "for", "not")
     tocut <- paste0("\\b", tocut, "\\b", collapse="|")
     # newcharnames <- gsub(tocut, "", newcharnames)
-    part1 <- gsub(tocut, "", part1)
-    part2 <- gsub(tocut, "", part2)
-    part3 <- gsub(tocut, "", part3)
+    part1 <- gsub("[[:punct:]]", " ", part1)
+    part1 <- gsub("[[:digit:]]", " ", part1)
+    part1 <- gsub(tocut, "", part1, ignore.case=TRUE)
+    part2 <- gsub("[[:punct:]]", " ", part2)
+    part2 <- gsub("[[:digit:]]", " ", part2)
+    part2 <- gsub(tocut, "", part2, ignore.case=TRUE)
+    part3 <- gsub("[[:punct:]]", " ", part3)
+    part3 <- gsub("[[:digit:]]", " ", part3)
+    part3 <- gsub(tocut, "", part3, ignore.case=TRUE)
 
     # remove vague terms
-    tocut <- c("absent", "present", "form", "process", "state", "view", "margin", "shape", "placed", "recess", "(UN)?ORDERED", "(un)?ordered")
+    # TODO: fix it so this will remove things like "posteroventral"
+    tocut <- c("along", "less", "below", "above", "around", "longer", "shorter", "sits", "absent", "present", "form", "process", "state", "view", "margin", "shape", "placed", "recess", "(UN)?ORDERED", "(un)?ordered")
     tocut <- paste0("\\b", tocut, "\\b", collapse="|")
     # newcharnames <- gsub(tocut, "", newcharnames)
-    part1 <- gsub(tocut, "", part1)
-    part2 <- gsub(tocut, "", part2)
-    part3 <- gsub(tocut, "", part3)
+    part1 <- gsub(tocut, "", part1, ignore.case=TRUE)
+    part2 <- gsub(tocut, "", part2, ignore.case=TRUE)
+    part3 <- gsub(tocut, "", part3, ignore.case=TRUE)
 
     # remove positional terms
     tocut <- c("lateral", "distal", "ventral", "posterior", "anterior", "medial", "dors", "external")
     tocut <- paste0("\\b", tocut, "(\\w*)?", collapse="|")
     # newcharnames <- gsub(tocut, "", newcharnames)
-    part1 <- gsub(tocut, "", part1)
-    part2 <- gsub(tocut, "", part2)
-    part3 <- gsub(tocut, "", part3)
+    part1 <- gsub(tocut, "", part1, ignore.case=TRUE)
+    part2 <- gsub(tocut, "", part2, ignore.case=TRUE)
+    part3 <- gsub(tocut, "", part3, ignore.case=TRUE)
     
     # clean up character names:
     # newstatenames <- cleantext(newstatenames)
@@ -144,11 +155,21 @@ if (is.null(map)) {
     part2[part2==""] <- NA
     part3[part3==""] <- NA
 
+
+  part1 <- sapply(part1, unique)
+  part2 <- sapply(part2, unique)
+  part3 <- sapply(part3, unique)
+
+# part1
+# part2
+
   # Setup weightings
+
+  # TODO: try weighting by commenness of word in the matrix
 
   weighting <- cbind(rep(1, length(part1)), rep(1, length(part2)), rep(1, length(part3)))
 
-  # @done Weight first few words (if comma) more heavily
+  # DONE: weight first few words (if comma) more heavily
   # e.g., Dorsal vertebrae, shape -- vs Caudal vertebrae, shape (shouldn't be identified as duplicates)
   id <- !is.na(part2)
   weighting[id, 2] <- 0.5

@@ -18,9 +18,9 @@ cleantext <- function(x, comma=TRUE) {
   # take out common words (if, to, the...)
   # x <- removeWords(x, stopwords("english"))
   # take out beginning and ending spaces
-  x <- gsub("^\\s", "", x)
+  x <- gsub("^\\s*", "", x)
   x <- gsub("\\:", " ", x)
-  x <- gsub("\\s$", "", x)
+  x <- gsub("\\s*$", "", x)
   # remove extra spaces
   x <- gsub("\t|\\s{2,}", " ", x)
   # output
