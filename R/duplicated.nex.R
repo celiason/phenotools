@@ -327,12 +327,39 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = FALSE,
     sstrain <- sscut[ss]
     sset.dist <- sstrain
     sset <- as.numeric(names(sset.dist))
+    
     # run loop to determine matches
-    answer <- sapply(sset, matchfun)
+    
+    printpair <- function(sset) {
+      id1 <- pairids[1, sset]
+      id2 <- pairids[2, sset]
+      # print pairs of characters:
+      cat('\n-------\nTrait pair', i, ' (string distance = ', sset.dist[as.character(sset)], ') \n\nCHARLABELS:\n\n',
+        oldcharnames[id1], ' (', x$file[id1], ', character ', x$charnums[id1],')\n\n',
+        oldcharnames[id2], ' (', x$file[id2], ', character ', x$charnums[id2],')\n\nSTATELABELS:\n\n',
+        x$statelabels[id1], '\n\n',
+        x$statelabels[id2], '\n----------\n\n', sep="")
+      cat('Are these the same traits (y/n/N/q)\n')
+    }
+
+    answers <- rep("", length(sset))
+
+    for (i in 1:length(sset)) {  
+      printpair(i)  # print pair of characters
+      answer <- scan(n = 1, what = 'character')  # wait for user input
+      if (answer=='q') {
+        stop('Function terminated by user')
+      }
+      if (answer=='N') {
+        answers[i:length(answers)] <- answers[i-1]
+        break
+      }
+      answers[i] <- answer
+    }
     
     # Linear discrimant analysis
     df <- data.frame(match = ifelse(answer=="y", 1, 0), dist = sset.dist)
-    if (sum(diff(df$match)) == 0) {
+    if (all(diff(df$match)==0)) {
       stop("All pairs identified as matches/nonmatches, need variability for LDA training analysis")
     } else {
       lda1 <- lda(match~dist, data=df)
@@ -343,7 +370,6 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = FALSE,
       # matchid <- as.numeric(names(pred$posterior[, 2][pred$posterior[, 2] > 0.5]))
       dups <- pairids[, matchid]
     }
-
     if (plot) {
       plot(predict(lda1, df)$posterior[,2]~df[,2], type='b', col=df[,1]+1, pch=16, xlab="String distance", ylab="P(duplicate)")
       legend("topright", pch=16, col=c("black", "red"), legend=c("not dup", "dup"), bty="n")
@@ -479,25 +505,3 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = FALSE,
   res
 
 }
-
-
-
-matchfun <- function(sset) {
-  id1 <- pairids[1, sset]
-  id2 <- pairids[2, sset]
-  # print pairs of characters:
-  cat('\n-------\nTrait pair', i, ' (string distance = ', sset.dist[as.character(sset)], ') \n\nCHARLABELS:\n\n',
-    oldcharnames[id1], ' (', x$file[id1], ', character ', x$charnums[id1],')\n\n',
-    oldcharnames[id2], ' (', x$file[id2], ', character ', x$charnums[id2],')\n\nSTATELABELS:\n\n',
-    x$statelabels[id1], '\n\n',
-    x$statelabels[id2], '\n----------\n\n', sep="")
-  cat('Are these the same traits (y/n/q)\n')
-  # wait for user input
-  answer <- scan(n = 1, what = 'character')
-  if (answer=='q') {
-    stop('Function terminated by user')
-  }
-  answer
-}
-
-
