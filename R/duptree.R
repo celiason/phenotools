@@ -3,7 +3,7 @@
 #' @param fac edge scaling factor
 #' @param plot whether to make a plot of the network
 #' x <- twig12.d
-duptree <- function(x, fac=10, plot=FALSE, ...) {
+duptree <- function(x, fac=10, plot=TRUE, ...) {
 	oldpar <- par(no.readonly=TRUE)
 	library(igraph)
 	# x <- twig1.dup

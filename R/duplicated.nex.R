@@ -21,22 +21,12 @@
 #' duplicated(x, cutoff = 0.01, method = 'auto')
 #' duplicated(x, method = 'user', map=list(c(2,3)))
 #' @author Chad Eliason \email{chad_eliason@@utexas.edu}
-
-# TODO list
-# [x] should have this output the string distances as well in the dup data frame
-# [x] exclude positional terms during matching
-# [x] maybe use a different string distance metric (e.g., 'vomer' AND 'vomer extending laterally' give dist = 0)
-
-# Testing zone
-# x <- twig1[, 1:50]
-# method <- "jw"
-# commasep <- FALSE
-# weighted <- FALSE
-# parts <- FALSE
-# within_dataset <- FALSE
-# train=FALSE
-# cutoff=0.05
-
+#'
+#' TODO list
+#' [x] should have this output the string distances as well in the dup data frame
+#' [x] exclude positional terms during matching
+#' [x] maybe use a different string distance metric (e.g., 'vomer' AND 'vomer extending laterally' give dist = 0)
+#'
 duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = FALSE,
   cutoff = 0.35, method = c("jw", "cosine", "terms"), within_dataset = FALSE, plot = FALSE,
   drop = FALSE, commasep = FALSE, weighted = FALSE, parts = FALSE, ...) {
@@ -130,11 +120,9 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = FALSE,
     # whole character statement
     # broken up character statement (locator, variable, states)
     if (method %in% c("jw", "cosine")) {
-
       # remove stop words
       oldcharnames <- removeWords(oldcharnames, stopwords("en"))
       oldstatenames <- removeWords(oldstatenames, stopwords("en"))
-
       # comma separated?
       # commasep <- FALSE
       if (commasep) {
@@ -150,25 +138,17 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = FALSE,
         part2 <- NA
         part3 <- oldstatenames
       }
-      # newstatenames <- oldstatenames
-      # newcharnames <- oldcharnames
-      
       # remove comments in square brackets:
       part3 <- str_replace_all(part3, "[\\s]*[\\[\\(].+[\\]\\)][\\s]*", "")
       # remove comments in after 'Note:'
       part3 <- str_replace_all(twig1$charlab[91], "Note\\:.*?$", "")
-
       # remove reference to figures
       part1 <- str_replace(part1, "\\([Ff]ig(\\.|ure).*\\)", "")
       part2 <- str_replace(part2, "\\([Ff]ig(\\.|ure).*\\)", "")
       part3 <- str_replace(part3, "\\([Ff]ig(\\.|ure).*\\)", "")
-
       # remove short words
       tocut <- c("with", "than", "then", "those", "with", "to", "the", "and", "an", "a", "or", "of", "for", "not")
-      tocut <- paste0("\\b", tocut, "\\b", collapse="|")    
-
-      # newcharnames <- gsub(tocut, "", newcharnames)
-      
+      tocut <- paste0("\\b", tocut, "\\b", collapse="|")
       part1 <- gsub("[[:punct:]]", " ", part1)
       part1 <- gsub("[[:digit:]]", " ", part1)
       part1 <- gsub(tocut, "", part1, ignore.case=TRUE)
@@ -178,23 +158,20 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = FALSE,
       part3 <- gsub("[[:punct:]]", " ", part3)
       part3 <- gsub("[[:digit:]]", " ", part3)
       part3 <- gsub(tocut, "", part3, ignore.case=TRUE)
-
-      # Removing non-informative terms:
+      # Removing non-informative terms
       # [ ] fix it so this will remove things like "posteroventral"
       tocut <- c("along", "less", "below", "above", "around", "longer", "shorter", "sits", "absent", "present", "form", "process", "state", "view", "margin", "shape", "placed", "recess", "(UN)?ORDERED", "(un)?ordered")
       tocut <- paste0("\\b", tocut, "\\b", collapse="|")
       part1 <- gsub(tocut, "", part1, ignore.case=TRUE)
       part2 <- gsub(tocut, "", part2, ignore.case=TRUE)
       part3 <- gsub(tocut, "", part3, ignore.case=TRUE)
-
-      # Removing positional terms:
+      # Removing positional terms
       tocut <- c("lateral", "distal", "ventral", "posterior", "anterior", "medial", "dors", "external")
       tocut <- paste0("\\b", tocut, "(\\w*)?", collapse="|")
       part1 <- gsub(tocut, "", part1, ignore.case=TRUE)
       part2 <- gsub(tocut, "", part2, ignore.case=TRUE)
       part3 <- gsub(tocut, "", part3, ignore.case=TRUE)
-      
-      # Cleaning up character names:
+      # Clean up character names
       part1 <- cleantext(part1)
       part2 <- cleantext(part2)
       part3 <- cleantext(part3)
@@ -342,19 +319,19 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = FALSE,
       cat('Are these the same traits (y/n/N/q)\n')
     }
 
-    answers <- rep("", length(sset))
+    answer <- rep("", length(sset))
 
     for (i in 1:length(sset)) {  
-      printpair(i)  # print pair of characters
-      answer <- scan(n = 1, what = 'character')  # wait for user input
-      if (answer=='q') {
+      printpair(sset[i])  # print pair of characters
+      ans <- scan(n = 1, what = 'character')  # wait for user input
+      if (ans=='q') {
         stop('Function terminated by user')
       }
-      if (answer=='N') {
-        answers[i:length(answers)] <- answers[i-1]
+      if (ans=='N') {
+        answer[i:length(answer)] <- answer[i-1]
         break
       }
-      answers[i] <- answer
+      answer[i] <- ans
     }
     
     # Linear discrimant analysis
@@ -364,16 +341,13 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = FALSE,
     } else {
       lda1 <- lda(match~dist, data=df)
       pred <- predict(lda1, data.frame(dist=stringdists))
-      # matches with > 50% probability of being a match
-      sens <- 0.5
-      matchid <- which(pred$posterior[, 2] > sens)
-      # matchid <- as.numeric(names(pred$posterior[, 2][pred$posterior[, 2] > 0.5]))
+      sens <- 0.5  
+      matchid <- which(pred$posterior[, 2] > sens)  # matches with 'sens' (i.e. 50%) probability of being a match
       dups <- pairids[, matchid]
     }
     if (plot) {
       plot(predict(lda1, df)$posterior[,2]~df[,2], type='b', col=df[,1]+1, pch=16, xlab="String distance", ylab="P(duplicate)")
       legend("topright", pch=16, col=c("black", "red"), legend=c("not dup", "dup"), bty="n")
-      # predict(lda1, df)$posterior[,2]>0.5
       abline(h=0.5, lty=2)
       title("LDA training results")  
       }
@@ -392,21 +366,18 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = FALSE,
     stringdists.output <- NA
   }
 
-  }  # END OF `if (is.null(map)) {`
-    
-    # answer <- character(length = length(sset))
+  if (train & length(matchid)!=0)
+    stringdists.output <- stringdists[matchid]
+  } 
 
-    # loop over pairs, wait for user input confirming redundant traits
-    # sset = integers corresponding to row of pairids as possible matches
-    # sset.dist = string distances
+  # resultant NEXUS file for outputting later
+  res <- x
 
   ################################################################################
   # Do the dropping and merging characters:
   ################################################################################
 
   # [x] need to have this output what characters are duplicated, retained, etc.
-
-  res <- x
 
   drops2 <- rep(TRUE, ncol(res$data))
 
@@ -505,3 +476,11 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = FALSE,
   res
 
 }
+
+
+
+# testing
+# 
+# xx <- duplicated.nex(twig1[,1:100], train=TRUE, cutoff=0.55, method='jw', n = 10)
+# duptree(xx)
+
