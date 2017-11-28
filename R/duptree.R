@@ -1,9 +1,10 @@
-# function to make duplicate network tree
-# x = a `nex` object with duplicated identified using `duplicated.nex`
-# fac = edge scaling factor
-# plot = whether to make a plot of the network
-# x <- twig12.d
+#' function to make duplicate network tree
+#' x = a `nex` object with duplicated identified using `duplicated.nex`
+#' @param fac edge scaling factor
+#' @param plot whether to make a plot of the network
+#' x <- twig12.d
 duptree <- function(x, fac=10, plot=FALSE, ...) {
+	oldpar <- par(no.readonly=TRUE)
 	library(igraph)
 	# x <- twig1.dup
 	if (!"dups" %in% names(x)) {
@@ -18,6 +19,7 @@ duptree <- function(x, fac=10, plot=FALSE, ...) {
 	if (plot) {
 		par(mar=c(0,0,0,0))
 		plot(g, edge.width=E(g)$weight, ...)
+		par(oldpar)
 	}
 	g
 }

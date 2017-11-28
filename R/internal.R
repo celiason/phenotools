@@ -6,6 +6,21 @@ print.nex <- function(x) {
   cat('NEXUS data file with', nchar, 'morphological characters and', ntax, 'taxa\n')
 }
 
+
+# TODO printneat() function for character pairs
+# x = nexus object
+# y = list of characters (numeric)
+printneat <- function(x, y) {
+  charnames <- x$charlabels[y]
+  statenames <- x$statelabels[y]
+  charnames <- str_replace_all(charnames, "Note\\:.*?$", "")
+  charnames <- str_replace_all(charnames, "\\[.*?\\]", "")
+  statenames <- str_replace_all(statenames, "\\[.*?\\]", "")
+  statenames <- str_replace_all(statenames, "Note\\:.*?$", "")
+  paste0(charnames, statenames)
+}
+
+
 # sort nexus file by something
 
 sort.nex <- function(x, by = c('taxlabels', 'charlabels'), ...) {

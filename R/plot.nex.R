@@ -1,17 +1,20 @@
-# plot data matrix and phylogeny
-# plot a nexus file
-# bw = whether to plot in black (scoring present) and white (no scoring)
-# compute changes along different branches, set as branch thickness
-# create a shiny app for exploring phenomic data?
-# colour = any factor present in the nexus file (statelabels, file, charpartition, charset, etc.)
-#
-# x <- allnex.genome
-# phy <- tree
+#' plot data matrix and phylogeny
+#' plot a nexus file
+#' @param bw whether to plot in black (scoring present) and white (no scoring)
+#' @param colour any factor present in the nexus file (statelabels, file, charpartition, charset, etc.)
+#'
+#' x <- allnex.genome
+#' phy <- tree
+
+# TODO compute changes along different branches, set as branch thickness
+# TODO create a shiny app for exploring phenomic data?
+
 plot.nex <- function(x, phy = NULL, legend.pos = 'none', bw = FALSE, na.value = 'lightgray', fsize = 8, fill = c('statelabels', 'charpartition', 'charset', 'file')) {
 
-	library(grid)
-	library(ape)
-	library(gridExtra)
+	require(grid)
+	require(ape)
+	require(gridExtra)
+	require(RColorBrewer)
 
   	source('/Users/chadeliason/R/ggplotphylo.R')
 

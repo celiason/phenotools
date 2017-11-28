@@ -27,6 +27,8 @@
 
 read.nex <- function(file, missing = '?', gap = '-') {
 
+	require(stringr)
+
   	x <- scan(file = file, what = "", sep = "\n")
 	
 	# find number of characters

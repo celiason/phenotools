@@ -1,5 +1,6 @@
 # convert string of scorings to a matrix
 text2mat <- function(x) {
+	require(stringr)
 	if (any(str_detect(x, "[Mm]atrix"))) {
 		x <- x[!grepl("[Mm]atrix", x)]
 	}
