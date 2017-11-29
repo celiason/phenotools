@@ -9,7 +9,7 @@
 capture_comments <- function(file) {
 
 	# read text
-	txt <- readLines(commentfile)
+	txt <- readLines(file)
 	txt <- paste0(txt, collapse="\n")
 	txt <- str_trim(txt)
 

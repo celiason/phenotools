@@ -114,6 +114,7 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = FALSE,
       # plot(g, vertex.label=NA, vertex.size=1, edge.width=2*E(g)$weight, edge.color=rgb(1,0,0,0.1), mark.col=rgb(0,0,1,.3), mark.border="black")
       # ggplot(d[1:100,], aes(x=freq, y=reorder(word, freq))) + geom_point()
       # TODO need to output dups list based on some cutoff??
+      stringdists.output <- NA
     }
 
     # text similarity (a few methods)
@@ -141,7 +142,7 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = FALSE,
       # remove comments in square brackets:
       part3 <- str_replace_all(part3, "[\\s]*[\\[\\(].+[\\]\\)][\\s]*", "")
       # remove comments in after 'Note:'
-      part3 <- str_replace_all(twig1$charlab[91], "Note\\:.*?$", "")
+      part3 <- str_replace_all(part3, "Note\\:.*?$", "")
       # remove reference to figures
       part1 <- str_replace(part1, "\\([Ff]ig(\\.|ure).*\\)", "")
       part2 <- str_replace(part2, "\\([Ff]ig(\\.|ure).*\\)", "")
@@ -351,6 +352,9 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = FALSE,
       abline(h=0.5, lty=2)
       title("LDA training results")  
       }
+    if (train & length(matchid)!=0)
+      stringdists.output <- stringdists[matchid]
+    }
     }
 
   if (!train & method!="terms") {
@@ -362,13 +366,10 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = FALSE,
       stringdists.output <- stringdists[sset]
   }
 
-  if (method=="terms" | length(matchid)==0) {
-    stringdists.output <- NA
-  }
+  # if (method=="terms" | length(matchid)==0) {
+  #   stringdists.output <- NA
+  # }
 
-  if (train & length(matchid)!=0)
-    stringdists.output <- stringdists[matchid]
-  } 
 
   # resultant NEXUS file for outputting later
   res <- x
