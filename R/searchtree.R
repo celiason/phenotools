@@ -3,7 +3,7 @@
 #' @param pattern text to search for (regular expression)
 #' @param plot whether to plot (logical)
 #' @param mode whether to search for all edges to current node ("in") or away from ("out")
-searchtree <- function(graph, pattern, plot=TRUE, mode="out"...) {
+searchtree <- function(graph, pattern, plot=TRUE, mode="out", ...) {
 	id <- grep(pattern, V(graph)$name)
 	subcomps <- lapply(id, subcomponent, graph=graph, mode=mode)
 	id <- unique(unlist(subcomps))
