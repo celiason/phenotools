@@ -1,4 +1,4 @@
-#' Find duplicate traits in nexus files
+#' Find duplicate or overlapping characters in nexus files
 #' Function uses fuzzy text matching to output a list of potentially redundant
 #' characters in a `nex` object, waits for user input to confirm, and then
 #' handles merging of characters and outputs a new `nex` object
@@ -22,11 +22,22 @@
 #' duplicated(x, method = 'user', map=list(c(2,3)))
 #' @author Chad Eliason \email{chad_eliason@@utexas.edu}
 #'
-#' TODO list
-#' [x] should have this output the string distances as well in the dup data frame
-#' [x] exclude positional terms during matching
-#' [x] maybe use a different string distance metric (e.g., 'vomer' AND 'vomer extending laterally' give dist = 0)
-#'
+#' DONE output the string distances as well in the dup data frame
+#' DONE exclude positional terms during matching
+#' DONE maybe use a different string distance metric (e.g., 'vomer' AND 'vomer extending laterally' give dist = 0)
+
+
+# TODO write a lda.nex() function? separate the dup finding and dropping? maybe filter.nex()?
+
+# testing
+
+# x <- twig1
+# train=FALSE
+# cutoff=0.35
+# method="terms"
+# drop=FALSE
+# commasep=TRUE
+
 duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = FALSE,
   cutoff = 0.35, method = c("jw", "cosine", "terms"), within_dataset = FALSE, plot = FALSE,
   drop = FALSE, commasep = FALSE, weighted = FALSE, parts = FALSE, ...) {
@@ -73,29 +84,26 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = FALSE,
       tocut <- c("with", "than", "then", "those", "with", "to", "the", "and", "an", "a", "or", "of", "for", "not", "along", "length", "less", "below", "above", "around", "longer", "shorter", "sits", "absent", "present", "form", "process", "state", "view", "margin", "shape", "placed", "recess", "(UN)?ORDERED", "(un)?ordered", "lateral", "distal", "ventral", "posterior", "anterior", "medial", "dors", "external")
       termlist <- paste(oldcharnames, oldstatenames)
       termlist <- Corpus(VectorSource(termlist))
-      # Convert the text to lower case
-      termlist <- tm_map(termlist, content_transformer(tolower))
-      # Remove numbers
-      termlist <- tm_map(termlist, removeNumbers)
-      # Remove english common stopwords
-      termlist <- tm_map(termlist, removeWords, stopwords("english"))
-      # Remove your own stop word
-      # specify your stopwords as a character vector
-      termlist <- tm_map(termlist, removeWords, tocut)
-      # Remove punctuations
-      termlist <- tm_map(termlist, removePunctuation)
-      # Eliminate extra white spaces
-      termlist <- tm_map(termlist, stripWhitespace)
-      # Latinized tokens
-      termlist <- tm_map(termlist, schinke)
+      termlist <- tm_map(termlist, content_transformer(tolower))  # Convert the text to lower case
+      termlist <- tm_map(termlist, removeNumbers)  # Remove numbers
+      termlist <- tm_map(termlist, removeWords, stopwords("english"))  # Remove english common stopwords
+      termlist <- tm_map(termlist, removeWords, tocut)  # specify stopwords
+      termlist <- tm_map(termlist, removePunctuation)  # Remove punctuations
+      termlist <- tm_map(termlist, stripWhitespace)  # Eliminate extra white spaces
+      termlist <- tm_map(termlist, schinke)  # Latinized tokens
       # weighting or not (weighting options= 'weightTf', 'weightTfIdf', 'weightBin', 'weightSMART'
-      dtm <- TermDocumentMatrix(termlist, control = list(wordLengths = c(2, Inf), weighting = function(x) weightTfIdf(x, normalize = TRUE), stemming=TRUE))
+      if (weighted) {
+        dtm <- TermDocumentMatrix(termlist, control = list(wordLengths = c(2, Inf), weighting = function(x) weightTfIdf(x, normalize = TRUE), stemming=TRUE))  
+      } else {
+        dtm <- TermDocumentMatrix(termlist, control = list(wordLengths = c(2, Inf), stemming=TRUE))
+      }
       # dtm <- TermDocumentMatrix(termlist, control = list(wordLengths = c(2, Inf)))
       # dtm <- TermDocumentMatrix(termlist, control = list(wordLengths = c(3, Inf), weighting = 'weightTfIdf'))
       # make document matrix, sort by term frequency
       m <- as.matrix(dtm)
-      v <- sort(rowSums(m),decreasing=TRUE)
-      d <- data.frame(word = names(v), freq = v)
+      # TODO check we don't need this?
+      # v <- sort(rowSums(m), decreasing=TRUE)
+      # d <- data.frame(word = names(v), freq = v)
       g <- graph_from_incidence_matrix(m, weighted = TRUE)
       # TODO add option to specify different clustering algorithms
       # cl <- cluster_walktrap(g, weights = E(g)$weight)
@@ -477,11 +485,3 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = FALSE,
   res
 
 }
-
-
-
-# testing
-# 
-# xx <- duplicated.nex(twig1[,1:100], train=TRUE, cutoff=0.55, method='jw', n = 10)
-# duptree(xx)
-

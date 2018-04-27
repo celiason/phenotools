@@ -14,6 +14,9 @@
 #'
 #' @author Chad Eliason \email{chad_eliason@@utexas.edu}
 #'
+
+# x <- list(twig1, twig2)
+
 merge.nex <- function(x, taxa=NULL) {
   mat <- lapply(x, '[[', 'data')
   alltaxlabels <- unique(unlist(lapply(x, '[[', 'taxlabels')))
