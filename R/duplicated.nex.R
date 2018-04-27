@@ -40,7 +40,7 @@
 
 duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = FALSE,
   cutoff = 0.35, method = c("jw", "cosine", "terms"), within_dataset = FALSE, plot = FALSE,
-  drop = FALSE, commasep = FALSE, weighted = FALSE, parts = FALSE, ...) {
+  drop = FALSE, commasep = FALSE, weighted = FALSE, parts = FALSE, K=1, ...) {
 
   require(stringdist)
   require(tm)
@@ -78,7 +78,6 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = FALSE,
     # remove comments in after 'Note:'
     oldcharnames <- str_replace_all(oldcharnames, regex("Note\\:.*?$", ignore_case=TRUE), "")
     oldstatenames <- str_replace_all(oldstatenames, regex("Note\\:.*?$", ignore_case=TRUE), "")
-    # part3 <- str_replace_all(twig1$charlab[91], "Note\\:.*?$", "")
 
     if (method=="terms") {
       tocut <- c("with", "than", "then", "those", "with", "to", "the", "and", "an", "a", "or", "of", "for", "not", "along", "length", "less", "below", "above", "around", "longer", "shorter", "sits", "absent", "present", "form", "process", "state", "view", "margin", "shape", "placed", "recess", "(UN)?ORDERED", "(un)?ordered", "lateral", "distal", "ventral", "posterior", "anterior", "medial", "dors", "external")
@@ -97,18 +96,11 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = FALSE,
       } else {
         dtm <- TermDocumentMatrix(termlist, control = list(wordLengths = c(2, Inf), stemming=TRUE))
       }
-      # dtm <- TermDocumentMatrix(termlist, control = list(wordLengths = c(2, Inf)))
-      # dtm <- TermDocumentMatrix(termlist, control = list(wordLengths = c(3, Inf), weighting = 'weightTfIdf'))
       # make document matrix, sort by term frequency
       m <- as.matrix(dtm)
-      # TODO check we don't need this?
-      # v <- sort(rowSums(m), decreasing=TRUE)
-      # d <- data.frame(word = names(v), freq = v)
       g <- graph_from_incidence_matrix(m, weighted = TRUE)
       # TODO add option to specify different clustering algorithms
-      # cl <- cluster_walktrap(g, weights = E(g)$weight)
       cl <- cluster_fast_greedy(g, weights = E(g)$weight)
-      # cl <- cluster_edge_betweenness(g, weights = E(g)$weight)
       # get clusters
       grps <- communities(cl)
       # make all possible combinations within groups/clusters
@@ -117,10 +109,6 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = FALSE,
       dups <- dups[keep]
       grps <- grps[keep]
       dups <- do.call(cbind, sapply(dups, combn, m=2))
-      # plot (for fun)
-      # par(mar=c(0,0,0,0))
-      # plot(g, vertex.label=NA, vertex.size=1, edge.width=2*E(g)$weight, edge.color=rgb(1,0,0,0.1), mark.col=rgb(0,0,1,.3), mark.border="black")
-      # ggplot(d[1:100,], aes(x=freq, y=reorder(word, freq))) + geom_point()
       # TODO need to output dups list based on some cutoff??
       stringdists.output <- NA
     }
@@ -133,7 +121,6 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = FALSE,
       oldcharnames <- removeWords(oldcharnames, stopwords("en"))
       oldstatenames <- removeWords(oldstatenames, stopwords("en"))
       # comma separated?
-      # commasep <- FALSE
       if (commasep) {
         matches <- str_match(oldcharnames, "^((.*?),)?(.*)")
         part1 <- matches[, 3]
@@ -168,7 +155,7 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = FALSE,
       part3 <- gsub("[[:digit:]]", " ", part3)
       part3 <- gsub(tocut, "", part3, ignore.case=TRUE)
       # Removing non-informative terms
-      # [ ] fix it so this will remove things like "posteroventral"
+      # TODO fix it so this will remove things like "posteroventral"
       tocut <- c("along", "less", "below", "above", "around", "longer", "shorter", "sits", "absent", "present", "form", "process", "state", "view", "margin", "shape", "placed", "recess", "(UN)?ORDERED", "(un)?ordered")
       tocut <- paste0("\\b", tocut, "\\b", collapse="|")
       part1 <- gsub(tocut, "", part1, ignore.case=TRUE)
@@ -289,12 +276,6 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = FALSE,
   ################################################################################
   # Training to identify duplicates
   ################################################################################
-
-  # dups doesn't exist yet
-  # if (dim(dups)[2]==0) {
-  #   stop("No matches found")
-  # }
-
   if (train) {
     sscut <- stringdists[stringdists < cutoff]
     if (length(sscut)==0) {
@@ -374,19 +355,12 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = FALSE,
       stringdists.output <- stringdists[sset]
   }
 
-  # if (method=="terms" | length(matchid)==0) {
-  #   stringdists.output <- NA
-  # }
-
-
   # resultant NEXUS file for outputting later
   res <- x
 
   ################################################################################
   # Do the dropping and merging characters:
   ################################################################################
-
-  # [x] need to have this output what characters are duplicated, retained, etc.
 
   drops2 <- rep(TRUE, ncol(res$data))
 
