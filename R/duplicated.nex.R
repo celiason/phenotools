@@ -22,21 +22,15 @@
 #' duplicated(x, method = 'user', map=list(c(2,3)))
 #' @author Chad Eliason \email{chad_eliason@@utexas.edu}
 #'
-#' DONE output the string distances as well in the dup data frame
-#' DONE exclude positional terms during matching
-#' DONE maybe use a different string distance metric (e.g., 'vomer' AND 'vomer extending laterally' give dist = 0)
-
-
 # TODO write a lda.nex() function? separate the dup finding and dropping? maybe filter.nex()?
-
 # testing
-
-# x <- twig1
+# x <- twig
 # train=FALSE
 # cutoff=0.35
 # method="terms"
 # drop=FALSE
 # commasep=TRUE
+# K=25
 
 duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = FALSE,
   cutoff = 0.35, method = c("jw", "cosine", "terms"), within_dataset = FALSE, plot = FALSE,
@@ -78,31 +72,52 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = FALSE,
     # remove comments in after 'Note:'
     oldcharnames <- str_replace_all(oldcharnames, regex("Note\\:.*?$", ignore_case=TRUE), "")
     oldstatenames <- str_replace_all(oldstatenames, regex("Note\\:.*?$", ignore_case=TRUE), "")
-
     if (method=="terms") {
-      tocut <- c("with", "than", "then", "those", "with", "to", "the", "and", "an", "a", "or", "of", "for", "not", "along", "length", "less", "below", "above", "around", "longer", "shorter", "sits", "absent", "present", "form", "process", "state", "view", "margin", "shape", "placed", "recess", "(UN)?ORDERED", "(un)?ordered", "lateral", "distal", "ventral", "posterior", "anterior", "medial", "dors", "external")
-      termlist <- paste(oldcharnames, oldstatenames)
-      termlist <- Corpus(VectorSource(termlist))
-      termlist <- tm_map(termlist, content_transformer(tolower))  # Convert the text to lower case
-      termlist <- tm_map(termlist, removeNumbers)  # Remove numbers
-      termlist <- tm_map(termlist, removeWords, stopwords("english"))  # Remove english common stopwords
-      termlist <- tm_map(termlist, removeWords, tocut)  # specify stopwords
-      termlist <- tm_map(termlist, removePunctuation)  # Remove punctuations
-      termlist <- tm_map(termlist, stripWhitespace)  # Eliminate extra white spaces
-      termlist <- tm_map(termlist, schinke)  # Latinized tokens
+      termlist <- cleanchars(paste(oldcharnames, oldstatenames))
+      # 2 options here- igraph/network modularity, or Ward clustering
       # weighting or not (weighting options= 'weightTf', 'weightTfIdf', 'weightBin', 'weightSMART'
       if (weighted) {
-        dtm <- TermDocumentMatrix(termlist, control = list(wordLengths = c(2, Inf), weighting = function(x) weightTfIdf(x, normalize = TRUE), stemming=TRUE))  
+        dtm <- TermDocumentMatrix(termlist, control = list(wordLengths = c(2, Inf), weighting = function(x) weightTfIdf(x, normalize = TRUE), stemming=FALSE))
       } else {
-        dtm <- TermDocumentMatrix(termlist, control = list(wordLengths = c(2, Inf), stemming=TRUE))
+        dtm <- TermDocumentMatrix(termlist, control = list(wordLengths = c(2, Inf), stemming=FALSE))
       }
       # make document matrix, sort by term frequency
       m <- as.matrix(dtm)
-      g <- graph_from_incidence_matrix(m, weighted = TRUE)
-      # TODO add option to specify different clustering algorithms
-      cl <- cluster_fast_greedy(g, weights = E(g)$weight)
-      # get clusters
-      grps <- communities(cl)
+      if (K==1) {
+        g <- graph_from_incidence_matrix(m, weighted = TRUE)
+        # TODO add option to specify different clustering algorithms
+        # cl <- cluster_fast_greedy(g, weights = E(g)$weight)
+
+# TODO work on this weighted bipartite network algorithm
+# i think it will take ~1h though (yuck)
+# maybe there's a faster unweighted version?        
+# source("~/github/nexustools/temp/bipartite/LPA_wb_plus.R")
+# source("~/github/nexustools/temp/bipartite/MODULARPLOT.R") #read in plotting function
+# MAT = matrix(sample(0:3,500*500,replace=TRUE),500,500) # create an example matrix
+# system.time(MOD1 <- LPA_wb_plus(MAT)) # find labels and weighted modularity using LPAwb+
+# MOD2 = DIRT_LPA_wb_plus(MAT) # find labels and weighted modularity using DIRTLPAwb+
+# MOD3 = DIRT_LPA_wb_plus(MAT>0, 2, 20) # find labels and binary modularity using DIRTLPAwb+ checking from a minimum of 2 modules and 20 replicates
+# MODULARPLOT(MAT,MOD1) # show the modular network configuration found in MOD1. Row and column numbering indicates the ordering of rows and columns in MAT. Modules are highlighted in red rectangles.
+# system.time(mod1 <- LPA_wb_plus(m))
+        cl <- cluster_walktrap(g, weights=E(g)$weight)
+        # cl <- cluster_label_prop(g, weights=E(g)$weight)
+        grps <- communities(cl)  # get clusters
+        # TODO printout
+      }
+      # TODO work on this
+      if (K > 1) {
+        tf_mat <- TermDocFreq(t(m))
+        # TF-IDF and cosine similarity
+        tfidf <- t(t(m)[ , tf_mat$term ]) * tf_mat$idf
+        tfidf <- t(tfidf)
+        csim <- tfidf / sqrt(rowSums(tfidf * tfidf))
+        csim <- csim %*% t(csim)
+        cdist <- as.dist(1 - csim)
+        hc <- hclust(cdist, "ward.D")
+        clust <- cutree(hc, K)
+        clustering <- cutree(hc, K)
+        grps <- clust
+      }
       # make all possible combinations within groups/clusters
       dups <- sapply(sapply(grps, str_extract, "\\d+"), na.omit)
       keep <- sapply(dups, length) > 1
@@ -182,29 +197,17 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = FALSE,
     # Setup term weightings
     ################################################################################
 
-      # [x] weight words by usage in dataset (common words, not important; rare words, more important)
-      # [x] try weighting by commenness of word in the matrix
-
       weighting <- cbind(rep(1, length(part1)), rep(1, length(part2)), rep(1, length(part3)))
-
-      # DONE: weight first few words (if comma) more heavily
-      # e.g., Dorsal vertebrae, shape -- vs Caudal vertebrae, shape (shouldn't be identified as duplicates)
       id <- !is.na(part2)
       weighting[id, 2] <- 0.5
       weighting[is.na(part2), 2] <- 0
 
-      # DONE: if state labels are absent/present (i.e. non-informative), then remove from duplicate matching
-      # this is already being done above
-      # id <- grep("('present'\\s*'absent')|(present\\s*absent)|('absent'\\s*'present')|(absent\\s*present)", part3)  
-      # weighting[id, 3] <- 0
-
       # generate all possible pairs of character combinations
       pairids <- combn(seq_along(part1), m=2)
 
-      # only comparisons BETWEEN datasets/character types, not within:
-    
       file <- x$file
 
+      # only comparisons BETWEEN datasets/character types, not within:
       if (within_dataset) {  
         id <- file[pairids[1, ]] != file[pairids[2, ]]
         pairids <- pairids[, id]
@@ -218,8 +221,7 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = FALSE,
       }
 
       stringdists <- numeric(length = ncol(pairids))
-      
-      # create progress bar
+
       pb <- txtProgressBar(min = 0, max = ncol(pairids), style = 3)
 
     ################################################################################
@@ -243,7 +245,7 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = FALSE,
           sd2 <- (1/wt2) * stringdist(str12, str22, method=method, ...)
           sd3 <- (1/wt3) * ifelse(any(weighting[c(id1, id2), 3]==0), NA, stringdist(str13, str23, method=method, ...))
           stringdists[i] <- sum(sd1, sd2, sd3, na.rm=TRUE)
-          setTxtProgressBar(pb, i)  # update progress bar
+          setTxtProgressBar(pb, i)
         }
       } else {
         for (i in 1:ncol(pairids)) {  
@@ -262,15 +264,10 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = FALSE,
           setTxtProgressBar(pb, i)  # update progress bar
         }
       }
-
       close(pb)
-
       names(stringdists) <- 1:length(stringdists)
-
       sset.dist <- sort(stringdists)
-
       sset <- as.numeric(names(stringdists))
-
     }
 
   ################################################################################
