@@ -10,7 +10,7 @@
 #' @param within_dataset whether to limit search to only among-dataset characters (e.g., useful if you are certain the individual matrices do not contain duplicates)
 #' @param train whether to use training algorithm to predict duplicate matches
 #' @param plot whether to plot the XX vs XX curve
-#' @param weighted whether to use term weighting when searching for similar characters (more common downweighted)
+#' @param weighting vector for parts of character (before comma, after comma, states)
 #' @param parts whether to use weighting of locators/states or not (i.e. whole statement used in fuzzy matching)
 #' @return an object of class \code{nex} for use in further \code{nexustools} functions
 #' @examples \dontrun{
@@ -22,24 +22,27 @@
 #' duplicated(x, method = 'user', map=list(c(2,3)))
 #' @author Chad Eliason \email{chad_eliason@@utexas.edu}
 #'
-# TODO write a lda.nex() function? separate the dup finding and dropping? maybe filter.nex()?
-# testing
-# x <- twig
+#' TODO write a lda.nex() function? separate the dup finding and dropping? maybe filter.nex()?
+#' TODO add option to "nest" state labels in the network graph (so things like "size of distal end" wouldn't be matched across all characters, only those with state label as, say, "Humerus...")
+#' TODO be able to plot "subclusters" (looking at all connections among characters, keeping only terms in common between the two)
+#'
+
+# x=twig1
 # train=FALSE
-# cutoff=0.35
-# method="terms"
+# cutoff=0.15
+# method="jw"
 # drop=FALSE
 # commasep=TRUE
-# K=25
 
-duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = FALSE,
-  cutoff = 0.35, method = c("jw", "cosine", "terms"), within_dataset = FALSE, plot = FALSE,
-  drop = FALSE, commasep = FALSE, weighted = FALSE, parts = FALSE, K=1, ...) {
+duplicated.nex <- function(x, map = NULL, method = c("terms", "jw", "cosine"),
+  within_dataset = FALSE, commasep = FALSE, parts = FALSE, force = FALSE, n = 25,
+  train = FALSE, plot = FALSE,  cutoff = 0.35, drop = FALSE, weighting = c(1, 1, 1), K = 1, ...) {
 
   require(stringdist)
   require(tm)
   require(MASS)
   require(igraph)
+  require(textmineR)
 
   method <- match.arg(method)
 
@@ -50,62 +53,40 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = FALSE,
 
   if (!is.null(map)) {
     if (class(map)=="list") {
-      dups <- matrix(unlist(map), ncol = length(map))  
+      dups <- matrix(unlist(map), ncol = length(map))
     } else {
-    # pairids <- matrix(unlist(map), ncol=length(map))
     dups <- t(map)
     }
   }
 
   # IF no map, then do automated discovery of duplicate characters:
 
+  if (is.null(map)) {
+    
+    oldcharnames <- x$charlabels
+
+    oldstatenames <- x$statelabels
+
   ################################################################################
-  # Calculate text distances (method 1)
+  # Calculate text distances (method 1 - terms)
   ################################################################################
 
-  if (is.null(map)) {
-    oldcharnames <- x$charlabels
-    oldstatenames <- x$statelabels
-    # remove comments in square brackets:
-    oldcharnames <- str_replace_all(oldcharnames, "[\\s]*[\\[\\(].+[\\]\\)][\\s]*", "")
-    oldstatenames <- str_replace_all(oldstatenames, "[\\s]*[\\[\\(].+[\\]\\)][\\s]*", "")
-    # remove comments in after 'Note:'
-    oldcharnames <- str_replace_all(oldcharnames, regex("Note\\:.*?$", ignore_case=TRUE), "")
-    oldstatenames <- str_replace_all(oldstatenames, regex("Note\\:.*?$", ignore_case=TRUE), "")
     if (method=="terms") {
-      termlist <- cleanchars(paste(oldcharnames, oldstatenames))
+      termlist <- cleantext(paste(oldcharnames, oldstatenames))
       # 2 options here- igraph/network modularity, or Ward clustering
       # weighting or not (weighting options= 'weightTf', 'weightTfIdf', 'weightBin', 'weightSMART'
-      if (weighted) {
-        dtm <- TermDocumentMatrix(termlist, control = list(wordLengths = c(2, Inf), weighting = function(x) weightTfIdf(x, normalize = TRUE), stemming=FALSE))
-      } else {
-        dtm <- TermDocumentMatrix(termlist, control = list(wordLengths = c(2, Inf), stemming=FALSE))
-      }
       # make document matrix, sort by term frequency
-      m <- as.matrix(dtm)
-      if (K==1) {
-        g <- graph_from_incidence_matrix(m, weighted = TRUE)
-        # TODO add option to specify different clustering algorithms
-        # cl <- cluster_fast_greedy(g, weights = E(g)$weight)
-
-# TODO work on this weighted bipartite network algorithm
-# i think it will take ~1h though (yuck)
-# maybe there's a faster unweighted version?        
-# source("~/github/nexustools/temp/bipartite/LPA_wb_plus.R")
-# source("~/github/nexustools/temp/bipartite/MODULARPLOT.R") #read in plotting function
-# MAT = matrix(sample(0:3,500*500,replace=TRUE),500,500) # create an example matrix
-# system.time(MOD1 <- LPA_wb_plus(MAT)) # find labels and weighted modularity using LPAwb+
-# MOD2 = DIRT_LPA_wb_plus(MAT) # find labels and weighted modularity using DIRTLPAwb+
-# MOD3 = DIRT_LPA_wb_plus(MAT>0, 2, 20) # find labels and binary modularity using DIRTLPAwb+ checking from a minimum of 2 modules and 20 replicates
-# MODULARPLOT(MAT,MOD1) # show the modular network configuration found in MOD1. Row and column numbering indicates the ordering of rows and columns in MAT. Modules are highlighted in red rectangles.
-# system.time(mod1 <- LPA_wb_plus(m))
+      if (K == 1) {
+        dtm <- TermDocumentMatrix(termlist, control = list(wordLengths = c(2, Inf), weighting = function(x) weightTfIdf(x, normalize = TRUE), stemming=FALSE))
+        m <- as.matrix(dtm)
+        g <- graph_from_incidence_matrix(m, weighted=TRUE)
+        # TODO add option to specify different clustering algorithms (cluster_fast_greedy, cluster_label_prop, etc.)
         cl <- cluster_walktrap(g, weights=E(g)$weight)
-        # cl <- cluster_label_prop(g, weights=E(g)$weight)
         grps <- communities(cl)  # get clusters
-        # TODO printout
       }
-      # TODO work on this
       if (K > 1) {
+        dtm <- TermDocumentMatrix(termlist, control = list(wordLengths = c(2, Inf), stemming=FALSE))
+        m <- as.matrix(dtm)
         tf_mat <- TermDocFreq(t(m))
         # TF-IDF and cosine similarity
         tfidf <- t(t(m)[ , tf_mat$term ]) * tf_mat$idf
@@ -115,27 +96,28 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = FALSE,
         cdist <- as.dist(1 - csim)
         hc <- hclust(cdist, "ward.D")
         clust <- cutree(hc, K)
-        clustering <- cutree(hc, K)
-        grps <- clust
+        grps <- split(names(clust), clust)
       }
       # make all possible combinations within groups/clusters
-      dups <- sapply(sapply(grps, str_extract, "\\d+"), na.omit)
+      dups <- lapply(lapply(grps, str_extract, "\\d+"), na.omit)
+      dups <- lapply(dups, as.numeric)
       keep <- sapply(dups, length) > 1
       dups <- dups[keep]
       grps <- grps[keep]
-      dups <- do.call(cbind, sapply(dups, combn, m=2))
+      dups <- t(do.call(cbind, lapply(dups, combn, m=2)))
       # TODO need to output dups list based on some cutoff??
       stringdists.output <- NA
     }
+    # text similarity using a few different methods (whole character statement, broken up character statement -locator, variable, states)
 
-    # text similarity (a few methods)
-    # whole character statement
-    # broken up character statement (locator, variable, states)
+    # TODO lapply this stuff, e.g.-  list(part1, part2, part3)
+
+  ################################################################################
+  # Calculate text distances (method 2 - fuzzy string distance)
+  ################################################################################
+
     if (method %in% c("jw", "cosine")) {
-      # remove stop words
-      oldcharnames <- removeWords(oldcharnames, stopwords("en"))
-      oldstatenames <- removeWords(oldstatenames, stopwords("en"))
-      # comma separated?
+      
       if (commasep) {
         matches <- str_match(oldcharnames, "^((.*?),)?(.*)")
         part1 <- matches[, 3]
@@ -149,154 +131,117 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = FALSE,
         part2 <- NA
         part3 <- oldstatenames
       }
-      # remove comments in square brackets:
-      part3 <- str_replace_all(part3, "[\\s]*[\\[\\(].+[\\]\\)][\\s]*", "")
-      # remove comments in after 'Note:'
-      part3 <- str_replace_all(part3, "Note\\:.*?$", "")
-      # remove reference to figures
-      part1 <- str_replace(part1, "\\([Ff]ig(\\.|ure).*\\)", "")
-      part2 <- str_replace(part2, "\\([Ff]ig(\\.|ure).*\\)", "")
-      part3 <- str_replace(part3, "\\([Ff]ig(\\.|ure).*\\)", "")
-      # remove short words
-      tocut <- c("with", "than", "then", "those", "with", "to", "the", "and", "an", "a", "or", "of", "for", "not")
-      tocut <- paste0("\\b", tocut, "\\b", collapse="|")
-      part1 <- gsub("[[:punct:]]", " ", part1)
-      part1 <- gsub("[[:digit:]]", " ", part1)
-      part1 <- gsub(tocut, "", part1, ignore.case=TRUE)
-      part2 <- gsub("[[:punct:]]", " ", part2)
-      part2 <- gsub("[[:digit:]]", " ", part2)
-      part2 <- gsub(tocut, "", part2, ignore.case=TRUE)
-      part3 <- gsub("[[:punct:]]", " ", part3)
-      part3 <- gsub("[[:digit:]]", " ", part3)
-      part3 <- gsub(tocut, "", part3, ignore.case=TRUE)
-      # Removing non-informative terms
-      # TODO fix it so this will remove things like "posteroventral"
-      tocut <- c("along", "less", "below", "above", "around", "longer", "shorter", "sits", "absent", "present", "form", "process", "state", "view", "margin", "shape", "placed", "recess", "(UN)?ORDERED", "(un)?ordered")
-      tocut <- paste0("\\b", tocut, "\\b", collapse="|")
-      part1 <- gsub(tocut, "", part1, ignore.case=TRUE)
-      part2 <- gsub(tocut, "", part2, ignore.case=TRUE)
-      part3 <- gsub(tocut, "", part3, ignore.case=TRUE)
-      # Removing positional terms
-      tocut <- c("lateral", "distal", "ventral", "posterior", "anterior", "medial", "dors", "external")
-      tocut <- paste0("\\b", tocut, "(\\w*)?", collapse="|")
-      part1 <- gsub(tocut, "", part1, ignore.case=TRUE)
-      part2 <- gsub(tocut, "", part2, ignore.case=TRUE)
-      part3 <- gsub(tocut, "", part3, ignore.case=TRUE)
+      
       # Clean up character names
-      part1 <- cleantext(part1)
-      part2 <- cleantext(part2)
-      part3 <- cleantext(part3)
-      part1[part1 == ""] <- NA
-      part2[part2 == ""] <- NA
-      part3[part3 == ""] <- NA
-      part1 <- sapply(part1, unique)
-      part2 <- sapply(part2, unique)
-      part3 <- sapply(part3, unique)
+      part1 <- sapply(cleantext(part1), as.character)
+      part2 <- sapply(cleantext(part2), as.character)
+      part3 <- sapply(cleantext(part3), as.character)
 
-    ################################################################################
-    # Setup term weightings
-    ################################################################################
 
-      weighting <- cbind(rep(1, length(part1)), rep(1, length(part2)), rep(1, length(part3)))
-      id <- !is.na(part2)
-      weighting[id, 2] <- 0.5
-      weighting[is.na(part2), 2] <- 0
-
-      # generate all possible pairs of character combinations
-      pairids <- combn(seq_along(part1), m=2)
+################################################################################
+# Setup term weightings
+################################################################################
 
       file <- x$file
 
       # only comparisons BETWEEN datasets/character types, not within:
       if (within_dataset) {  
-        id <- file[pairids[1, ]] != file[pairids[2, ]]
-        pairids <- pairids[, id]
+        ids <- 1:ncol(x$data)
+        splits <- split(ids, file)
       }
 
       # only look within character partitions
       if (!is.null(x$charpartition) & length(unique(x$charpartition)) > 1) {
         charpart <- x$charpartition
-        id <- charpart[pairids[1, ]] == charpart[pairids[2, ]]
-        pairids <- pairids[, id]
+        # id <- charpart[pairids[1, ]] == charpart[pairids[2, ]]
+        # pairids <- pairids[, id]
+        split(ids, charpart)
       }
 
-      stringdists <- numeric(length = ncol(pairids))
+      sdist <- lapply(seq_along(splits), function(z) {
+        nms <- splits[[z]]
+        sd1 <- as.matrix(stringdistmatrix(part1[splits[[z]]], method=method))
+        sd2 <- as.matrix(stringdistmatrix(part2[splits[[z]]], method=method))
+        sd3 <- as.matrix(stringdistmatrix(part3[splits[[z]]], method=method))
+        dimnames(sd1) <- dimnames(sd2) <- dimnames(sd3) <- list(nms, nms)
+        list(sd1, sd2, sd3)
+      })
 
-      pb <- txtProgressBar(min = 0, max = ncol(pairids), style = 3)
+# weighting <- c(1,1,1)
 
-    ################################################################################
-    # Calculate text distances (takes ~200 seconds for 2.2M comparisons):
-    ################################################################################
-    
-      if (parts) {
-        for (i in 1:ncol(pairids)) {
-          id1 <- pairids[1, i]
-          id2 <- pairids[2, i]
-          str11 <- part1[id1]
-          str12 <- part2[id1]
-          str13 <- part3[id1]
-          str21 <- part1[id2]
-          str22 <- part2[id2]
-          str23 <- part3[id2]
-          wt1 <- sum(weighting[c(id1, id2), 1])
-          wt2 <- sum(weighting[c(id1, id2), 2])
-          wt3 <- sum(weighting[c(id1, id2), 3])
-          sd1 <- (1/wt1) * stringdist(str11, str21, method=method, ...)
-          sd2 <- (1/wt2) * stringdist(str12, str22, method=method, ...)
-          sd3 <- (1/wt3) * ifelse(any(weighting[c(id1, id2), 3]==0), NA, stringdist(str13, str23, method=method, ...))
-          stringdists[i] <- sum(sd1, sd2, sd3, na.rm=TRUE)
-          setTxtProgressBar(pb, i)
-        }
-      } else {
-        for (i in 1:ncol(pairids)) {  
-          id1 <- pairids[1, i]
-          id2 <- pairids[2, i]
-          newcharnames <- paste(na.omit(part1, part2))
-          newstatenames <- paste(na.omit(part3))
-          str1a <- newcharnames[pairids[1,i]]
-          str1b <- newstatenames[pairids[1,i]]
-          str2a <- newcharnames[pairids[2,i]]
-          str2b <- newstatenames[pairids[2,i]]
-          stringdist1 <- stringdist(str1a, str2a, method = method)
-          stringdist2 <- stringdist(str1b, str2b, method = method)
-          # stringdists[i] <- stringdist1 + stringdist2
-          stringdists[i] <- sum(stringdist1, stringdist2, na.rm=TRUE)
-          setTxtProgressBar(pb, i)  # update progress bar
-        }
-      }
-      close(pb)
+      # calculate final distances
+      sdist_final <- lapply(seq_along(sdist), function(z) {
+        # z=1
+        d1 <- weighting[1] * sdist[[z]][[1]]
+        d2 <- weighting[2] * sdist[[z]][[2]]
+        d3 <- weighting[3] * sdist[[z]][[3]]
+        res <- (d1+d2+d3)/3
+        diag(res) <- NA
+        res[upper.tri(res)] <- NA
+        res
+      })
+
+      dups <- lapply(seq_along(sdist_final), function(z) {
+        sset <- which(sdist_final[[z]] < cutoff, arr.ind=TRUE)
+        data.frame(char1 = rownames(sdist_final[[z]])[sset[, 1]],
+                   char2 = colnames(sdist_final[[z]])[sset[, 2]],
+                   stringdist = sdist_final[[z]][which(sdist_final[[z]] < cutoff)])
+      })
+
+      dups <- do.call(rbind, dups)
+      dups <- dups[order(dups$stringdist), ]
+      dups$char1 <- as.numeric(as.character(dups$char1))
+      dups$char2 <- as.numeric(as.character(dups$char2))
+
+      stringdists <- unlist(sapply(seq_along(sdist_final), function(z) as.numeric(as.dist(sdist_final[[z]]))))
+
       names(stringdists) <- 1:length(stringdists)
-      sset.dist <- sort(stringdists)
-      sset <- as.numeric(names(stringdists))
+      
+      pairids <- t(combn(1:ncol(x$data), m=2))
+      pairids <- lapply(splits, combn, m=2)
+      pairids <- t(do.call(cbind, pairids))
+      pairids <- cbind(pairids, stringdist=stringdists)
+
+      sset.dist <- stringdists[stringdists < cutoff]
+
     }
 
   ################################################################################
   # Training to identify duplicates
   ################################################################################
   if (train) {
+    
+    # sscut <- setNames(dups$stringdist, 1:nrow(dups))
+    names(stringdists) <- seq_along(stringdists)
+
     sscut <- stringdists[stringdists < cutoff]
+
     if (length(sscut)==0) {
       stop("No matches found, try increasing cutoff")
     }
-    sscut <- sort(sscut)
+
     # sample evenly over range of string distances
-    # [x] employ a random sampling approach
+    # n <- 25
     ss <- sapply(seq(0, cutoff, length=n), function(z) {
       which.min(abs(sscut - z))
     })
+    
     if (length(ss) < n) {
       stop("Number of pairs to assess is less than specified, try increasing cutoff")
     }
+    
     ss <- unique(ss)
+    
     sstrain <- sscut[ss]
+    
     sset.dist <- sstrain
+
     sset <- as.numeric(names(sset.dist))
     
     # run loop to determine matches
-    
-    printpair <- function(sset) {
-      id1 <- pairids[1, sset]
-      id2 <- pairids[2, sset]
+    printpair <- function(i) {
+      id1 <- pairids[i, 1]
+      id2 <- pairids[i, 2]
       # print pairs of characters:
       cat('\n-------\nTrait pair', i, ' (string distance = ', sset.dist[as.character(sset)], ') \n\nCHARLABELS:\n\n',
         oldcharnames[id1], ' (', x$file[id1], ', character ', x$charnums[id1],')\n\n',
@@ -328,31 +273,37 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = FALSE,
     } else {
       lda1 <- lda(match~dist, data=df)
       pred <- predict(lda1, data.frame(dist=stringdists))
-      sens <- 0.5  
+      sens <- 0.25  
       matchid <- which(pred$posterior[, 2] > sens)  # matches with 'sens' (i.e. 50%) probability of being a match
-      dups <- pairids[, matchid]
+      dups <- pairids[matchid, ]
     }
     if (plot) {
-      plot(predict(lda1, df)$posterior[,2]~df[,2], type='b', col=df[,1]+1, pch=16, xlab="String distance", ylab="P(duplicate)")
-      legend("topright", pch=16, col=c("black", "red"), legend=c("not dup", "dup"), bty="n")
-      abline(h=0.5, lty=2)
+      plot(predict(lda1, df)$posterior[,2] ~ df[,2], type='b', col=df[,1]+1,
+        pch=16, xlab="String distance", ylab="P(duplicate)")
+      legend("topright", pch=16, col=c("black", "red"),
+        legend=c("not dup", "dup"), bty="n")
+      abline(h=sens, lty=2)
       title("LDA training results")  
       }
-    if (train & length(matchid)!=0)
+    
+    if (train & length(matchid)!=0) {
       stringdists.output <- stringdists[matchid]
     }
-    }
+    
+  }
 
   if (!train & method!="terms") {
       sset <- as.numeric(names(which(sset.dist < cutoff)))
       if (length(sset) == 0) {
         warning('No matches found')
       }
-      dups <- as.matrix(pairids[, sset])
+      dups <- as.matrix(pairids[sset, ])
       stringdists.output <- stringdists[sset]
   }
+}
 
   # resultant NEXUS file for outputting later
+
   res <- x
 
   ################################################################################
@@ -438,21 +389,28 @@ duplicated.nex <- function(x, map = NULL, force = FALSE, n = 25, train = FALSE,
   if (is.null(dups)) {
     dups <- matrix(NA, nrow=2, ncol=1)
   } else {
-    dups <- apply(dups, 2, as.numeric)  
+    dups <- apply(dups, 2, as.numeric)
   }
 
   if (sum(dups)==0) {
     res$dups <- NULL
   } else {
-      res$dups <- data.frame("char1" = dups[1, ], "charnum1" = x$charnum[dups[1, ]],
-                             "char2" = dups[2, ], "charnum2" = x$charnum[dups[2, ]],
+      res$dups <- data.frame("char1" = dups[, 1], "charnum1" = x$charnum[dups[, 1]],
+                             "char2" = dups[, 2], "charnum2" = x$charnum[dups[, 2]],
                              stringdist = stringdists.output)
+      res$dups <- res$dups[order(res$dups$stringdist), ]
     }
 
   if (method=="terms") {
     res$clusters <- grps
   }
 
+  if (method %in% c('jw', 'cosine')) {
+    g <- graph_from_edgelist(t(apply(dups[,1:2], 1, as.character)), directed=F)
+    grps <- communities(cluster_walktrap(g))
+    res$clusters <- grps
+  }
+  
   res
 
 }

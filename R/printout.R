@@ -1,6 +1,17 @@
-# x = nexus object with clusters found
-# maxsize = maximum size of cluster of characters
+#' Function to print an html summary of clusters of similar characters
+#' x = nexus object with clusters found
+#' maxsize = maximum size of cluster of characters
+#' Example:
+#' x <- twig
+#' twig2 <- twig
+#' twig2$charlabels <- str_extract(twig2$charlab, paste0(".*?(:|\\(\\d)"))
+#' twig$charlab[854]
+#' twig2$charlab[854]
+#' dups <- duplicated(twig2, weighted=TRUE)
+#' printout(dups, maxsize=10, file="~/Desktop/testtext.html")
 printout <- function(x, maxsize=NULL, file) {
+	require(RColorBrewer)
+	require(kableExtra)
 	dark2 <- brewer.pal(8, "Dark2")
 	clust <- x$cluster
 	if (!is.null(maxsize)) {
@@ -13,12 +24,10 @@ printout <- function(x, maxsize=NULL, file) {
 		hlite <- as.character(na.omit(str_extract(clust[[i]], "[^\\d]+")))
 		chars <- x$charlab[ids]
 		chars0 <- sapply(chars, strsplit, " ")
-		chars <- cleanchars(chars, fast=FALSE)
+		chars <- cleantext(chars, fast=FALSE)
 		if (!is.list(chars)) {
 			chars <- list(chars)
 		}
-		# chars <- strsplit(paste0(chars), split=" ")
-		# chars1 <- strsplit(paste0(chars1), split=" ")
 		nm <- rep(ids, times=sapply(chars, length))
 		names(chars) <- ids
 		if (length(hlite) > 8) {
@@ -38,14 +47,9 @@ printout <- function(x, maxsize=NULL, file) {
 		})
 		header <- text_spec(paste0("Cluster ", i), "html", bold=TRUE)
 		if (i==1) {
-			cat(header, text_formatted, file="~/Desktop/testtext.html", sep="<br/>", append=F)
+			cat(header, text_formatted, file=file, sep="<br/>", append=F)
 		} else {
 			cat("<br/><br/>", header, text_formatted, file=file, sep="<br/>", append=T)
 		}
 	}
 }
-
-# Example:
-# x <- twig
-# dups <- duplicated(twig, weighted=TRUE)
-# printout(dups, maxsize=10, file="~/Desktop/testtext.html")
