@@ -1,17 +1,14 @@
 #' Read a nexus data file
 #'
-#' a function that reads data stored in nexus files
+#' A function that reads data stored in nexus files
 #'
 #' @param file (required) path to nexus file
 #' @param missing character representing missing data
 #' @param gap character representing inapplicable/incomporable data
 #' @return an object of class \code{nex} for use in further \code{nexustools} functions
 #' @examples \dontrun{
-#'
 #' x <- read.nex(file='example/toy1.nex')
-#'
-#' @author Chad Eliason \email{chad_eliason@@utexas.edu}
-#'
+#' @author Chad Eliason \email{celiason@@fieldmuseum.org}
 #'
 read.nex <- function(file, missing = '?', gap = '-') {
 

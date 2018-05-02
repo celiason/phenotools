@@ -20,7 +20,7 @@
 #' duplicated.nex(x, method = 'automated', map = map)
 #' duplicated(x, cutoff = 0.01, method = 'auto')
 #' duplicated(x, method = 'user', map=list(c(2,3)))
-#' @author Chad Eliason \email{chad_eliason@@utexas.edu}
+#' @author Chad Eliason \email{celiason@@fieldmuseum.org}
 #'
 #' TODO write a lda.nex() function? separate the dup finding and dropping? maybe filter.nex()?
 #' TODO add option to "nest" state labels in the network graph (so things like "size of distal end" wouldn't be matched across all characters, only those with state label as, say, "Humerus...")

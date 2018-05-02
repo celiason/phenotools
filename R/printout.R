@@ -1,14 +1,14 @@
 #' Function to print an html summary of clusters of similar characters
-#' x = nexus object with clusters found
-#' maxsize = maximum size of cluster of characters
-#' Example:
+#' @param x = nexus object with clusters found
+#' @param maxsize = maximum size of cluster of characters
+#' @examples
 #' data(twig)
 #' dups <- duplicated(twig, weighted=TRUE)
 #' printout(dups, maxsize=10, file="~/Desktop/twig.html")
+#' 
 
 # TODO scale text by number of occurrences in cluster/weight
 # TODO add color option
-
 printout <- function(x, maxsize=NULL, file, statelabels=TRUE) {
 	require(RColorBrewer)
 	require(kableExtra)
