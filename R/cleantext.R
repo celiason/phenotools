@@ -4,7 +4,7 @@
 #' schinke = whether to use Latin token algorithm from Schinke 1996 (?)
 #' example:
 #' cleantext("dorsalmost part of the processus ligamentus cranii")
-cleantext <- function(x, comma=TRUE, fast=TRUE, latin=TRUE, cuts=TRUE) {
+cleantext <- function(x, comma=TRUE, fast=TRUE, latin=TRUE, cuts=TRUE, comments=TRUE) {
   removeSpaces <- function(x) {
     x <- gsub("\\s{2,}", " ", x)  # remove extra spaces
     x <- gsub("^\\s", "", x)  # take out beginning spaces
@@ -12,9 +12,11 @@ cleantext <- function(x, comma=TRUE, fast=TRUE, latin=TRUE, cuts=TRUE) {
     x
   }
   # remove comments in square brackets
-  x <- str_replace_all(x, "[\\s]*[\\[\\(].*?[\\]\\)][\\s]*", " ")
-  x <- str_replace_all(x, "Note\\:.*?$", " ")
-  x <- str_replace_all(x, "\\([Ff]ig(\\.|ure).*\\)", " ")
+  if (comments) {
+    x <- str_replace_all(x, "[\\s]*[\\[\\(].*?[\\]\\)][\\s]*", " ")
+    x <- str_replace_all(x, "Note\\:.*?$", " ")
+    x <- str_replace_all(x, "\\([Ff]ig(\\.|ure).*\\)", " ")
+  }
   # if (comma) {
   #   x <- gsub("\\,", "", x)
   # }

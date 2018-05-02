@@ -33,10 +33,12 @@
 # method="jw"
 # drop=FALSE
 # commasep=TRUE
+# x <- twig3
 
-duplicated.nex <- function(x, map = NULL, method = c("terms", "jw", "cosine"),
-  within_dataset = FALSE, commasep = FALSE, parts = FALSE, force = FALSE, n = 25,
-  train = FALSE, plot = FALSE,  cutoff = 0.35, drop = FALSE, weighting = c(1, 1, 1), K = 1, ...) {
+duplicated.nex <- function(x, map=NULL, method=c("terms", "jw", "cosine"),
+  within_dataset=FALSE, commasep=FALSE, parts=FALSE, force=FALSE, n=25,
+  train=FALSE, plot=FALSE, cutoff=0.35, drop=FALSE, weighting=c(1, 1, 1), K=1, 
+  cluster = c("edge_betweenness", "fast_greedy", "infomap", "label_prop", "leading_eigen", "louvain", "optimal", "spinglass", "walktrap"), ...) {
 
   require(stringdist)
   require(tm)
@@ -45,6 +47,7 @@ duplicated.nex <- function(x, map = NULL, method = c("terms", "jw", "cosine"),
   require(textmineR)
 
   method <- match.arg(method)
+  cluster <- match.arg(cluster)
 
   ################################################################################
   # Check if user provides "map" of duplicated characters (e.g., list(1 = c(2, 3, 5), 5 = c(2, 4, 8)))
@@ -80,8 +83,8 @@ duplicated.nex <- function(x, map = NULL, method = c("terms", "jw", "cosine"),
         dtm <- TermDocumentMatrix(termlist, control = list(wordLengths = c(2, Inf), weighting = function(x) weightTfIdf(x, normalize = TRUE), stemming=FALSE))
         m <- as.matrix(dtm)
         g <- graph_from_incidence_matrix(m, weighted=TRUE)
-        # TODO add option to specify different clustering algorithms (cluster_fast_greedy, cluster_label_prop, etc.)
-        cl <- cluster_walktrap(g, weights=E(g)$weight)
+        f <- get(paste0("cluster_", cluster))
+        cl <- f(g, E(g)$weight)
         grps <- communities(cl)  # get clusters
       }
       if (K > 1) {

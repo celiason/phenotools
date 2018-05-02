@@ -9,7 +9,12 @@
 #' twig2$charlab[854]
 #' dups <- duplicated(twig2, weighted=TRUE)
 #' printout(dups, maxsize=10, file="~/Desktop/testtext.html")
-printout <- function(x, maxsize=NULL, file) {
+
+# x <- test
+
+# TODO scale text by number of occurrences in cluster/weight
+
+printout <- function(x, maxsize=NULL, file, statelabels=TRUE) {
 	require(RColorBrewer)
 	require(kableExtra)
 	dark2 <- brewer.pal(8, "Dark2")
@@ -24,15 +29,35 @@ printout <- function(x, maxsize=NULL, file) {
 		hlite <- as.character(na.omit(str_extract(clust[[i]], "[^\\d]+")))
 		chars <- x$charlab[ids]
 		chars0 <- sapply(chars, strsplit, " ")
-		chars <- cleantext(chars, fast=FALSE)
+		chars <- cleantext(chars, fast=FALSE, comments=FALSE)
+		if (statelabels) {
+			states <- x$statelab[ids]
+			states0 <- sapply(states, strsplit, " ")
+			states <- cleantext(states, fast=FALSE, comments=FALSE)
+			if (!is.list(states)) {
+				states <- list(states)
+			}
+			if (all(x$statelabels=="")) {
+				states <- NULL
+			}
+		} else {
+			states <- NULL
+		}
 		if (!is.list(chars)) {
 			chars <- list(chars)
 		}
+		
+		if (!is.null(states)) {
+			chars <- lapply(seq_along(chars), function(z) { c(chars[[z]], ": ", states[[z]]) } )
+			chars0 <- lapply(seq_along(chars0), function(z) { c(chars0[[z]], ": ", states0[[z]]) } )
+		}
+
 		nm <- rep(ids, times=sapply(chars, length))
 		names(chars) <- ids
 		if (length(hlite) > 8) {
 			# pal <- rainbow(length(hlite))
-			pal <- viridis::viridis(length(hlite))
+			# pal <- viridis::viridis(length(hlite))
+			pal <- colorRampPalette(brewer.pal(11, "Spectral"))(length(hlite))
 		} else {
 			pal <- dark2[seq_along(hlite)]
 		}

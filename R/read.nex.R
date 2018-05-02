@@ -20,10 +20,9 @@
 # files <- list.files('~/Documents/UT/projects/phenome/data', pattern='\\.nex', full.names = TRUE)
 # file <- files[10]
 
-# file <- "~/Desktop/test.nex"
-# file <- "/Users/chadeliason/Documents/UT/projects/phenome/data/nesbitt_2015.nex"
-# file <- "/Users/chadeliason/Documents/UT/projects/phenome/data/mckitrick_1991.nex"
+# file <- "/Users/chadeliason/Documents/UT/projects/phenome/data/theropods/Turner_etal_2012.nex"
 # file <- "/Users/chadeliason/Documents/UT/projects/phenome/data/livezey_2006.nex"
+# file <- "/Users/chadeliason/Documents/UT/projects/phenome/data/bertelli_2002.nex"
 
 read.nex <- function(file, missing = '?', gap = '-') {
 
@@ -106,15 +105,33 @@ read.nex <- function(file, missing = '?', gap = '-') {
 
 # locs <- str_locate(mat, fixed(paste0("\n", taxlabels)))
 
-taxlabels <- gsub('\"', "", taxlabels)
-mat <- gsub('\"', "", mat)
+taxlabels0 <- taxlabels
 
-# locs <- str_locate(mat, paste0("\n", taxlabels, "\\b"))
-# locs <- str_locate(mat, fixed(paste0("\n", taxlabels)))
-# locs <- str_locate(mat, paste0("\n", taxlabels, "\\b"))
+# taxlabels <- gsub('\"', "", taxlabels)
+# mat <- gsub('\"', "", mat)
 
+# taxlabels <- gsub("[[:punct:]]", "_", taxlabels)
+
+taxlabels <- gsub("[^_'A-Za-z0-9]", " ", taxlabels)
+taxlabels <- gsub("\\s{2,}", " ", taxlabels)
+# taxlabels <- gsub("\\s{2,}", " ", taxlabels)
+
+# replace "bad" characters in taxon names
+for (i in seq_along(taxlabels)) {
+	mat <- str_replace_all(string=mat, pattern=fixed(taxlabels0[i]), replacement=taxlabels[i])
+}
+
+
+# i=1
+# str_length(mat)
+
+# mat
+# taxlabels0[31]
+# taxlabels[31]
+
+#  TODO fix
 locs <- str_locate(mat, paste0("\n", taxlabels, "(\\b|\\t)"))
-
+# locs <- str_locate(mat, fixed(paste0(taxlabels, " ")))
 
 # Two formats:
 # Genus_species
@@ -263,6 +280,8 @@ locs <- str_locate(mat, paste0("\n", taxlabels, "(\\b|\\t)"))
 		res$charnums <- charnums
 		res$statelabels <- gsub("^\\s|\\s$", "", statelabels)
 	}
+	
+	res$statelabels <- gsub("''", "' '", res$statelabels)
 
 	class(res) <- c('nex', 'list')
 	
