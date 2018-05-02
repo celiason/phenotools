@@ -13,17 +13,6 @@
 #' @author Chad Eliason \email{chad_eliason@@utexas.edu}
 #'
 #'
-
-# file <- "/Users/chadeliason/Downloads/monograph matrix public.nex"
-# missing <- '?'
-# gap <- '-'
-# files <- list.files('~/Documents/UT/projects/phenome/data', pattern='\\.nex', full.names = TRUE)
-# file <- files[10]
-
-# file <- "/Users/chadeliason/Documents/UT/projects/phenome/data/theropods/Turner_etal_2012.nex"
-# file <- "/Users/chadeliason/Documents/UT/projects/phenome/data/livezey_2006.nex"
-# file <- "/Users/chadeliason/Documents/UT/projects/phenome/data/bertelli_2002.nex"
-
 read.nex <- function(file, missing = '?', gap = '-') {
 
 	require(stringr)
@@ -36,20 +25,15 @@ read.nex <- function(file, missing = '?', gap = '-') {
 	# throws an error if ntax specified multiple times
 	ntax <- as.numeric(na.omit(str_extract(x, regex('(?<=NTAX=)\\d+', ignore_case=TRUE)))[1])
 	
-	# where are taxon labels
-	# starts with 'taxlabels'
+	# find taxon labels
 	taxlabelsstart <- grep('TAXLABELS', x, ignore.case=TRUE) + 1
 	# lines that had END + semicolon
-	# ends <- grep(';', x)
-	# figure out which line with END; is > than taxlabelstart location
-	# taxlabelsend <- ends[which(ends > taxlabelsstart)[1]] - 1
 	taxlabelsend <- taxlabelsstart + ntax - 1
-	# taxlabelsend <- grep('\\;', x[taxlabelsstart:length(x)])[1] + taxlabelsstart - 2
-
-	# taxlabels <- str_match(x[taxlabelsstart:taxlabelsend], '[\\t]*(\\w+)')[,2]
 	taxlabels <- str_match(x[taxlabelsstart:taxlabelsend], '[\\t]*(.*)')[,2]
+
 	# remove space at start of taxon label
 	taxlabels <- gsub('^\\s*', '', taxlabels)
+
 	# remove puncutation at end of taxon label
 	taxlabels <- gsub('(\\s|\\;)$', '', taxlabels)
 
@@ -58,17 +42,10 @@ read.nex <- function(file, missing = '?', gap = '-') {
 		taxlabels <- strsplit(taxlabels, split="\\s")[[1]]
 	}
 
-
-	# remove apostrophes at start and end
-	# taxlabels <- gsub("^'|'$", "", taxlabels)
-	# maybe TODO?? add apostrophes around taxon labels if not there already
-	# taxlabels <- ifelse(str_detect(taxlabels, "'.*'"), taxlabels, paste0("'", taxlabels, "'"))
-
 	# extract data matrix
 	matstart <- grep('MATRIX$', x, ignore.case=TRUE) + 1
 	ends <- grep('\\;', x)
 	matend <- ends[which(ends > matstart)[1]] - 1
-	# matend <- grep('\\;', x[matstart:length(x)])[1] + matstart - 2
 
 	# mesquite saves spaces between polymorphic characters (annoying)
 	
@@ -77,78 +54,36 @@ read.nex <- function(file, missing = '?', gap = '-') {
 	mat <- gsub("^(\t|\\s)+", "", mat)
 	mat <- paste0(mat, collapse="\n")
 	mat <- paste0("\n", mat)
-	# FIX UP TAXON LABELS
-	# cleantext <- function(txt) {
-	# 	txt <- gsub("\\(", "\\(", txt)
-	# 	txt <- gsub("\\)", "\\)", txt)
-	# 	txt <- gsub("\\+", "plus", txt)
-	# 	txt <- gsub("\\/", "\\/", txt)
-	# 	txt <- gsub(" ", "_", txt)
-	# 	txt
-	# }
-
-	# taxlabels <- cleantext(taxlabels)
-
-	# add word boundaries for taxa without (is this needed???)
-	# use word boundaries if there are spaces before/after words in the nexus file
-
-	# any(as.vector(str_locate(pattern="\\s", fixed(taxlabels))))
-
-	# see if any taxa have spaces in the names
-	# if (is.na(any(str_locate(pattern="\\s", fixed(taxlabels))))) {
-	# if (any(is.na(str_locate(pattern="\\s", fixed(taxlabels))))) {
-		# locs <- str_locate(mat, paste0("\\b", taxlabels, "\\b", sep=""))
-	# } else {
-		# find taxon labels
-		# locs <- str_locate(mat, fixed(paste0("\n", taxlabels)))
-	# }
-
-# locs <- str_locate(mat, fixed(paste0("\n", taxlabels)))
 
 taxlabels0 <- taxlabels
 
-# taxlabels <- gsub('\"', "", taxlabels)
-# mat <- gsub('\"', "", mat)
-
-# taxlabels <- gsub("[[:punct:]]", "_", taxlabels)
-
 taxlabels <- gsub("[^_'A-Za-z0-9]", " ", taxlabels)
 taxlabels <- gsub("\\s{2,}", " ", taxlabels)
-# taxlabels <- gsub("\\s{2,}", " ", taxlabels)
 
 # replace "bad" characters in taxon names
 for (i in seq_along(taxlabels)) {
 	mat <- str_replace_all(string=mat, pattern=fixed(taxlabels0[i]), replacement=taxlabels[i])
 }
 
-
-# i=1
-# str_length(mat)
-
-# mat
-# taxlabels0[31]
-# taxlabels[31]
-
-#  TODO fix
 locs <- str_locate(mat, paste0("\n", taxlabels, "(\\b|\\t)"))
-# locs <- str_locate(mat, fixed(paste0(taxlabels, " ")))
 
 # Two formats:
 # Genus_species
 # 'Genus species'
-
-	# there's a problem if some OTUs are just genus and others genus + species (with spaces between)
+# there's a problem if some OTUs are just genus and others genus + species (with spaces between)
 
 	# break up matrix by start/end locations of taxon labels
 	mat <- str_sub(mat, start = locs[,1], end = c(locs[2:nrow(locs), 1] - 1, str_length(mat)))
+
 	# remove taxon labels from matrix
 	mat <- str_replace_all(mat, fixed(taxlabels), "")
+
 	# remove white space
 	mat <- gsub("\\s", "", mat)
 
-	# mat <- str_replace_all(x[matstart:matend], taxlabels, "")  # remove taxon labels
-	mat <- gsub(',', '', mat)  # remove commas in data matrix
-	# mat <- str_extract_all(mat, '\\d{1}|[\\(\\[\\{]\\d{1,4}[\\)\\]\\}]|\\-|\\?|\\w')  # extract scorings
+	# remove commas in data matrix
+	mat <- gsub(',', '', mat)
+
 	# this didn't work with theropod working matrix (Turner 2012 AMNH version)
 	# so fixed with:
 	mat <- str_extract_all(mat, '\\d{1}|[\\(\\[\\{]\\d{1,4}[\\)\\]\\}]|\\-|\\?')  # extract scorings
@@ -165,29 +100,17 @@ locs <- str_locate(mat, paste0("\n", taxlabels, "(\\b|\\t)"))
 	if (length(mat)!=ntax) {
 		warning('Number of rows in data matrix not equal to number of taxa.')
 	}
-	# if (all(sapply(seq_along(mat), function(x) {length(mat[[x]]==nchar)})!=nchar)) {
-	# 	warning('Number of characters for some taxa does not equal to that in defined by `nchar`')
-	# }
 	if (any(sapply(mat, length) != nchar)) {
 		warning('Number of characters for some taxa does not equal to that in defined by `nchar`')
 	}
 
-
-	# list(taxlabels=taxlabels, nchar=nchar, ntax=ntax, data=setNames(mat, taxlabels))
 	mat <- do.call(rbind, mat)
 	symbols <- paste(unique(unlist(strsplit(gsub('[\\(\\)\\??\\-]', '', sort(unique(as.vector(mat)))), ""))),collapse="")
 	
-	# symbols <- paste(sort(unique(as.vector(mat))), collapse="")
 	symbols <- gsub('[\\?\\-]','',symbols)
 
 	mat <- ifelse(mat==missing, NA, mat)
 
-	# mat <- as.data.frame(mat)  # Maybe remove this??? slows things down a bit
-	
-	# charset <- rep(file, ncol(mat))
-	# charset <- rep(str_extract(file, '\\w+[\\s\\w]*\\.nex'), ncol(mat))
-	
-	# file <- rep(str_extract(file, '\\w+[\\s\\w]*\\.nex'), ncol(mat))
 	file <- rep(str_extract(file, '\\w+[\\s\\w]*(?=\\.nex)'), ncol(mat))
 
 	res <- list(taxlabels = taxlabels, data = mat, symbols = symbols, gap = gap, missing = missing, file = file)
@@ -216,6 +139,7 @@ locs <- str_locate(mat, paste0("\n", taxlabels, "(\\b|\\t)"))
 		} else {
 			names(ids) <- charpartsets
 		}
+
 		# now create a vector and set names at ids according to charpartsets labels
 		charparts <- rep(NA, nchar)
 		for (i in 1:length(ids)) {
@@ -287,15 +211,3 @@ locs <- str_locate(mat, paste0("\n", taxlabels, "(\\b|\\t)"))
 	
 	res
 }
-
-# system.time(tmp <- read.nex(file = '~/Documents/UT/projects/phenome/data/concatenated.nex'))  # 0.4 seconds
-
-# problem with bertelli_2002.nex
-
-# library(phylobase)
-
-# system.time(tmp2 <- readNexus(file='~/Documents/UT/projects/phenome/data/concatenated.nex', type='data', check.names=FALSE, return.labels=FALSE))  # 2 seconds
-
-# ~4Xs faster than readNexus, and read.nexus.data doesn't work with morphological characters
-
-# should I work on making this integrate with existing programs, like MrBayes, PAUP, etc. 

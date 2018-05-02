@@ -26,15 +26,6 @@
 #' TODO add option to "nest" state labels in the network graph (so things like "size of distal end" wouldn't be matched across all characters, only those with state label as, say, "Humerus...")
 #' TODO be able to plot "subclusters" (looking at all connections among characters, keeping only terms in common between the two)
 #'
-
-# x=twig1
-# train=FALSE
-# cutoff=0.15
-# method="jw"
-# drop=FALSE
-# commasep=TRUE
-# x <- twig3
-
 duplicated.nex <- function(x, map=NULL, method=c("terms", "jw", "cosine"),
   within_dataset=FALSE, commasep=FALSE, parts=FALSE, force=FALSE, n=25,
   train=FALSE, plot=FALSE, cutoff=0.35, drop=FALSE, weighting=c(1, 1, 1), K=1, 
@@ -111,7 +102,6 @@ duplicated.nex <- function(x, map=NULL, method=c("terms", "jw", "cosine"),
       # TODO need to output dups list based on some cutoff??
       stringdists.output <- NA
     }
-    # text similarity using a few different methods (whole character statement, broken up character statement -locator, variable, states)
 
     # TODO lapply this stuff, e.g.-  list(part1, part2, part3)
 
@@ -156,8 +146,6 @@ duplicated.nex <- function(x, map=NULL, method=c("terms", "jw", "cosine"),
       # only look within character partitions
       if (!is.null(x$charpartition) & length(unique(x$charpartition)) > 1) {
         charpart <- x$charpartition
-        # id <- charpart[pairids[1, ]] == charpart[pairids[2, ]]
-        # pairids <- pairids[, id]
         split(ids, charpart)
       }
 
@@ -170,11 +158,8 @@ duplicated.nex <- function(x, map=NULL, method=c("terms", "jw", "cosine"),
         list(sd1, sd2, sd3)
       })
 
-# weighting <- c(1,1,1)
-
       # calculate final distances
       sdist_final <- lapply(seq_along(sdist), function(z) {
-        # z=1
         d1 <- weighting[1] * sdist[[z]][[1]]
         d2 <- weighting[2] * sdist[[z]][[2]]
         d3 <- weighting[3] * sdist[[z]][[3]]
@@ -214,7 +199,6 @@ duplicated.nex <- function(x, map=NULL, method=c("terms", "jw", "cosine"),
   ################################################################################
   if (train) {
     
-    # sscut <- setNames(dups$stringdist, 1:nrow(dups))
     names(stringdists) <- seq_along(stringdists)
 
     sscut <- stringdists[stringdists < cutoff]
@@ -224,7 +208,6 @@ duplicated.nex <- function(x, map=NULL, method=c("terms", "jw", "cosine"),
     }
 
     # sample evenly over range of string distances
-    # n <- 25
     ss <- sapply(seq(0, cutoff, length=n), function(z) {
       which.min(abs(sscut - z))
     })
@@ -241,11 +224,11 @@ duplicated.nex <- function(x, map=NULL, method=c("terms", "jw", "cosine"),
 
     sset <- as.numeric(names(sset.dist))
     
-    # run loop to determine matches
+    # function to print pairs of characters
     printpair <- function(i) {
       id1 <- pairids[i, 1]
       id2 <- pairids[i, 2]
-      # print pairs of characters:
+      
       cat('\n-------\nTrait pair', i, ' (string distance = ', sset.dist[as.character(sset)], ') \n\nCHARLABELS:\n\n',
         oldcharnames[id1], ' (', x$file[id1], ', character ', x$charnums[id1],')\n\n',
         oldcharnames[id2], ' (', x$file[id2], ', character ', x$charnums[id2],')\n\nSTATELABELS:\n\n',
@@ -256,8 +239,9 @@ duplicated.nex <- function(x, map=NULL, method=c("terms", "jw", "cosine"),
 
     answer <- rep("", length(sset))
 
+    # run loop to manually determine matches
     for (i in 1:length(sset)) {  
-      printpair(sset[i])  # print pair of characters
+      printpair(sset[i])
       ans <- scan(n = 1, what = 'character')  # wait for user input
       if (ans=='q') {
         stop('Function terminated by user')
@@ -306,7 +290,6 @@ duplicated.nex <- function(x, map=NULL, method=c("terms", "jw", "cosine"),
 }
 
   # resultant NEXUS file for outputting later
-
   res <- x
 
   ################################################################################

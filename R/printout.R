@@ -2,17 +2,12 @@
 #' x = nexus object with clusters found
 #' maxsize = maximum size of cluster of characters
 #' Example:
-#' x <- twig
-#' twig2 <- twig
-#' twig2$charlabels <- str_extract(twig2$charlab, paste0(".*?(:|\\(\\d)"))
-#' twig$charlab[854]
-#' twig2$charlab[854]
-#' dups <- duplicated(twig2, weighted=TRUE)
-#' printout(dups, maxsize=10, file="~/Desktop/testtext.html")
-
-# x <- test
+#' data(twig)
+#' dups <- duplicated(twig, weighted=TRUE)
+#' printout(dups, maxsize=10, file="~/Desktop/twig.html")
 
 # TODO scale text by number of occurrences in cluster/weight
+# TODO add color option
 
 printout <- function(x, maxsize=NULL, file, statelabels=TRUE) {
 	require(RColorBrewer)
@@ -55,8 +50,6 @@ printout <- function(x, maxsize=NULL, file, statelabels=TRUE) {
 		nm <- rep(ids, times=sapply(chars, length))
 		names(chars) <- ids
 		if (length(hlite) > 8) {
-			# pal <- rainbow(length(hlite))
-			# pal <- viridis::viridis(length(hlite))
 			pal <- colorRampPalette(brewer.pal(11, "Spectral"))(length(hlite))
 		} else {
 			pal <- dark2[seq_along(hlite)]
