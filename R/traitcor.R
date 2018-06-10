@@ -1,27 +1,22 @@
 #' Get trait correlations for all pairwise combinations of discrete traits in nexus file
 #' x = 'nexus' object 
-#'
 traitcor <- function(x, parallel = FALSE, cores = 1, method = c('hamming', 'polycor')) {
 	library(parallel)
 	library(devtools)
 	library(polycor)
 	library(psych)
 	library(pbapply)
+	library(pbmcapply)
 	library(stringdist)
-	load_all('~/github/nexustools')	
 	method <- match.arg(method)
 	mat <- x$data
 	# convert '?' or '-' scorings to NA:
 	mat <- gsub("\\?|\\-", NA, mat)
 	# get all pairs of characters
 	pairids <- combn(1:ncol(mat), m=2)
-	# calculate string distances by one of 2 methods
 	if (method=="polycor") {
-		# library(multicore)
-		# will take ~2.6 hours (or 30 minutes using all cores)
-		# (5/8000) * ncol(pairids)
 		if (parallel) {
-			dmat <- mclapply(1:ncol(pairids), function(i) {
+			dmat <- pbmclapply(1:ncol(pairids), function(i) {
 				id1 <- pairids[1, i]
 				id2 <- pairids[2, i]
 				char1 <- mat[, id1]
@@ -31,10 +26,11 @@ traitcor <- function(x, parallel = FALSE, cores = 1, method = c('hamming', 'poly
 				M <- na.omit(M)
 				M <- apply(M, 2, as.numeric)
 				# get correlations
-				try(polychoric(M)$rho[1,2])
+				tryCatch(polychor(M), error=function(e) NA, warning=function(e) NA)
+				# try(polychoric(M)$rho[1,2])
 			}, mc.cores = cores)
 		} else {
-			dmat <- mclapply(1:ncol(pairids), function(i) {
+			dmat <- pblapply(1:ncol(pairids), function(i) {
 				id1 <- pairids[1, i]
 				id2 <- pairids[2, i]
 				char1 <- mat[, id1]
@@ -44,9 +40,13 @@ traitcor <- function(x, parallel = FALSE, cores = 1, method = c('hamming', 'poly
 				M <- na.omit(M)
 				M <- apply(M, 2, as.numeric)
 				# get correlation
-				try(polychoric(M)$rho[1,2])
-			}, mc.cores = cores)
+				tryCatch(polychor(M), error=function(e) NA, warning=function(e) NA)
+    			# tryCatch(polychoric(M)$rho[1,2], error=function(e) NULL, warning=function(e) NULL)
+				# try(polychoric(M)$rho[1,2])
+			})
 		}
+		cors <- unlist(dmat)
+		weights <- rep(1, length(cors))
 	}
 	if (method == "hamming") {
 		# dmat <- mclapply(1:ncol(pairids), function(i) {
@@ -69,13 +69,11 @@ traitcor <- function(x, parallel = FALSE, cores = 1, method = c('hamming', 'poly
 			sdist <- sdist/0.5
 			# NB: might want to weight by number of co-scored characters @done
 			# i.e. if only one species scored overlap, very weak evidence for similar traits
+			cors <- sapply(dmat, "[[", "sdist")
+			weights <- sapply(dmat, "[[", "weight")
 			c(sdist=sdist, weight=wt)
 			}) #, mc.cores = cores)
 	}
-	dmat[grepl("Error", dmat)] <- NA
-	cors <- sapply(dmat, "[[", "sdist")
-	weights <- sapply(dmat, "[[", "weight")
 	res <- data.frame(cor = cors, weight = weights, t1 = pairids[1,], t2 = pairids[2, ])
 	res[res$cor!=Inf,]
-	# list(cor = cors, weight = weights, pair = pairids[1:2, ], charnames = x$charlabels[pairids[1:2, ]])
 }

@@ -32,3 +32,14 @@ buildnex2 <- function(data, charlabels=NULL, charnums=NULL, statelabels=NULL, ta
 	class(res) <- c("nex", "list")
 	res
 }
+
+
+# mattext <- readLines("/Users/chadeliason/Documents/UT/projects/phenome/data/theropods/brusatte2014_matrix.txt")
+# chartext <- readLines("/Users/chadeliason/Documents/UT/projects/phenome/data/theropods/brusatte2014_charlist.txt")
+# mat <- text2mat(mattext)
+# charlabs <- text2charlabels(chartext)
+
+# length(charlabs)
+
+# twig1 <- buildnex2(data=mat, charlabels=charlabs)
+
