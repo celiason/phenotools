@@ -1,17 +1,15 @@
 #' Function to remove spaces, punctuation from phenome terms
-#' comma = whether 
-#' fast = whether to use fast version (for duplicated analysis) or slow version (for printing characters)
-#' schinke = whether to use Latin token algorithm from Schinke 1996 (?)
-#' example:
-#' cleantext("dorsalmost part of the processus ligamentus cranii")
 #' 
-cleantext <- function(x, comma=TRUE, fast=TRUE, latin=TRUE, cuts=TRUE, comments=TRUE) {
-  removeSpaces <- function(x) {
-    x <- gsub("\\s{2,}", " ", x)  # remove extra spaces
-    x <- gsub("^\\s", "", x)  # take out beginning spaces
-    x <- gsub("\\s$", "", x)  # remove end whitespace
-    x
-  }
+#' @param fast whether to use fast version (for duplicated analysis) or slow version (for printing characters)
+#' @param latin whether to use Latin token algorithm (see Schinke 1996)
+#' @param cuts whether to cut terms from a list
+#' @param comments logical whether to remove test in square brackets
+#' @example
+#' cleantext("dorsalmost part of the processus ligamentus cranii")
+#' @author Chad M. Eliason
+#' 
+cleantext <- function(x, fast=TRUE, latin=TRUE, cuts=TRUE, comments=TRUE) {
+  require(tm)
   if (comments) {
     x <- str_replace_all(x, "[\\s]*[\\[\\(].*?[\\]\\)][\\s]*", " ")  # remove comments in square brackets
     x <- str_replace_all(x, "Note\\:.*?$", " ")  # remove note comments
@@ -50,3 +48,28 @@ cleantext <- function(x, comma=TRUE, fast=TRUE, latin=TRUE, cuts=TRUE, comments=
   x <- lapply(x, removeSpaces)
   return(lapply(x, as.character))
 }
+
+
+removeSpaces <- function(x) {
+    x <- gsub("\\s{2,}", " ", x)  # remove extra spaces
+    x <- gsub("^\\s", "", x)  # take out beginning spaces
+    x <- gsub("\\s$", "", x)  # remove end whitespace
+    x
+}
+
+# stemmer function based on Schinke et al. 1996
+# TODO make it so things like -ity, -ed will be removed from end of word
+schinke <- function(x) {
+  x <- tolower(x)
+  x <- gsub("m\\.", "muscul", x)
+  x <- gsub("proc\\.", "processus", x)
+  x <- gsub("(lig|ligg)\\.", "ligamentos", x)
+  x <- gsub("n\\.", "nervos", x)
+  # x <- gsub("j", "i", x)
+  # x <- gsub("v", "u", x)
+  # x <- str_replace_all(x, "(ibus|ius|ae|am|as|em|es|ia|is|nt|os|ud|um|us|a|e|i|o|u)\\b", "")
+    # NEW VERSIon  (not exactly Schinke)
+  x <- str_replace_all(x, "(ity|ed|al|ibus|ius|ae|am|as|em|es|ia|is|nt|os|ud|um|us|a|e|i|o|u)\\b", "")
+  x
+}
+

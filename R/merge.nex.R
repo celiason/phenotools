@@ -6,17 +6,13 @@
 #' @param taxa a character vector of names of taxa to include in concatenated nexus file (optional)
 #' @return an object of class \code{nex} for use in further \code{nexustools} functions
 #' @examples \dontrun{
-#'
 #' x <- read.nex('example/toy1.nex')
 #' y <- read.nex('example/toy2.nex')
 #' xy <- merge.nex(list(x, y), taxa = c('species1', 'species2'))
 #' xy
-#'
+#' }
 #' @author Chad Eliason \email{chad_eliason@@utexas.edu}
 #'
-
-# x <- list(twig1, twig2)
-
 merge.nex <- function(x, taxa=NULL) {
   mat <- lapply(x, '[[', 'data')
   alltaxlabels <- unique(unlist(lapply(x, '[[', 'taxlabels')))

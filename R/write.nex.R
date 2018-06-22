@@ -8,22 +8,13 @@
 #' @param missing character representing missing data
 #' @return an object of class \code{nex} for use in further \code{nexustools} functions
 #' @examples \dontrun{
-#'
 #' x <- read.nex(file='example/toy1.nex')
-#'
 #' write.nex(x2, file='output/testnexus.nex')
-#'
+#' }
 #' @author Chad Eliason \email{chad_eliason@@utexas.edu}
 #'
 write.nex <- function(x, file, missing=NULL, gap=NULL, mrbayes=FALSE, ngen=NULL,
   phy=NULL, run=FALSE, format=c("nexus", "tnt")) {
-
-# testing zone
-# format <- "nexus"
-# missing <- "?"
-# gap <- "-"
-# file <- "~/Desktop/testnexus.nex"
-# x <- final
 
     format <- match.arg(format)
 
@@ -44,13 +35,8 @@ write.nex <- function(x, file, missing=NULL, gap=NULL, mrbayes=FALSE, ngen=NULL,
     fcat <- function(..., file = zz, sep = '') cat(..., file = file, sep = sep, append = TRUE)
   
   # Write character partitions
-
   if (!all(x$charpart=="''")) {
-
-      test <- x$charpart
-
-      test <- factor(test)
-
+      test <- factor(x$charpartition)
       # Function for finding starts and lengths of string/number sequences
       seqle <- function(x,incr=1) { 
         if(!is.numeric(x)) x <- as.numeric(x) 
@@ -60,13 +46,11 @@ write.nex <- function(x, file, missing=NULL, gap=NULL, mrbayes=FALSE, ngen=NULL,
         list(lengths = diff(c(0L,i)),
              values = x[head(c(0L,i)+1L,-1L)]) 
       } 
-
       # Find sequence locations and lengths
       xx <- lapply(levels(test), function(x) {
           seqle(which(test==x))
         }
       )
-
       # Paste starts and ends of sequences
       res <- sapply(seq_along(xx), function(i) {
         starts <- xx[[i]]$values
@@ -74,12 +58,29 @@ write.nex <- function(x, file, missing=NULL, gap=NULL, mrbayes=FALSE, ngen=NULL,
         res <- ifelse(len>1, paste0(starts, "-", starts+(len-1)), starts)
         paste0(res, collapse=" ")
       })
-
       names(res) <- levels(test)
-
       charpart <- res
-
     }
+
+  # Write character partition for file names
+  # x <- nexs[[1]]
+  if (!all(x$file=="''")) {
+    filepart <- factor(x$file)
+      # Find sequence locations and lengths
+      xx <- lapply(levels(filepart), function(x) {
+          seqle(which(filepart==x))
+        })
+      # Paste starts and ends of sequences
+      res <- sapply(seq_along(xx), function(i) {
+        starts <- xx[[i]]$values
+        len <- xx[[i]]$lengths
+        res <- ifelse(len>1, paste0(starts, "-", starts+(len-1)), starts)
+        paste0(res, collapse=" ")
+      })
+      names(res) <- levels(filepart)
+      filepart <- res
+    # filepart
+  }
 
   if (format=="nexus") {
 
@@ -130,8 +131,8 @@ write.nex <- function(x, file, missing=NULL, gap=NULL, mrbayes=FALSE, ngen=NULL,
         fcat('\t\tFORMAT DATATYPE=STANDARD GAP=- MISSING=',missing,' SYMBOLS="',x$symbols,'";\n')
         if (!is.null(x$charlabels)) {
           fcat('\t\tCHARLABELS\n')
-          # fcat(paste('\t\t\t[', x$charnums, '] ', x$charlabels, sep=""), sep='\n')
-          fcat(paste("\t\t\t[", 1:ncol(dat), "] '", x$charlabels, "'", sep=""), sep="\n")
+          fcat(paste('\t\t\t[', x$charnums, '] ', x$charlabels, sep=""), sep='\n')
+          # fcat(paste("\t\t\t[", 1:ncol(dat), "] '", x$charlabels, "'", sep=""), sep="\n")
           fcat("\t\t;\n")
         }
         if (!is.null(x$statelabels)) {
@@ -147,6 +148,9 @@ write.nex <- function(x, file, missing=NULL, gap=NULL, mrbayes=FALSE, ngen=NULL,
         # write character partitions
         fcat('BEGIN SETS;\n')
         fcat('\tCHARPARTITION set1=', paste0(names(charpart), ":", charpart, collapse=","), ';\n')
+        if (!all(x$file=="''")) {
+          fcat('\tCHARPARTITION file=', paste0(names(filepart), ":", filepart, collapse=","), ';\n')
+        }
         fcat('END;\n')
         close(zz)
       }

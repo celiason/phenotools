@@ -26,7 +26,7 @@ traitcor <- function(x, parallel = FALSE, cores = 1, method = c('hamming', 'poly
 				M <- na.omit(M)
 				M <- apply(M, 2, as.numeric)
 				# get correlations
-				tryCatch(polychor(M), error=function(e) NA, warning=function(e) NA)
+				suppressWarnings(tryCatch(polychor(M), error=function(e) NA))
 				# try(polychoric(M)$rho[1,2])
 			}, mc.cores = cores)
 		} else {
@@ -40,7 +40,7 @@ traitcor <- function(x, parallel = FALSE, cores = 1, method = c('hamming', 'poly
 				M <- na.omit(M)
 				M <- apply(M, 2, as.numeric)
 				# get correlation
-				tryCatch(polychor(M), error=function(e) NA, warning=function(e) NA)
+				suppressWarnings(tryCatch(polychor(M), error=function(e) NA))
     			# tryCatch(polychoric(M)$rho[1,2], error=function(e) NULL, warning=function(e) NULL)
 				# try(polychoric(M)$rho[1,2])
 			})

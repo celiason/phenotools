@@ -6,14 +6,16 @@
 #' dups <- duplicated(twig, weighted=TRUE)
 #' printout(dups, maxsize=10, file="~/Desktop/twig.html")
 #' 
-
 # TODO scale text by number of occurrences in cluster/weight
 # TODO add color option
+# x <- tmp
+# file <- "~/Desktop/phenome_terms3.csv"
 printout <- function(x, maxsize=NULL, file, statelabels=TRUE) {
 	require(RColorBrewer)
 	require(kableExtra)
 	dark2 <- brewer.pal(8, "Dark2")
 	clust <- x$cluster
+	clust <- clust[str_count(string=clust, pattern="\\d+")!=0]
 	if (!is.null(maxsize)) {
 		csize <- sapply(sapply(sapply(clust, str_extract, "\\d+"), na.omit), length)
 		keep <- csize < maxsize
@@ -26,7 +28,7 @@ printout <- function(x, maxsize=NULL, file, statelabels=TRUE) {
 		chars0 <- sapply(chars, strsplit, " ")
 		chars <- cleantext(chars, fast=FALSE, comments=FALSE)
 		if (statelabels) {
-			states <- x$statelab[ids]
+			states <- x$statelabels[ids]
 			states0 <- sapply(states, strsplit, " ")
 			states <- cleantext(states, fast=FALSE, comments=FALSE)
 			if (!is.list(states)) {
@@ -41,12 +43,10 @@ printout <- function(x, maxsize=NULL, file, statelabels=TRUE) {
 		if (!is.list(chars)) {
 			chars <- list(chars)
 		}
-		
 		if (!is.null(states)) {
 			chars <- lapply(seq_along(chars), function(z) { c(chars[[z]], ": ", states[[z]]) } )
 			chars0 <- lapply(seq_along(chars0), function(z) { c(chars0[[z]], ": ", states0[[z]]) } )
 		}
-
 		nm <- rep(ids, times=sapply(chars, length))
 		names(chars) <- ids
 		if (length(hlite) > 8) {
@@ -54,7 +54,7 @@ printout <- function(x, maxsize=NULL, file, statelabels=TRUE) {
 		} else {
 			pal <- dark2[seq_along(hlite)]
 		}
-		textcol <- rep("black", sum(sapply(chars,length)))
+		textcol <- rep("black", sum(sapply(chars, length)))
 		for (j in seq_along(hlite)) {
 		  textcol[unlist(lapply(chars, grepl, pattern=hlite[j]))] <- pal[j]
 		}

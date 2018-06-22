@@ -1,15 +1,8 @@
 Misc:
- [ ] locate characters with absence plus 'present but variable' states - recode to two characters: 1) presence/absence of the feature and 2) values/states of the feature
  [ ] locate compound characters, consider whether to recode as separate characters
  
 duplicated.nex:
 this is tricky. in many cases, new characters may differ from original ones (e.g., 0-1-2 instead of 0-1, even though they are scoring the same thing. how can we deal with this?)
- [ ]  make it so the set(?) difference between species names is also returned (in find duplicates)
- [ ]  change name of function (maybe to get.duplicates? find.dup.chars? or something...)
- [ ]  maybe create a function merge.nex with a `what` argument (either taxa or characters)?
- [ ]  create a separate find duplicates function that returns a map of old-new characters for use with merge.nex
- [ ]  benchmark ability to automatically find duplicates
-  this function needs some work. it should return the user input (e.g., which characters were suspected duplicates, for further use, maybe with the 'map' argument in duplicated.nex). also, it should maybe do something such as, if a newer character scoring differs but is more complete than an old one (i.e. covers all old taxa), then just drop the old character rather than try to merge the two characters.
 
 buildnex:
  [ ]  try out a few more PDF extractions
@@ -32,8 +25,6 @@ read.nex:
  [ ]  if polymorphisms coded differently - e.g., with [] versus () - make it the same upon export with write.nex
 
 write.nex:
- [ ]  output a nexus object with some state, character labels NA
- [ ]  add ability to output character sets, partitions in NEXUS file
 
 testing:
  [ ] need to add a bunch of checks to ensure format of file is kosher
@@ -45,7 +36,14 @@ someday/maybe:
 
 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
 Archive:
- [x]  make a way to scrape text from PDF files? @project(someday/maybe)
+ [x]  output a nexus object with some state, character labels NA @done (18-06-21 11:07) @project(write.nex)
+ [x]  maybe create a function merge.nex with a `what` argument (either taxa or characters)? @done (18-06-21 11:07) @project(duplicated.nex)
+ [x]  create a separate find duplicates function that returns a map of old-new characters for use with merge.nex @done (18-06-21 11:07) @project(duplicated.nex)
+ [x]  benchmark ability to automatically find duplicates @done (18-06-21 11:07) @project(duplicated.nex)
+  this function needs some work. it should return the user input (e.g., which characters were suspected duplicates, for further use, maybe with the 'map' argument in duplicated.nex). also, it should maybe do something such as, if a newer character scoring differs but is more complete than an old one (i.e. covers all old taxa), then just drop the old character rather than try to merge the two characters.
+ [x]  add ability to output character sets, partitions in NEXUS file @done (18-06-21 11:07) @project(write.nex)
+ [x]  locate characters with absence plus 'present but variable' states - recode to two characters: 1) presence/absence of the feature and 2) values/states of the feature @done (18-06-21 11:06) @project(Misc)
+ [x]  change name of function (maybe to get.duplicates? find.dup.chars? or something...) @done (18-06-21 11:06) @project(duplicated.nex)
  [x]  find absence/presence characters (should be relatively rare, in most cases they are probably just lazy coding or absence of a zone, not a bone/structure) @done (16-06-01 12:52) @project(Inbox)
  [x] remove repeated absence characters (i.e. duplicates) @done (15-08-29 12:27) @project(Inbox)
  [x]  add other ways to color data matrix (file, charpartition, charset, etc.) @done (15-08-29 12:26) @project(plot.nex)
@@ -68,6 +66,8 @@ Archive:
  [x] Add ability to sort/subset characters based on charsets or grep @done (15-05-08 17:26)
  [x] Add a way to merge taxa (code overlapping, different scorings as polymorphisms?) @done (15-05-08 17:26)
  [x] add ability to sort @done (15-05-08 17:25)
+ [-]  make it so the set(?) difference between species names is also returned (in find duplicates) @project(duplicated.nex)
+ [x]  make a way to scrape text from PDF files? @project(someday/maybe)
  [-] reword (in basic english?) the livezey characters, other datasets? maybe make a function to do this? access google translate perhaps? @project(Misc)
  [-]   make able to work with phylogenetic trees? @project(someday/maybe)
  [x] should there be a certain class associated with this? like 'nex' (YES) or 'morph' (NO)?

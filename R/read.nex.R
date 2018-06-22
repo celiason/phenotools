@@ -10,6 +10,9 @@
 #' x <- read.nex(file='example/toy1.nex')
 #' @author Chad Eliason \email{celiason@@fieldmuseum.org}
 #'
+
+# file <- "/Users/chadeliason/Documents/UT/projects/phenome/output/final_reordered2.nex"
+
 read.nex <- function(file, missing = '?', gap = '-') {
 
 	require(stringr)
@@ -52,22 +55,22 @@ read.nex <- function(file, missing = '?', gap = '-') {
 	mat <- paste0(mat, collapse="\n")
 	mat <- paste0("\n", mat)
 
-taxlabels0 <- taxlabels
+	taxlabels0 <- taxlabels
 
-taxlabels <- gsub("[^_'A-Za-z0-9]", " ", taxlabels)
-taxlabels <- gsub("\\s{2,}", " ", taxlabels)
+	taxlabels <- gsub("[^_'A-Za-z0-9]", " ", taxlabels)
+	taxlabels <- gsub("\\s{2,}", " ", taxlabels)
 
-# replace "bad" characters in taxon names
-for (i in seq_along(taxlabels)) {
-	mat <- str_replace_all(string=mat, pattern=fixed(taxlabels0[i]), replacement=taxlabels[i])
-}
+	# replace "bad" characters in taxon names
+	for (i in seq_along(taxlabels)) {
+		mat <- str_replace_all(string=mat, pattern=fixed(taxlabels0[i]), replacement=taxlabels[i])
+	}
 
-locs <- str_locate(mat, paste0("\n", taxlabels, "(\\b|\\t)"))
+	locs <- str_locate(mat, paste0("\n", taxlabels, "(\\b|\\t)"))
 
-# Two formats:
-# Genus_species
-# 'Genus species'
-# there's a problem if some OTUs are just genus and others genus + species (with spaces between)
+	# Two formats:
+	# Genus_species
+	# 'Genus species'
+	# there's a problem if some OTUs are just genus and others genus + species (with spaces between)
 
 	# break up matrix by start/end locations of taxon labels
 	mat <- str_sub(mat, start = locs[,1], end = c(locs[2:nrow(locs), 1] - 1, str_length(mat)))
@@ -103,46 +106,49 @@ locs <- str_locate(mat, paste0("\n", taxlabels, "(\\b|\\t)"))
 
 	mat <- do.call(rbind, mat)
 	symbols <- paste(unique(unlist(strsplit(gsub('[\\(\\)\\??\\-]', '', sort(unique(as.vector(mat)))), ""))),collapse="")
-	
 	symbols <- gsub('[\\?\\-]','',symbols)
 
 	mat <- ifelse(mat==missing, NA, mat)
-
-	file <- rep(str_extract(file, '\\w+[\\s\\w]*(?=\\.nex)'), ncol(mat))
-
-	res <- list(taxlabels = taxlabels, data = mat, symbols = symbols, gap = gap, missing = missing, file = file)
+	
+	res <- list(taxlabels = taxlabels, data = mat, symbols = symbols, gap = gap, missing = missing)
 
 	# extract charpartitions
-	# use this format for character partition by body region:
-	# CHARPARTITION bodyparts=head: 1-4 7, body:5 6, legs:8-10;
+	# use this format for character partition by body region: CHARPARTITION bodyparts=head: 1-4 7, body:5 6, legs:8-10;
 	if (length(grep('\\bCHARPARTITION\\b', x, ignore.case=TRUE)) > 0) {
-		charstart <- grep('CHARPARTITION', x, ignore.case=TRUE) + 1
-		charpart <- na.omit(str_match(x, regex('CHARPARTITION\\s(.+)\\;', ignore_case=TRUE)))[,2]
-		charpartname <- str_match(charpart, '^\\w+')
-		charmatch <- str_match_all(charpart, '(\\w+):[\\s]*(\\d+[\\-\\s]*[\\d+]*)')[[1]]
-		charpartsets <- charmatch[,2]
-		charpartranges <- charmatch[,3]
-		# Function to go from this "2,5-7,10,12-15" to this "c(2,5,6,7,10,12,13,14,15)"
-		# http://r.789695.n4.nabble.com/convert-delimited-strings-with-ranges-to-numeric-td4673763.html
-		text2numeric <- function(xx) {
-			xx <- gsub('\\s|,\\s', ',', xx)
-			xx <- gsub('\\-', ':', xx)
-			eval(parse(text = paste("c(", xx, ")")))
-		}
-		ids <- sapply(charpartranges, text2numeric)
-		if (is.matrix(ids)) {
-			ids <- ids[,1]
-			names(ids) <- rep(charpartsets, length(ids))
+		charstart <- grep('CHARPARTITION', x, ignore.case=TRUE)
+		charparts <- lapply(charstart, function(i) {
+			charpart <- x[i]
+			# charpartname <- str_match(charpart, '^\\w+')
+			charmatch <- str_match_all(charpart, "(\\w+):([0-9\\s\\-]*)")[[1]]
+			# charmatch <- str_match_all(charpart, '(\\w+):[\\s]*(\\d+[\\-\\s]*[\\d+]*)')[[1]]
+			charpartsets <- charmatch[,2]
+			charpartranges <- charmatch[,3]
+			ids <- sapply(charpartranges, text2numeric)
+			if (is.matrix(ids)) {
+				ids <- ids[,1]
+				names(ids) <- rep(charpartsets, length(ids))
+			} else {
+				names(ids) <- charpartsets
+			}
+			# now create a vector and set names at ids according to charpartsets labels
+			charparts <- rep(NA, nchar)
+			for (i in 1:length(ids)) {
+				charparts[ids[[i]]] <- names(ids)[i]
+			}
+			# res$charpartition <- charparts
+			charparts
+		})
+		# look for file partition
+		if (any(grep('CHARPARTITION file', x, ignore.case=TRUE))) {
+			id <- grep('CHARPARTITION file', x, ignore.case=TRUE)
+			id1 <- match(id, charstart)
+			id2 <- match(setdiff(charstart, id), charstart)
+			res$file <- charparts[[id1]]
+			res$charpartition <- charparts[[id2]]
 		} else {
-			names(ids) <- charpartsets
+			res$file <- rep(str_extract(file, '\\w+[\\s\\w]*(?=\\.nex)'), ncol(mat))
+			res$charpartition <- charparts[[1]]
 		}
-
-		# now create a vector and set names at ids according to charpartsets labels
-		charparts <- rep(NA, nchar)
-		for (i in 1:length(ids)) {
-			charparts[ids[[i]]] <- names(ids)[i]
-		}
-		res$charpartition <- charparts
 	} else {
 		res$charpartition <- rep("''", ncol(mat))
 	}
@@ -207,4 +213,13 @@ locs <- str_locate(mat, paste0("\n", taxlabels, "(\\b|\\t)"))
 	class(res) <- c('nex', 'list')
 	
 	res
+}
+
+
+# Function to go from this "2,5-7,10,12-15" to this "c(2,5,6,7,10,12,13,14,15)"
+# see http://r.789695.n4.nabble.com/convert-delimited-strings-with-ranges-to-numeric-td4673763.html
+text2numeric <- function(xx) {
+	xx <- gsub('\\s|,\\s', ',', xx)
+	xx <- gsub('\\-', ':', xx)
+	eval(parse(text = paste("c(", xx, ")")))
 }

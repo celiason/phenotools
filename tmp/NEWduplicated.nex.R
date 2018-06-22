@@ -29,7 +29,7 @@
 #' TODO be able to plot "subclusters" (looking at all connections among characters, keeping only terms in common between the two)
 #'
 duplicated.nex <- function(x, opt=c("fuzzy", "terms", "comments", "traitcor"),
-  method=NULL, within_dataset=FALSE, commasep=FALSE, weighting=c(1,1,1),
+  method=NULL, within=c("none","partition","dataset"), commasep=FALSE, weighting=c(1,1,1),
   K=1, cluster = c("infomap", "fast_greedy", "walktrap", "label_prop", "leading_eigen",
     "louvain", "optimal", "spinglass"), cores=1, ...) {
 
@@ -48,7 +48,10 @@ duplicated.nex <- function(x, opt=c("fuzzy", "terms", "comments", "traitcor"),
 
   # setup
   opt <- match.arg(opt)
-  
+  within <- match.arg(within)
+
+# within <- "partition"
+
   cluster <- match.arg(cluster)  
 # cluster <- "infomap"
   clustfun <- get(paste0("cluster_", cluster))
@@ -57,34 +60,44 @@ duplicated.nex <- function(x, opt=c("fuzzy", "terms", "comments", "traitcor"),
   oldcharnames <- x$charlabels
   oldstatenames <- x$statelabels
 
-  # Setup term weightings
-  file <- x$file
-  # only comparisons BETWEEN datasets/character types, not within:
-# within_dataset <- TRUE
+  ids <- 1:ncol(x$data)
   
-  # split up character ids to use later
-  if (within_dataset) {  
-    ids <- 1:ncol(x$data)
-    splits <- split(ids, file)
-  } else {
-    splits <- list(1:ncol(x$data))
+  # only comparisons BETWEEN datasets/character types, not within:
+  if (within == "dataset") {  
+    splits <- split(ids, x$file)
+  }
+  
+  # option to look within character partitions
+  if (within == "partition" & !is.null(x$charpartition) & length(unique(x$charpartition)) > 1) {
+    splits <- split(ids, x$charpartition)
   }
 
-  # TODO add option to look within character partitions
-  # if (!is.null(x$charpartition) & length(unique(x$charpartition)) > 1) {
-  #   charpart <- x$charpartition
-  #   splits <- split(ids, charpart)
-  # }
+  if (within == "none") {
+    splits <- list(1:ncol(x$data))
+  }
 
   # Calculate text distances based on overlapping terms
   # 2 options here- igraph/network modularity, or Ward clustering
   # weighting or not (weighting options= 'weightTf', 'weightTfIdf', 'weightBin', 'weightSMART'
   if (opt == "terms") {
-    chars <- paste(oldcharnames, oldstatenames)
-    chars <- gsub("\\-\\s", "", chars)    
-    termlist <- cleantext(chars)
+    termlist <- cleantext(paste(oldcharnames, oldstatenames))
     # make document matrix, sort by term frequency
     if (K == 1) {
+      # do for each chunk
+      M <- lapply(seq_along(splits), function(i) {
+        # i=2
+        subterms <- termlist[splits[[i]]]
+        dtm <- TermDocumentMatrix(subterms, control = list(wordLengths = c(2, Inf), weighting = function(x) weightTfIdf(x, normalize = TRUE), stemming=FALSE))
+        m <- as.matrix(dtm)
+        colnames(m) <- splits[[i]]
+        g <- graph_from_incidence_matrix(m, weighted=TRUE)
+        cl <- clustfun(g, E(g)$weight)
+        grps <- communities(cl)  # get clusters
+        list(g=g, cl=cl, grps=grps)
+      })
+
+# head(merge(M[[1]], M[[2]], by=0, all=TRUE))
+
       dtm <- TermDocumentMatrix(termlist, control = list(wordLengths = c(2, Inf), weighting = function(x) weightTfIdf(x, normalize = TRUE), stemming=FALSE))
       m <- as.matrix(dtm)
       g <- graph_from_incidence_matrix(m, weighted=TRUE)
@@ -107,6 +120,23 @@ duplicated.nex <- function(x, opt=c("fuzzy", "terms", "comments", "traitcor"),
     }
 
     # make all possible combinations within groups/clusters
+    lapply(splits, function(i) {
+      # i=2
+      g <- M[[i]]$g
+      verts <- which(grepl("\\d+", V(g)$name))
+      sdist <- as.dist(distances(g, v=verts, to=verts, weights=E(g)$weight))
+      chars <- as.character(splits[[i]])
+      if (!length(chars)>1) {
+        return(NA)
+      }
+      dups <- as.data.frame(t(combn(chars, m=2)))
+      dups$stringdist <- sdist
+      # dups <- cbind(dups, sdist)
+      dups <- dups[dups[,3]!=Inf, ]
+      plot(g, edge.width=E(g)$weight*20)
+      dups
+    })
+
     verts <- grepl("\\d+", V(g)$name)
     sdist <- as.dist(distances(g, v=verts, to=verts, weights=E(g)$weight))
     dups <- t(combn(1:ncol(x$data), m=2))
@@ -180,11 +210,7 @@ duplicated.nex <- function(x, opt=c("fuzzy", "terms", "comments", "traitcor"),
     dups <- dups[order(dups$stringdist), ]
     dups$char1 <- as.numeric(as.character(dups$char1))
     dups$char2 <- as.numeric(as.character(dups$char2))
-    # string distances
-    # stringdists <- unlist(sapply(seq_along(sdist_final), function(z) as.numeric(as.dist(sdist_final[[z]]))))
-    # names(stringdists) <- 1:length(stringdists)
     dups <- subset(dups, stringdist < cutoff)
-    # stringdists <- stringdists[stringdists < cutoff]
   }
   
   # Method to look at comments/reference to other datasets
@@ -269,7 +295,7 @@ duplicated.nex <- function(x, opt=c("fuzzy", "terms", "comments", "traitcor"),
     res$dups <- NULL
   } else {
     res$dups <- data.frame("char1" = dups[, 1], "charnum1" = x$charnum[dups[, 1]], "char2" = dups[, 2], "charnum2" = x$charnum[dups[, 2]], stringdist = dups[, 3])
-    # res$dups <- res$dups[order(res$dups$stringdist), ]
+    res$dups <- res$dups[order(res$dups$stringdist), ]
   }
 
   # get clusters
@@ -312,9 +338,8 @@ findgroups <- function(x) {
   grps
 }
 
-# Small function to update a duplicated nex object
-# changing cutoff will affect the characters identified as duplicates for later
-# visualization (e.g., with `printout` or `duptree` functions)
+# x <- tmp  
+# cutoff=0.2
 update.nex <- function(x, cutoff=Inf) {
   dups <- x$dups
   newdups <- dups[dups$stringdist < cutoff, ]
