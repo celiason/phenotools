@@ -23,6 +23,7 @@ traitlink <- function(tree, x) {
 
 	require(igraph)
 	require(stringr)
+	require(pbapply)
 
 	# roots of trait ontology
 	roots <- which(degree(tree, v = V(tree), mode = "in")==0, useNames=TRUE)

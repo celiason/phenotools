@@ -27,7 +27,12 @@
 #' TODO write a lda.nex() function? separate the dup finding and dropping? maybe filter.nex()?
 #' TODO add option to "nest" state labels in the network graph (so things like "size of distal end" wouldn't be matched across all characters, only those with state label as, say, "Humerus...")
 #' TODO be able to plot "subclusters" (looking at all connections among characters, keeping only terms in common between the two)
-#'
+
+# x <- dat2
+# opt <- "comments"
+# Error in `[.data.frame`(dups, , c("infile", "charnum", "author", "year",  : 
+#   undefined columns selected
+
 duplicated.nex <- function(x, opt=c("fuzzy", "terms", "comments", "traitcor"),
   method=NULL, within_dataset=FALSE, commasep=FALSE, weighting=c(1,1,1),
   K=1, cluster = c("infomap", "fast_greedy", "walktrap", "label_prop", "leading_eigen",
@@ -46,11 +51,10 @@ duplicated.nex <- function(x, opt=c("fuzzy", "terms", "comments", "traitcor"),
 
   cutoff <- Inf # I previously had this as an argument, but i think it's better in the printout function (that way all possible dups will be output and their string distances for later subsetting)
 
-  # setup
   opt <- match.arg(opt)
   
   cluster <- match.arg(cluster)  
-# cluster <- "infomap"
+
   clustfun <- get(paste0("cluster_", cluster))
   
   # extract information from nexus file
@@ -59,8 +63,6 @@ duplicated.nex <- function(x, opt=c("fuzzy", "terms", "comments", "traitcor"),
 
   # Setup term weightings
   file <- x$file
-  # only comparisons BETWEEN datasets/character types, not within:
-# within_dataset <- TRUE
   
   # split up character ids to use later
   if (within_dataset) {  
@@ -83,6 +85,7 @@ duplicated.nex <- function(x, opt=c("fuzzy", "terms", "comments", "traitcor"),
     chars <- paste(oldcharnames, oldstatenames)
     chars <- gsub("\\-\\s", "", chars)    
     termlist <- cleantext(chars)
+    
     # make document matrix, sort by term frequency
     if (K == 1) {
       dtm <- TermDocumentMatrix(termlist, control = list(wordLengths = c(2, Inf), weighting = function(x) weightTfIdf(x, normalize = TRUE), stemming=FALSE))
@@ -95,7 +98,7 @@ duplicated.nex <- function(x, opt=c("fuzzy", "terms", "comments", "traitcor"),
       dtm <- TermDocumentMatrix(termlist, control = list(wordLengths = c(2, Inf), stemming=FALSE))
       m <- as.matrix(dtm)
       tf_mat <- TermDocFreq(t(m))
-      # TF-IDF and cosine similarity
+      # TF-IDF and cosine similarity:
       tfidf <- t(t(m)[ , tf_mat$term ]) * tf_mat$idf
       tfidf <- t(tfidf)
       csim <- tfidf / sqrt(rowSums(tfidf * tfidf))
@@ -145,10 +148,12 @@ duplicated.nex <- function(x, opt=c("fuzzy", "terms", "comments", "traitcor"),
       part2 <- NA
       part3 <- oldstatenames
     }
+    
     # Clean up character names
     part1 <- sapply(cleantext(part1), as.character)
     part2 <- sapply(cleantext(part2), as.character)
     part3 <- sapply(cleantext(part3), as.character)
+    
     # individual text distance matrix
     sdist <- lapply(seq_along(splits), function(z) {
       nms <- splits[[z]]
@@ -158,6 +163,7 @@ duplicated.nex <- function(x, opt=c("fuzzy", "terms", "comments", "traitcor"),
       dimnames(sd1) <- dimnames(sd2) <- dimnames(sd3) <- list(nms, nms)
       list(sd1, sd2, sd3)
     })
+    
     # calculate weighted string distances
     sdist_final <- lapply(seq_along(sdist), function(z) {
       d1 <- weighting[1] * sdist[[z]][[1]]
@@ -169,6 +175,7 @@ duplicated.nex <- function(x, opt=c("fuzzy", "terms", "comments", "traitcor"),
       dimnames(res) <- dimnames(d1)
       res
     })
+    
     # setup duplicates matrix
     dups <- lapply(seq_along(sdist_final), function(z) {
       sset <- which(sdist_final[[z]] < cutoff, arr.ind=TRUE)
@@ -202,6 +209,7 @@ duplicated.nex <- function(x, opt=c("fuzzy", "terms", "comments", "traitcor"),
     dups$infile <- x$file[dups$id]
     dups$charnum <- x$charnum[dups$id]
     dups$matchfile <- paste0(tolower(str_extract(dups$author, "[A-Z][a-z]+")), "_", dups$year)
+    head(dups)
     dups <- dups[, c("infile", "charnum", "author", "year", "charmatch", "matchfile")]
     # match 1
     id1 <- sapply(1:nrow(dups), function(i) {
@@ -255,8 +263,6 @@ duplicated.nex <- function(x, opt=c("fuzzy", "terms", "comments", "traitcor"),
       cors <- sapply(dmat, "[[", "sdist")
       weights <- sapply(dmat, "[[", "weight")  
     }
-    # things to output: pairids, sset.dist, dups, stringdists
-    # sset.dist <- NULL
     stringdists <- 1-abs(cors)
     dups <- cbind(char1 = pairids[1,], char2 = pairids[2, ], cor = cors, weight = weights)
   }
@@ -275,6 +281,8 @@ duplicated.nex <- function(x, opt=c("fuzzy", "terms", "comments", "traitcor"),
   # get clusters
   if (opt == "terms") {
     res$clusters <- grps
+    res$g <- g
+    res$cl <- cl
   }
   
   if (opt == "fuzzy" & nrow(dups) != 0) {

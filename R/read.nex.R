@@ -150,6 +150,7 @@ read.nex <- function(file, missing = '?', gap = '-') {
 			res$charpartition <- charparts[[1]]
 		}
 	} else {
+		res$file <- rep(str_extract(file, '\\w+[\\s\\w]*(?=\\.nex)'), ncol(mat))
 		res$charpartition <- rep("''", ncol(mat))
 	}
 

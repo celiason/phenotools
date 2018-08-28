@@ -16,7 +16,7 @@ plot.nex <- function(x, phy = NULL, legend.pos = 'none', bw = FALSE, na.value = 
 	require(gridExtra)
 	require(RColorBrewer)
 
-  	source('/Users/chadeliason/R/ggplotphylo.R')
+  	# source('/Users/chadeliason/R/ggplotphylo.R')
 
   	fill <- match.arg(fill)
 
