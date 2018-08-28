@@ -117,7 +117,7 @@ read.nex <- function(file, missing = '?', gap = '-') {
 	if (length(grep('\\bCHARPARTITION\\b', x, ignore.case=TRUE)) > 0) {
 		charstart <- grep('CHARPARTITION', x, ignore.case=TRUE)
 		charparts <- lapply(charstart, function(i) {
-			charpart <- x[i]
+		  charpart <- x[i]
 			# charpartname <- str_match(charpart, '^\\w+')
 			charmatch <- str_match_all(charpart, "(\\w+):([0-9\\s\\-]*)")[[1]]
 			# charmatch <- str_match_all(charpart, '(\\w+):[\\s]*(\\d+[\\-\\s]*[\\d+]*)')[[1]]
@@ -220,7 +220,8 @@ read.nex <- function(file, missing = '?', gap = '-') {
 # Function to go from this "2,5-7,10,12-15" to this "c(2,5,6,7,10,12,13,14,15)"
 # see http://r.789695.n4.nabble.com/convert-delimited-strings-with-ranges-to-numeric-td4673763.html
 text2numeric <- function(xx) {
-	xx <- gsub('\\s|,\\s', ',', xx)
+	xx <- gsub("^\\s*|\\s*$", "", xx)
+  xx <- gsub('\\s|,\\s', ',', xx)
 	xx <- gsub('\\-', ':', xx)
 	eval(parse(text = paste("c(", xx, ")")))
 }
