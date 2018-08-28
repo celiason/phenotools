@@ -2,8 +2,6 @@
 # x = nexus file
 generate_ontology <- function(x) {
 
-	library(igraph)
-
 	if (is.nex(x)) {
 		charlabs <- x$charlabels
 	}

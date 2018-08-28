@@ -1,11 +1,5 @@
 # Plot phylogenies in ggplot
 
-#################
-#---LIBRARIES---#
-#################
-library(ape)
-library(ggplot2)
-
 #####################
 #---FORTIFY.PHYLO---#
 #####################

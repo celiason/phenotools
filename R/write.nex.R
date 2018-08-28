@@ -94,7 +94,6 @@ write.nex <- function(x, file, missing=NULL, gap=NULL, mrbayes=FALSE, ngen=NULL,
       sapply(1:ntax, function(z) { fcat(x$taxlabels[z], '\t\t', dat[z,], '\n') })
       fcat(';\nend;\n')
       fcat('begin mrbayes;\n')
-      library(phangorn)
       if (!is.null(phy)) {
         ntips <- length(phy$tip.label)
         nnodes <- phy$Nnode

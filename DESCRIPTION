@@ -4,5 +4,21 @@ Version: 1.0
 Authors@R: person("Eliason", "Chad", , "celiason@fieldmuseum.org", role = c("aut", "cre"))
 Description: What the package does (one paragraph)
 Depends: R (>= 3.1.2)
+Imports:
+	tm,
+	igraph,
+	ape,
+	ggplot2,
+	phangorn,
+	polycor,
+	psych,
+	textmineR,
+	pbmcapply,
+	stringdist,
+	stringr,
+	RColorBrewer,
+  kableExtra,
+  knitr,
+  pdftools
 License: What license is it under?
 LazyData: true
