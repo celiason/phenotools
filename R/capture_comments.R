@@ -1,11 +1,20 @@
 #' Function to find comments in text file
-#' how characters are characterized
+#' 
+#' How characters are characterized
 #' DD = duplicate
 #' KK = keep
 #' KKM = keep and modify wording
 #' XX = cut
+#' 
+#' @param file name of file
+#' 
+#' @importFrom stringr str_trim
+#' @importFrom stringr regex
+#' @importFrom stringr str_locate
+#' @importFrom stringr str_extract_all
+#' 
+#' @export
 #'
-#' devtools::load_all('~/github/nexustools')
 capture_comments <- function(file) {
 
 	# read text
@@ -34,7 +43,7 @@ capture_comments <- function(file) {
 		comments[[i]] <- str_extract_all(newtext, "(?<=\\{)(.*?)(?=\\})")[[1]]
 	}
 	names(comments) <- charnum
-	comments <- setNames(unlist(comments, use.names=F), rep(charnum, times = sapply(comments, length)))
+	comments <- stats::setNames(unlist(comments, use.names=F), rep(charnum, times = sapply(comments, length)))
 
 	# merge
 	res1 <- data.frame(charnum = as.numeric(names(comments)), comment = comments)
@@ -61,7 +70,7 @@ capture_comments <- function(file) {
 
 	names(dups) <- res1$charnum
 
-	dups <- na.omit(setNames(unlist(dups, use.names=F), rep(names(dups), times = sapply(dups, length))))
+	dups <- na.omit(stats::setNames(unlist(dups, use.names=F), rep(names(dups), times = sapply(dups, length))))
 
 	dups <- data.frame(target = as.numeric(names(dups)), duplicate = as.numeric(dups))
 

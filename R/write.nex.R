@@ -6,12 +6,22 @@
 #' @param file file patch for exported file
 #' @param gap character representing incomparable data
 #' @param missing character representing missing data
+#' @param mrbayes whether to add mrbayes block to output
+#' @param ngen number of generations to run in mrbyaes
+#' @param phy input phylogeny for downstream analysis in mrbayes
+#' @param run whether to run TNT analysis
+#' @param format output formate
+#' 
 #' @return an object of class \code{nex} for use in further \code{nexustools} functions
+#' 
 #' @examples \dontrun{
 #' x <- read.nex(file='example/toy1.nex')
 #' write.nex(x2, file='output/testnexus.nex')
 #' }
+#' 
 #' @author Chad Eliason \email{chad_eliason@@utexas.edu}
+#' 
+#' @export
 #'
 write.nex <- function(x, file, missing=NULL, gap=NULL, mrbayes=FALSE, ngen=NULL,
   phy=NULL, run=FALSE, format=c("nexus", "tnt")) {
@@ -44,7 +54,7 @@ write.nex <- function(x, file, missing=NULL, gap=NULL, mrbayes=FALSE, ngen=NULL,
         y <- x[-1L] != x[-n] + incr 
         i <- c(which(y|is.na(y)),n) 
         list(lengths = diff(c(0L,i)),
-             values = x[head(c(0L,i)+1L,-1L)]) 
+             values = x[utils::head(c(0L,i)+1L,-1L)]) 
       } 
       # Find sequence locations and lengths
       xx <- lapply(levels(test), function(x) {
@@ -97,7 +107,7 @@ write.nex <- function(x, file, missing=NULL, gap=NULL, mrbayes=FALSE, ngen=NULL,
       if (!is.null(phy)) {
         ntips <- length(phy$tip.label)
         nnodes <- phy$Nnode
-        ids <- Descendants(phy, (ntips+1):(ntips + nnodes), type = 'tips')
+        ids <- phangorn::Descendants(phy, (ntips+1):(ntips + nnodes), type = 'tips')
         ids <- lapply(1:length(ids), function(x) { phy$tip[ids[[x]]] })
         fcat(paste('constraint node', 1:phy$Nnode, ' = ', sapply(ids, paste0, collapse=" "), ';', sep=''), sep='\n')
         fcat('prset topologypr=constraints(', paste('node',1:phy$Nnode,sep='',collapse=','), ');\n', sep='')
@@ -115,7 +125,7 @@ write.nex <- function(x, file, missing=NULL, gap=NULL, mrbayes=FALSE, ngen=NULL,
           else {
               system(paste("mrbayes ", file, ".bayes", sep = ""))
           }
-          tr <- read.nexus(paste(file, ".con.tre", sep = ""))
+          tr <- ape::read.nexus(paste(file, ".con.tre", sep = ""))
           tr
       }
     } else {

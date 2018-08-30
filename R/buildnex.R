@@ -1,6 +1,8 @@
 #' Read a nexus data file
-#' a function that reads data stored in nexus files
+#' 
+#' A function that reads data stored in nexus files
 #' NOTE: it is necessary to first install poppler with, e.g., `brew install poppler`
+#' 
 #' @param file (required) path to either a PDF file or a TXT file
 #' @param charlabels optional path to text file with character statements
 #' @param ntax number of taxa (needed for PDF file reading)
@@ -9,11 +11,25 @@
 #' @param last last page for data matrix in a PDF file
 #' @param missing character representing missing data
 #' @param gap character representing inapplicable/incomporable data
+#' @param charnums optional vector with character numbers
+#' @param statelabels optional character vector with state labels for characters
+#' @param taxlabels optional vector with names of taxa
+#' @param filename vector with names of files associated with characters
+#' 
 #' @return an object of class \code{nex} for use in further \code{nexustools} functions
+#' 
 #' @examples \dontrun{
 #' tmp <- buildnex('/Users/chadeliason/github/nexustools/example/Bertelli_Chiappe_2005.pdf', ntax = 34,
 #'	nchar = 63, first = 22, last = 22)
 #' plot(tmp, legend.pos = 'top')
+#' }
+#' 
+#' @export
+#' 
+#' @import stringr
+#' @importFrom stats sd
+#' @importFrom stats na.omit
+#' 
 #' @author Chad Eliason \email{chad_eliason@@utexas.edu}
 #'
 buildnex <- function(file, charlabels=NULL, charnums=NULL, statelabels=NULL, taxlabels=NULL, filename=NULL, ntax=NULL, nchar=NULL, first=NULL, last=NULL, missing="?", gap="-") {
@@ -83,7 +99,6 @@ buildnex <- function(file, charlabels=NULL, charnums=NULL, statelabels=NULL, tax
 		raw <- gsub("^\\s+", "", raw)
 
 		# remove/clean up exported text files
-
 		system(paste("rm '", txtfile, "'", sep=""))
 
 		# find first character label
@@ -97,14 +112,11 @@ buildnex <- function(file, charlabels=NULL, charnums=NULL, statelabels=NULL, tax
 		# charnums <- charmatches[[1]][,2]
 		# charlabels <- charmatches[[1]][,3]
 
-
 		####### START OF THIS NEW STUFF ############
 
 		raw2 <- do.call(paste0, list(raw, collapse="\n"))
 
-
 		# how to find the data matrix?
-
 
 		# patterns to search for:
 
@@ -134,7 +146,6 @@ buildnex <- function(file, charlabels=NULL, charnums=NULL, statelabels=NULL, tax
 
 		tmp <- do.call(rbind, tmp)
 
-
 		# Genus 0 1 1 1 0 1 0 0 1 (spaces between numeric data)
 
 		# Genus 011101001 01111210 (chunks of data greater than 3 long, separated by spaces)
@@ -146,7 +157,7 @@ buildnex <- function(file, charlabels=NULL, charnums=NULL, statelabels=NULL, tax
 		# tmp <- str_match_all(raw2, regex("([A-Za-z\\.]*).*?(([0-9\\?\\[\\]\\-]{3,}\\s*)+)", dotall=TRUE, multiline=FALSE))
 		# tmp <- str_match_all(raw2, regex("([A-Z].*?(?=\\s[A-Z])).*?(([0-9\\?\\[\\]\\-]{3,}\\s*)+)", dotall=TRUE))
 
-		# [ ] need to be able to look in a few following lines to see if data are there
+		# TODO need to be able to look in a few following lines to see if data are there
 
 		# or maybe look for data first, and then find label in preceding lines?
 
@@ -223,7 +234,8 @@ buildnex <- function(file, charlabels=NULL, charnums=NULL, statelabels=NULL, tax
 
 		datamatrix <- t(datamatrix)
 
-		res <- list(data = datamatrix, taxlabels = taxlabels, missing = missing, gap = gap, symbols = symbols)
+		# res <- list(data = datamatrix, taxlabels = taxlabels, missing = missing, gap = gap, symbols = symbols)
+		res <- list(data = datamatrix, taxlabels = taxlabels, missing = missing, gap = gap)
 
 		class(res) <- c('nex', 'list')
 
@@ -291,7 +303,7 @@ text2charlabels <- function(x) {
 		charnums <- as.numeric(matches[, 3])
 		charlabs <- matches[, 4]
 	}
-	res <- setNames(charlabs, charnums)
+	res <- stats::setNames(charlabs, charnums)
 	res <- res[!is.na(res)]
 	res <- gsub("\n", " ", res)
 	res

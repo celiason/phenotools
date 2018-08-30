@@ -1,11 +1,29 @@
 #' Function to remove spaces, punctuation from phenome terms
 #' 
+#' Given a character vector, remove comments, superfluous characters, extra spaces
+#' and non-anatomical terms
+#' 
+#' @param x a character vector
 #' @param fast whether to use fast version (for duplicated analysis) or slow version (for printing characters)
 #' @param latin whether to use Latin token algorithm (see Schinke 1996)
 #' @param cuts whether to cut terms from a list
 #' @param comments logical whether to remove test in square brackets
-#' @example
+#' 
+#' @examples \dontrun{
 #' cleantext("dorsalmost part of the processus ligamentus cranii")
+#' }
+#' 
+#' @importFrom stringr str_replace_all
+#' @importFrom tm Corpus
+#' @importFrom tm VectorSource
+#' @importFrom tm tm_map
+#' @importFrom tm content_transformer
+#' @importFrom tm removeNumbers
+#' @importFrom tm removeWords
+#' @importFrom tm stopwords
+#' 
+#' @export
+#' 
 #' @author Chad M. Eliason
 #' 
 cleantext <- function(x, fast=TRUE, latin=TRUE, cuts=TRUE, comments=TRUE) {

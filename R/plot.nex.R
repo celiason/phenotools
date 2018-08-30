@@ -1,20 +1,35 @@
 #' plot data matrix and phylogeny
-#' plot a nexus file
+#' 
+#' Plots a nexus dataset and optionally a tree
+#' 
+#' @param x a `nex` object for plotting
 #' @param bw whether to plot in black (scoring present) and white (no scoring)
-#' @param colour any factor present in the nexus file (statelabels, file, charpartition, charset, etc.)
+#' @param phy a phylogeny in `phylo` format
+#' @param na.value color for NA values in matrix
+#' @param fsize font size
+#' @param fill how to color cells in matrix
+#' @param legend.pos position of legend
 #'
+#' @examples \dontrun{
 #' x <- allnex.genome
 #' phy <- tree
+#' }
+#' 
+#' @import ggplot2
+#' @importFrom RColorBrewer brewer.pal
+#' @importFrom stats reorder
+#' @importFrom grDevices colorRampPalette
+#' 
+plot.nex <- function(x, phy = NULL, legend.pos = c("none", "left", "right",
+          "bottom", "top"), bw = FALSE, na.value = 'lightgray', fsize = 8, fill = c('statelabels', 'charpartition', 'charset', 'file')) {
 
 # TODO compute changes along different branches, set as branch thickness
 # TODO create a shiny app for exploring phenomic data?
 
-plot.nex <- function(x, phy = NULL, legend.pos = 'none', bw = FALSE, na.value = 'lightgray', fsize = 8, fill = c('statelabels', 'charpartition', 'charset', 'file')) {
-
-	require(grid)
-	require(ape)
-	require(gridExtra)
-	require(RColorBrewer)
+	# require(grid)
+	# require(ape)
+	# require(gridExtra)
+	# require(RColorBrewer)
 
   	# source('/Users/chadeliason/R/ggplotphylo.R')
 
@@ -68,13 +83,12 @@ plot.nex <- function(x, phy = NULL, legend.pos = 'none', bw = FALSE, na.value = 
 	}
 
 	if (!is.null(phy)) {
-
 		# only keep data in phylogeny, and match tips
 		if (any(phy$tip %in% x$tax)) {
 			df <- df[df$y %in% phy$tip, ]
 			# x <- x[x$tax %in% phy$tip, ]
-			phy <- drop.tip(phy, which(!phy$tip %in% df$y))
-			tip.order <- phy$tip.label[phy$edge[phy$edge[, 2] <= Ntip(phy), 2]]
+			phy <- ape::drop.tip(phy, which(!phy$tip %in% df$y))
+			tip.order <- phy$tip.label[phy$edge[phy$edge[, 2] <= ape::Ntip(phy), 2]]
 			matches <- match(df$y, tip.order)
 		} else {
 			stop('Tip labels not found in data')
@@ -83,7 +97,7 @@ plot.nex <- function(x, phy = NULL, legend.pos = 'none', bw = FALSE, na.value = 
 		# create ggplot phylogeny object
 		p1 <- ggplot(data = phy) +
 				geom_segment(aes(x = x, y = y, xend = xend, yend = yend), colour = "black", alpha = 1, lineend='square') +
-				coord_cartesian(y = c(.75, Ntip(phy) + .75)) +
+				coord_cartesian(ylim = c(.75, ape::Ntip(phy) + .75)) +
 				theme(
 					legend.position = "none",
 					axis.text = element_text(colour = NA),
@@ -104,7 +118,7 @@ plot.nex <- function(x, phy = NULL, legend.pos = 'none', bw = FALSE, na.value = 
 		
 		p2 <- ggplot(df, aes(x, reorder(y, matches), fill = fill)) + geom_tile() +
 			  	xlab("Trait") + 
-				coord_cartesian(y = c(.75, Ntip(phy) + .75)) +
+				coord_cartesian(y = c(.75, ape::Ntip(phy) + .75)) +
 				pal +
 			  	scale_x_continuous(breaks = seq(0, ncol(x$data), by=10)) +
 			  		theme(
@@ -121,14 +135,11 @@ plot.nex <- function(x, phy = NULL, legend.pos = 'none', bw = FALSE, na.value = 
 						panel.grid = element_blank()
 						)
 
-		grid.arrange(p1, p2, nrow = 1, widths = c(.2, 1))
-		
+		gridExtra::grid.arrange(p1, p2, nrow = 1, widths = c(.2, 1))
 		return(list(phy = phy, data = x))
-
 	}
 
 	if (is.null(phy)) {
-		
 		ggplot(df, aes(x, y, fill = abbreviate(fill, minlength=10))) + geom_tile() +
 		  	xlab("Trait") + 
 		  	ylab("Species") +
@@ -151,5 +162,4 @@ plot.nex <- function(x, phy = NULL, legend.pos = 'none', bw = FALSE, na.value = 
 		  	pal +
 		  	guides(fill=guide_legend(nrow=2, byrow=TRUE))
 	}
-
 }

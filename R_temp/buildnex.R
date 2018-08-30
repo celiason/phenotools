@@ -1,14 +1,20 @@
 #' Read a nexus data file
-#' a function that reads data stored in nexus files
+#' 
+#' A function that reads data stored in nexus files
 #' NOTE: it is necessary to first install poppler with, e.g., `brew install poppler`
+#' 
 #' @param file (required) path to nexus file
 #' @param missing character representing missing data
 #' @param gap character representing inapplicable/incomporable data
+#' 
 #' @return an object of class \code{nex} for use in further \code{nexustools} functions
+#' 
 #' @examples \dontrun{
 #' tmp <- buildnex('/Users/chadeliason/github/nexustools/example/Bertelli_Chiappe_2005.pdf', ntax = 34,
 #'	nchar = 63, first = 22, last = 22)
 #' plot(tmp, legend.pos = 'top')
+#' }
+#' 
 #' @author Chad Eliason \email{chad_eliason@@utexas.edu}
 #'
 buildnex <- function(pdffile, ntax, nchar, first, last, missing = '?', gap = '-') {

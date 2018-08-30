@@ -10,20 +10,23 @@
 #' 		barbule
 #' 			hooklet
 #'
+#' @import igraph
+#' 
+#' @export
+#' 
 read_ontology <- function(file, root=FALSE){
 	
-	require(psych)
-	require(zoo)
-	require(igraph)
+	# require(psych)
+	# require(zoo)
 	
-	fields <- max(count.fields(file, sep = "\t"))
+	fields <- max(utils::count.fields(file, sep = "\t"))
 	
-	dat <- read.table(file, sep="\t",col.names = paste0("V", sequence(fields)), header=FALSE, fill=TRUE, strip.white=TRUE, stringsAsFactors=FALSE, na.strings="")
+	dat <- utils::read.table(file, sep="\t",col.names = paste0("V", sequence(fields)), header=FALSE, fill=TRUE, strip.white=TRUE, stringsAsFactors=FALSE, na.strings="")
 	
 	# To prepare the data carry forward the last value in columns if lower level (col to the right) is non-missing
-	dat[1] <- na.locf(dat[1], na.rm=FALSE)
+	dat[1] <- zoo::na.locf(dat[1], na.rm=FALSE)
 	for(i in ncol(dat):2)  {
-	  dat[[i-1]] <-  ifelse(!is.na(dat[[i]]), na.locf(dat[[i-1]], na.rm=F), dat[[i-1]])
+	  dat[[i-1]] <-  ifelse(!is.na(dat[[i]]), zoo::na.locf(dat[[i-1]], na.rm=F), dat[[i-1]])
 	}
 	
 	# Create unique edges by pasting adjacent matrix cells
@@ -42,7 +45,7 @@ read_ontology <- function(file, root=FALSE){
 	edges <- rbind(na.omit(cbind(dat[1:2], sort = rownames(dat))),
 		do.call('rbind',
 			lapply(1:(ncol(dat) - 2), function(i) {
-				na.omit(setNames(cbind(dat[(1 + i) : (2 + i)], rownames(dat)), c(names(dat[1:2]), "sort")))
+				na.omit(stats::setNames(cbind(dat[(1 + i) : (2 + i)], rownames(dat)), c(names(dat[1:2]), "sort")))
 			})))
 
 	edges <- as.matrix(edges)

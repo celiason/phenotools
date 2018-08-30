@@ -1,21 +1,32 @@
 #' Function to print an html summary of clusters of similar characters
+#' 
+#' Function prints out a list of clusters of similar characters with terms color-
+#' coded to illustrate overlap among similar characters
+#' 
 #' @param x = nexus object with clusters found
 #' @param maxsize = maximum size of cluster of characters
-#' @examples
+#' @param file name of output file (html format)
+#' @param statelabels whether to include state labels in output
+#' 
+#' @examples \dontrun{
 #' data(twig)
 #' dups <- duplicated(twig, weighted=TRUE)
 #' printout(dups, maxsize=10, file="~/Desktop/twig.html")
+#' }
 #' 
-# TODO scale text by number of occurrences in cluster/weight
-# TODO add color option
-# x <- tmp
-# file <- "~/Desktop/phenome_terms3.csv"
+#' @export
+#' 
 printout <- function(x, maxsize=NULL, file, statelabels=TRUE) {
+
+# TODO scale text by number of occurrences in cluster/weight
+
+# TODO add color option
+
 	require(RColorBrewer)
 	require(kableExtra)
 	dark2 <- brewer.pal(8, "Dark2")
 	clust <- x$cluster
-	clust <- clust[str_count(string=clust, pattern="\\d+")!=0]
+	clust <- clust[stringr::str_count(string=clust, pattern="\\d+")!=0]
 	if (!is.null(maxsize)) {
 		csize <- sapply(sapply(sapply(clust, str_extract, "\\d+"), na.omit), length)
 		keep <- csize < maxsize
@@ -60,10 +71,10 @@ printout <- function(x, maxsize=NULL, file, statelabels=TRUE) {
 		}
 		textcol <- split(textcol, nm)
 		text_formatted <- sapply(seq_along(chars), function(x) {
-			paste0("<br/>", text_spec(paste("Character ", ids[x], ": "), "html", color="black", italic=T),
-				paste(text_spec(chars0[[x]], "html", color=textcol[[x]]), collapse=" "))
+			paste0("<br/>", kableExtra::text_spec(paste("Character ", ids[x], ": "), "html", color="black", italic=T),
+				paste(kableExtra::text_spec(chars0[[x]], "html", color=textcol[[x]]), collapse=" "))
 		})
-		header <- text_spec(paste0("Cluster ", i), "html", bold=TRUE)
+		header <- kableExtra::text_spec(paste0("Cluster ", i), "html", bold=TRUE)
 		if (i==1) {
 			cat(header, text_formatted, file=file, sep="<br/>", append=F)
 		} else {

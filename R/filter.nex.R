@@ -1,9 +1,11 @@
-#' Function for filtering out duplicated characters in a nexus file
+#' Filter duplicated characters in a nexus file
+#' 
+#' Given a list of specified duplicates, drop and/or merge characters
 #' 
 #' @param x (required) a nexus input file
 #' @param dups an optional matrix or list specifying which character are duplicates (e.g., dups = list('1733' = c(1741,1745,1755)))
 #' 
-#' Example: hindlimb assessed characters only
+#' @examples \dontrun{
 #' dat <- read.nex("/Users/chadeliason/Dropbox/phenome dataset/data/2015-09-02/original/final_reordered.nex")
 #' drops <- grep("livezey_2006", dat$charlab)
 #' tmp <- capture_comments(file = "~/Dropbox/phenome dataset/data/2015-09-02/modified/final_reorderedJAC+CME.txt")
@@ -13,6 +15,7 @@
 #' xx <- filter(x, dups=tmp$dups)
 #' sum(is.na(x$data))/length(x$data)  # 86.5% missing data
 #' sum(is.na(xx$data))/length(xx$data)  # 86.3% missing data
+#' }
 #' 
 filter.nex <- function(x, dups=NULL) {
     if (class(dups)=="list") {      	

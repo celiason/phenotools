@@ -7,7 +7,9 @@
 #' @param x (required) a nexus data object
 #' @param opt method to use for finding duplicates
 #' @param method specific method arguments to pass to functions
-#' @param n number of pairs to use for training discriminant function analysis to predict matches
+#' @param commasep whether characters should be split into parts based on commas
+#' @param K number of clusters (if 1 cluster are found automatically according to method specified with `cluster=`)
+#' @param cluster clustering algorithm to use for finding overlapping characters
 #' @param within_dataset whether to limit search to only among-dataset characters (e.g., useful if you are certain the individual matrices do not contain duplicates)
 #' @param weighting vector for parts of character (before comma, after comma, states)
 #' @param cores how many cores to use (for parallel processing in traitcor option)
@@ -21,22 +23,29 @@
 #' duplicated.nex(x, method = 'automated', map = map)
 #' duplicated(x, cutoff = 0.01, method = 'auto')
 #' duplicated(x, method = 'user', map=list(c(2,3)))
+#' }
+#' 
+#' @importFrom textmineR TermDocFreq
+#' @importFrom utils combn
+#' @importFrom stats as.dist
+#' @importFrom stats hclust
+#' @importFrom stats cutree
+#' @importFrom stringdist stringdist
+#' @importFrom stringr str_extract
+#' @importFrom stringr str_length
+#' @importFrom stats complete.cases
+#' @importFrom pbmcapply pbmclapply
 #' 
 #' @author Chad Eliason \email{celiason@@fieldmuseum.org}
 #'
-#' TODO write a lda.nex() function? separate the dup finding and dropping? maybe filter.nex()?
-#' TODO add option to "nest" state labels in the network graph (so things like "size of distal end" wouldn't be matched across all characters, only those with state label as, say, "Humerus...")
-#' TODO be able to plot "subclusters" (looking at all connections among characters, keeping only terms in common between the two)
-
-# x <- dat2
-# opt <- "comments"
-# Error in `[.data.frame`(dups, , c("infile", "charnum", "author", "year",  : 
-#   undefined columns selected
-
 duplicated.nex <- function(x, opt=c("fuzzy", "terms", "comments", "traitcor"),
   method=NULL, within_dataset=FALSE, commasep=FALSE, weighting=c(1,1,1),
   K=1, cluster = c("infomap", "fast_greedy", "walktrap", "label_prop", "leading_eigen",
-    "louvain", "optimal", "spinglass"), cores=1, ...) {
+    "louvain", "optimal", "spinglass"), cores=1) {
+
+# TODO write a lda.nex() function? separate the dup finding and dropping? maybe filter.nex()?
+# TODO add option to "nest" state labels in the network graph (so things like "size of distal end" wouldn't be matched across all characters, only those with state label as, say, "Humerus...")
+# TODO be able to plot "subclusters" (looking at all connections among characters, keeping only terms in common between the two)
 
   require(stringdist)
   require(tm)
@@ -88,14 +97,14 @@ duplicated.nex <- function(x, opt=c("fuzzy", "terms", "comments", "traitcor"),
     
     # make document matrix, sort by term frequency
     if (K == 1) {
-      dtm <- TermDocumentMatrix(termlist, control = list(wordLengths = c(2, Inf), weighting = function(x) weightTfIdf(x, normalize = TRUE), stemming=FALSE))
+      dtm <- tm::TermDocumentMatrix(termlist, control = list(wordLengths = c(2, Inf), weighting = function(x) tm::weightTfIdf(x, normalize = TRUE), stemming=FALSE))
       m <- as.matrix(dtm)
       g <- graph_from_incidence_matrix(m, weighted=TRUE)
       cl <- clustfun(g, E(g)$weight)
       grps <- communities(cl)  # get clusters
     }
     if (K > 1) {
-      dtm <- TermDocumentMatrix(termlist, control = list(wordLengths = c(2, Inf), stemming=FALSE))
+      dtm <- tm::TermDocumentMatrix(termlist, control = list(wordLengths = c(2, Inf), stemming=FALSE))
       m <- as.matrix(dtm)
       tf_mat <- TermDocFreq(t(m))
       # TF-IDF and cosine similarity:
@@ -209,7 +218,6 @@ duplicated.nex <- function(x, opt=c("fuzzy", "terms", "comments", "traitcor"),
     dups$infile <- x$file[dups$id]
     dups$charnum <- x$charnum[dups$id]
     dups$matchfile <- paste0(tolower(str_extract(dups$author, "[A-Z][a-z]+")), "_", dups$year)
-    head(dups)
     dups <- dups[, c("infile", "charnum", "author", "year", "charmatch", "matchfile")]
     # match 1
     id1 <- sapply(1:nrow(dups), function(i) {
@@ -240,7 +248,7 @@ duplicated.nex <- function(x, opt=c("fuzzy", "terms", "comments", "traitcor"),
         M <- cbind(char1, char2)
         M <- na.omit(M)
         M <- apply(M, 2, as.numeric)
-        suppressWarnings(tryCatch(polychor(M), error=function(e) NA))
+        suppressWarnings(tryCatch(polycor::polychor(M), error=function(e) NA))
       }, mc.cores = cores)
       cors <- unlist(dmat)
       weights <- rep(1, length(cors))

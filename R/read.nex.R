@@ -5,31 +5,32 @@
 #' @param file (required) path to nexus file
 #' @param missing character representing missing data
 #' @param gap character representing inapplicable/incomporable data
+#' 
 #' @return an object of class \code{nex} for use in further \code{nexustools} functions
+#' 
 #' @examples \dontrun{
 #' x <- read.nex(file='example/toy1.nex')
+#' }
+#' 
 #' @author Chad Eliason \email{celiason@@fieldmuseum.org}
+#' 
+#' @export
 #'
-
-# file <- "/Users/chadeliason/Documents/UT/projects/phenome/output/final_reordered2.nex"
-
 read.nex <- function(file, missing = '?', gap = '-') {
-
-	require(stringr)
 
   	x <- scan(file = file, what = "", sep = "\n")
 	
 	# find number of characters
-	nchar <- as.numeric(na.omit(str_extract(x, regex('(?<=NCHAR=)\\d+', ignore_case=TRUE))))
+	nchar <- as.numeric(na.omit(stringr::str_extract(x, regex('(?<=NCHAR=)\\d+', ignore_case=TRUE))))
 	
 	# throws an error if ntax specified multiple times
-	ntax <- as.numeric(na.omit(str_extract(x, regex('(?<=NTAX=)\\d+', ignore_case=TRUE)))[1])
+	ntax <- as.numeric(na.omit(stringr::str_extract(x, regex('(?<=NTAX=)\\d+', ignore_case=TRUE)))[1])
 	
 	# find taxon labels
 	taxlabelsstart <- grep('TAXLABELS', x, ignore.case=TRUE) + 1
 	# lines that had END + semicolon
 	taxlabelsend <- taxlabelsstart + ntax - 1
-	taxlabels <- str_match(x[taxlabelsstart:taxlabelsend], '[\\t]*(.*)')[,2]
+	taxlabels <- stringr::str_match(x[taxlabelsstart:taxlabelsend], '[\\t]*(.*)')[,2]
 
 	# remove space at start of taxon label
 	taxlabels <- gsub('^\\s*', '', taxlabels)
@@ -62,10 +63,10 @@ read.nex <- function(file, missing = '?', gap = '-') {
 
 	# replace "bad" characters in taxon names
 	for (i in seq_along(taxlabels)) {
-		mat <- str_replace_all(string=mat, pattern=fixed(taxlabels0[i]), replacement=taxlabels[i])
+		mat <- stringr::str_replace_all(string=mat, pattern = stringr::fixed(taxlabels0[i]), replacement=taxlabels[i])
 	}
 
-	locs <- str_locate(mat, paste0("\n", taxlabels, "(\\b|\\t)"))
+	locs <- stringr::str_locate(mat, paste0("\n", taxlabels, "(\\b|\\t)"))
 
 	# Two formats:
 	# Genus_species
@@ -73,10 +74,10 @@ read.nex <- function(file, missing = '?', gap = '-') {
 	# there's a problem if some OTUs are just genus and others genus + species (with spaces between)
 
 	# break up matrix by start/end locations of taxon labels
-	mat <- str_sub(mat, start = locs[,1], end = c(locs[2:nrow(locs), 1] - 1, str_length(mat)))
+	mat <- stringr::str_sub(mat, start = locs[,1], end = c(locs[2:nrow(locs), 1] - 1, stringr::str_length(mat)))
 
 	# remove taxon labels from matrix
-	mat <- str_replace_all(mat, fixed(taxlabels), "")
+	mat <- stringr::str_replace_all(mat, stringr::fixed(taxlabels), "")
 
 	# remove white space
 	mat <- gsub("\\s", "", mat)
@@ -86,7 +87,7 @@ read.nex <- function(file, missing = '?', gap = '-') {
 
 	# this didn't work with theropod working matrix (Turner 2012 AMNH version)
 	# so fixed with:
-	mat <- str_extract_all(mat, '\\d{1}|[\\(\\[\\{]\\d{1,4}[\\)\\]\\}]|\\-|\\?')  # extract scorings
+	mat <- stringr::str_extract_all(mat, '\\d{1}|[\\(\\[\\{]\\d{1,4}[\\)\\]\\}]|\\-|\\?')  # extract scorings
 
 	# convert '{ }', '[ ]' --> '( )'
 	mat <- lapply(mat, gsub, pattern='\\{|\\[', replacement='\\(')
@@ -119,7 +120,7 @@ read.nex <- function(file, missing = '?', gap = '-') {
 		charparts <- lapply(charstart, function(i) {
 		  charpart <- x[i]
 			# charpartname <- str_match(charpart, '^\\w+')
-			charmatch <- str_match_all(charpart, "(\\w+):([0-9\\s\\-]*)")[[1]]
+			charmatch <- stringr::str_match_all(charpart, "(\\w+):([0-9\\s\\-]*)")[[1]]
 			# charmatch <- str_match_all(charpart, '(\\w+):[\\s]*(\\d+[\\-\\s]*[\\d+]*)')[[1]]
 			charpartsets <- charmatch[,2]
 			charpartranges <- charmatch[,3]
@@ -146,11 +147,11 @@ read.nex <- function(file, missing = '?', gap = '-') {
 			res$file <- charparts[[id1]]
 			res$charpartition <- charparts[[id2]]
 		} else {
-			res$file <- rep(str_extract(file, '\\w+[\\s\\w]*(?=\\.nex)'), ncol(mat))
+			res$file <- rep(stringr::str_extract(file, '\\w+[\\s\\w]*(?=\\.nex)'), ncol(mat))
 			res$charpartition <- charparts[[1]]
 		}
 	} else {
-		res$file <- rep(str_extract(file, '\\w+[\\s\\w]*(?=\\.nex)'), ncol(mat))
+		res$file <- rep(stringr::str_extract(file, '\\w+[\\s\\w]*(?=\\.nex)'), ncol(mat))
 		res$charpartition <- rep("''", ncol(mat))
 	}
 
@@ -158,7 +159,7 @@ read.nex <- function(file, missing = '?', gap = '-') {
 	if (length(grep('\\bCHARLABELS', x, ignore.case=TRUE)) > 0) {
 		charlabelsstart <- grep('\\bCHARLABELS', x, ignore.case=TRUE) + 1
 		charlabelsend <- grep('\\;$', x[charlabelsstart:length(x)])[1] + charlabelsstart - 2	
-		charnames <- na.omit(str_match(x[charlabelsstart:charlabelsend], '\\[(\\d{1,4}|[A-Z]+)[.]*\\]\\s(.+)'))
+		charnames <- na.omit(stringr::str_match(x[charlabelsstart:charlabelsend], '\\[(\\d{1,4}|[A-Z]+)[.]*\\]\\s(.+)'))
 		charnames <- gsub("^'|'$", "", charnames)
 		charnums <- as.numeric(charnames[,2])
 		charlabels <- charnames[,3]
@@ -173,14 +174,14 @@ read.nex <- function(file, missing = '?', gap = '-') {
 	if (length(grep('\\bSTATELABELS', x, ignore.case=TRUE)) > 0) {
 		statelabelsstart <- grep('\\bSTATELABELS', x, ignore.case=TRUE) + 1
 		statelabelsend <- grep('\\;$', x[statelabelsstart:length(x)])[1] + statelabelsstart - 2
-		statelabels <- str_match(x[statelabelsstart:statelabelsend], '[\\t]*\\d+\\s*(.+)$')[,2]
+		statelabels <- stringr::str_match(x[statelabelsstart:statelabelsend], '[\\t]*\\d+\\s*(.+)$')[,2]
 		# sometimes states are on multiple lines:
 		if (length(statelabels) != nchar) {
 			statelabelsend <- grep('\\;$', x[statelabelsstart:length(x)])[1] + statelabelsstart - 1
 			statelabels <- x[statelabelsstart:statelabelsend]
 			statelabels <- paste(statelabels, collapse="")
-			states_start <- str_locate_all(statelabels, "\\d+[\\t\\s]+[\\']")  # start
-			states_end <- str_locate_all(statelabels, "\\t+\\,|\\t+\\;")  # end
+			states_start <- stringr::str_locate_all(statelabels, "\\d+[\\t\\s]+[\\']")  # start
+			states_end <- stringr::str_locate_all(statelabels, "\\t+\\,|\\t+\\;")  # end
 			statelabels <- sapply(1:nchar, function(x) {substr(statelabels, start=states_start[[1]][x,1], stop=states_end[[1]][x,1])})
 			statelabels <- gsub('\\t|^\\d+', '', statelabels)
 		}
@@ -198,7 +199,7 @@ read.nex <- function(file, missing = '?', gap = '-') {
 		charlabelsend <- grep('\\;', x[charlabelsstart:length(x)])[1] + charlabelsstart - 1
 		# charstatelabels <- str_match_all(x[charlabelsstart:charlabelsend], "(\\t|\\,)\\s(\\d{1,})\\s'(.*?)'(\\s\\/\\s)?(.*?)(?=\\;|(\\,\\s\\d))")
 		
-		charstatelabels <- str_match_all(x[charlabelsstart:charlabelsend],
+		charstatelabels <- stringr::str_match_all(x[charlabelsstart:charlabelsend],
 			"(\\t|\\,)\\s(\\d{1,})\\s'(.*?)('\\s\\/(.*?))?(?=\\;(\\s)?$|(\\,\\s\\d{1,}\\s'))")
 
 		charnums <- as.numeric(charstatelabels[[1]][,3])

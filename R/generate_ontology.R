@@ -1,5 +1,15 @@
-# generate user/file-based trait ontology
-# x = nexus file
+#' Generate trait ontology from a nexus file
+#' 
+#' Comma separate terms are used to define links among components of a nexus
+#' character list
+#' 
+#' @param x a nexus file
+#' 
+#' @importFrom stringr str_split
+#' @importFrom utils tail
+#' 
+#' @export
+#' 
 generate_ontology <- function(x) {
 
 	if (is.nex(x)) {
@@ -7,7 +17,7 @@ generate_ontology <- function(x) {
 	}
 
 	# remove punctuation, comments in brackets, etc. (see cleantext.R function)
-	charlabs <- cleantext(charlabs, comma=FALSE)
+	charlabs <- cleantext(charlabs)
 
 	# fix muscule and nerve abbreviations
 	charlabs <- gsub("m\\.", "musculus", charlabs)

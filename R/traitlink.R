@@ -9,29 +9,25 @@
 #' 
 #' @return an object of class XX
 #' 
-#' @example
+#' @author Chad M. Eliason
+#' 
+#' @examples \dontrun{
 #' x <- twig2.ss
 #' tree <- tree
 #' x=nex
+#' }
 #' 
-#' @author Chad M. Eliason
+#' @export
 #' 
-
-# x=nex
-
 traitlink <- function(tree, x) {
-
-	require(igraph)
-	require(stringr)
-	require(pbapply)
-
+	
 	# roots of trait ontology
 	roots <- which(degree(tree, v = V(tree), mode = "in")==0, useNames=TRUE)
 
 	# all patchs from roots to tips
 	# isn't there a faster way to do this?
 	cat("Finding paths along trait ontology...\n")
-	paths <- pblapply(V(tree), all_shortest_paths, graph=tree, to=roots, mode="in")
+	paths <- pbapply::pblapply(V(tree), all_shortest_paths, graph=tree, to=roots, mode="in")
 	paths <- sapply(paths, "[[", "res")
 	
 	# combine nodes/names along paths (for regexp searching later)
@@ -89,12 +85,12 @@ traitlink <- function(tree, x) {
 	# m <- stringdistmatrix(cleanchars, terms, method="jw")
 
 	# (2) term overlap option
-	termlist <- Corpus(VectorSource(c(cleanchars, terms)))
-	dtm <- TermDocumentMatrix(termlist, control = list(wordLengths = c(2, Inf), weighting = function(x) weightTfIdf(x, normalize = TRUE), stemming=FALSE))
+	termlist <- tm::Corpus(VectorSource(c(cleanchars, terms)))
+	dtm <- tm::TermDocumentMatrix(termlist, control = list(wordLengths = c(2, Inf), weighting = function(x) tm::weightTfIdf(x, normalize = TRUE), stemming=FALSE))
 	m <- as.matrix(dtm)
 
 	cat("Creating links between characters and trait ontology...\n")
-	g <- graph_from_incidence_matrix(m, weighted=TRUE)
+	g <- igraph::graph_from_incidence_matrix(m, weighted=TRUE)
 
 	# finding clusters (turned off for now)
 	# cluster <- "infomap"
@@ -133,7 +129,7 @@ traitlink <- function(tree, x) {
 	# need to compute distances from terms to ontology, max distance of 2 vertices!!
 	# find neighborhood
 	cat("Locating matches...\n")
-	picks <- pbsapply(v1, function(i) {
+	picks <- pbapply::pbsapply(v1, function(i) {
 		nn <- ego(graph=g, order=2, nodes=i)[[1]]
 		tovert <- v2[V(g)$name[v2] %in% names(nn)]
 		d <- distances(g, v=i, to=tovert)[1, ]
@@ -188,65 +184,5 @@ traitlink <- function(tree, x) {
 	res <- list(chars=x$charlab, dmat=alldmat, ont=ontmatch, nodedepth=nodedepth)
 
 	res
-
-}
-
-############################################################################
-# fix below/add in to above:
-
-foo <- function(x) {
-	
-
-	# (3) regexp matching
-	stemchar2 <- lapply(paste0("\\b", unlist(terms2)), grep, x=cleanchars)
-	
-	names(stemchar2) <- rep(seq_along(terms2), times=sapply(terms2, length))
-
-	# remove zero length list elements
-	stemchar2 <- stemchar2[!lapply(stemchar2, length)==0]
-
-	# TODO create links from terms to characters, weighted by number of matches
-
-	# create links between terms and characters
-	x <- sapply(seq_along(stemchar2), function(x) {
-		paste0(names(stemchar2[x]), "--", stemchar2[[x]])
-	})
-	names(x) <- names(stemchar2)
-	edges <- do.call(rbind, strsplit(unlist(x), "--"))
-	edges[, 2] <- paste0("char", edges[, 2])
-	edges[, 1] <- V(tree)$name[as.numeric(edges[, 1])]
-	newverts <- unique(edges[, 2])
-
-	# create new network with characters added in
-	tree2 <- add_vertices(tree, nv=length(newverts), name=newverts) 
-
-	# add new edges
-	tree2 <- add_edges(tree2, apply(edges, 1, "c"))
-
-	tree2
-
-### FIX BELOW
-# output character assignment to see if correct
-roots <- which(degree(tree2, v = V(tree2), mode = "in")==0, useNames = T)
-system.time(nex.traitlink <- lapply(id, all_shortest_paths, graph=tree2, to=roots, mode="in"))
-nms <- V(tree2)$name[id]
-
-# get all paths
-# takes ~ 15 seconds:
-bodypart <- sapply(seq_along(paths), function(x) {names(sapply(paths[[x]], tail, 1))} )
-names(bodypart) <- nms
-
-# Figure out how many were correctly assigned to body part
-bodypart.unique <- sapply(bodypart, unique)
-bodypart.tables <- sapply(bodypart, table)
-df <- data.frame(char = names(bodypart.tables), part = sapply(seq_along(bodypart.tables), function(x) {names(which.max(bodypart.tables[[x]]))}))
-df$charnum <- as.numeric(str_extract(df$char, "\\d+"))
-df$charlabel <- nex$charlab[df$charnum]
-df <- dplyr::select(df, charnum, part, charlabel)
-df$part <- factor(df$part, levels = names(roots), ordered = TRUE)
-df <- arrange(df, part)
-head(df)
-
-###
 
 }

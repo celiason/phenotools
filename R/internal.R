@@ -83,7 +83,7 @@ na.omit.nex <- function(x) {
 }
 
 head.nex <- function(x) {
-  head(x$data)
+  utils::head(x$data)
 }
 
 

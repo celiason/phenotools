@@ -3,24 +3,19 @@
 #' Function to collapse taxa and merge data in taxon 1 with other taxa
 #'
 #' @param x (required) a `nex` object
-#' @param file file patch for exported file
 #' @param map a list specifying equivalent taxa to map from and to (e.g., `c('Tinamus' = 'Tinamus_major')` will map all characters from Tinamus to Tinamus_major)
 #' @param method whether to convert characters scored in both taxa to polymorphisms (`merge`) or retain original characters (default)
+#' 
 #' @return an object of class \code{nex} for use in further \code{nexustools} functions
-#' @examples \dontrun{
-#'
-#' x <- read.nex(file='example/toy1.nex')
-#' write.nex(x2, file='output/testnexus.nex')
-#'
+#' 
+#' @importFrom stringr str_extract_all
+#' @importFrom stringr str_length
+#' 
 #' @author Chad Eliason \email{chad_eliason@@utexas.edu}
-#'
-# x <- read.nex(files[5])
-# x <- tmp
-# map = list('Apteryx_spp' = 'Apteryx_haastii', 'Tinamidae_' = c('Rhynchotus_rufescens', 'Eudromia_elegans'))
-# map <- list('Ancestor' = c('Tinamus_solitarius', 'Crypturellus_undulatus', 'Rhynchotus_rufescens'), 'Dromaius' = 'Rhynchotus_rufescens')
-# map
-# maybe use mutate? or merge?
+#' 
 collapse.nex <- function(x, map, method = c('retain', 'merge')) {
+
+# TODO maybe use mutate? or merge?
 
   res <- x
 

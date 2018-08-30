@@ -1,15 +1,21 @@
-#' code for combining character lists and data matrices
+#' Code for combining character lists and data matrices
+#' 
+#' 
+#' 
+#' @examples \dontrun{
 #' x = nexus file (.nex object in R)
 #' file = text file with character list (numbered)
+#' }
+#' 
+#' @importFrom stringr str_match
+#' @importFrom stringr str_match_all
 #'
 addmeta <- function(x, file) {
 
 	# read in character labels
-
 	y <- readLines(file)
 
 	# search for pattern
-
 	matches <- str_match(y, "^[\\s\\t]*(\\d+)[\\.]?(.*)(\\[\\[\\]\\])(.*)")
 
 	# remove NAs

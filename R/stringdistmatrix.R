@@ -33,7 +33,7 @@ stringdistmatrix <- function (a, b, method = c("osa", "lv", "dl", "hamming", "lc
         weight <- weight[c(2, 1, 3)]
     if (missing(b)) {
         if (useNames == "names") {
-            a <- setNames(as.character(a), names(a))
+            a <- stats::setNames(as.character(a), names(a))
         }
         else {
             a <- as.character(a)
@@ -68,4 +68,9 @@ stringdistmatrix <- function (a, b, method = c("osa", "lv", "dl", "hamming", "lc
     else {
         matrix(x, nrow = length(a), ncol = length(b))
     }
+}
+
+listwarning <- function (x, y) {
+    sprintf("\nYou are passing one or more arguments of type 'list' to\n'%s'. These arguments will be converted with 'as.character'\nwhich is likeley not to give what you want (did you mean to use '%s'?).\nThis warning can be avoided by explicitly converting the argument(s).\n", 
+        x, y)
 }

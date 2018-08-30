@@ -1,13 +1,14 @@
 Package: phenotools
-Title: What the Package Does (one line, title case)
+Title: Tools for the analysis and assembly of phenomic data in R
 Version: 1.0
 Authors@R: person("Eliason", "Chad", , "celiason@fieldmuseum.org", role = c("aut", "cre"))
-Description: What the package does (one paragraph)
+Description: A framework for processing and assembling phenomic supermatrices from individuals nexus datasets.
 Depends: R (>= 3.1.2)
 Imports:
+	ape,
 	tm,
 	igraph,
-	ape,
+	pbapply,
 	ggplot2,
 	phangorn,
 	polycor,
@@ -17,8 +18,10 @@ Imports:
 	stringdist,
 	stringr,
 	RColorBrewer,
-  kableExtra,
-  knitr,
-  pdftools
-License: What license is it under?
+	kableExtra,
+	gridExtra,
+	knitr,
+	pdftools
+License: GPL (>= 2)
 LazyData: true
+RoxygenNote: 6.1.0

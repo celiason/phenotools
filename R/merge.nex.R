@@ -12,7 +12,7 @@
 #' xy
 #' }
 #' @author Chad Eliason \email{chad_eliason@@utexas.edu}
-#'
+#' 
 merge.nex <- function(x, taxa=NULL) {
   mat <- lapply(x, '[[', 'data')
   alltaxlabels <- unique(unlist(lapply(x, '[[', 'taxlabels')))

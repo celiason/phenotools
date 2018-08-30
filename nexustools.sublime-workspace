@@ -371,153 +371,6 @@
 	},
 	"buffers":
 	[
-		{
-			"file": "R/duptree.R",
-			"settings":
-			{
-				"buffer_size": 656,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "R/duplicated.nex.R",
-			"settings":
-			{
-				"buffer_size": 14379,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "R/cleantext.R",
-			"settings":
-			{
-				"buffer_size": 870,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "R/merge.nex.R",
-			"settings":
-			{
-				"buffer_size": 2466,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "example/workflow.Rmd",
-			"settings":
-			{
-				"buffer_size": 38053,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "R/text_convert_functions.R",
-			"settings":
-			{
-				"buffer_size": 2605,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "# word co-occurrence network for phenomes\n# source: http://f.briatte.org/r/turning-keywords-into-a-co-occurrence-network\n\nlibrary(dplyr)\nlibrary(ggnetwork)\nlibrary(ggplot2)\nlibrary(readr)\nlibrary(stringr)\nlibrary(tnet)\nlibrary(network) # keep after tnet\n\nx <- twig1$charlab\nx <- gsub(\"0|1\", \"\", x)\nx <- cleantext(x)\nx <- gsub(\"\\\\d*\", \"\", x)\nx <- gsub(\"[[:punct:]]\", \"\", x)\ntocut <- c(\"to\", \"the\", \"and\", \"an\", \"as\", \"a\", \"or\", \"of\", \"absent\", \"present\", \"form\", \"process\", \"state\", \"view\", \"margin\", \"shape\", \"placed\", \"recess\", \"(UN)?ORDERED\", \"(un)?ordered\", \"lateral\", \"distal\", \"ventral\", \"posterior\", \"anterior\", \"medial\", \"dors\", \"external\")\ntocut <- paste0(\"\\\\b\", tocut, \"\\\\b\", collapse=\"|\")\nx <- gsub(tocut, \"\", x)\nx <- gsub(\"½|¼\", \"\", x)\nx <- str_split(x, \"\\\\s\")\nx <- lapply(x, unique)\nx <- lapply(seq_along(x), function(i) { x[[i]][x[[i]]!=\"\"] })\n\n\n\nxx <- x[c(1, 500, 100)]\n\n\n# weighted edge list\nsystem.time(e <- xx %>%\n  lapply(function(x) {\n    expand.grid(x, x, w = 1 / length(x), stringsAsFactors = FALSE)\n  }) %>%\n  bind_rows)\n\n# rate-limiting step:\n# sorting..\nsystem.time(e <- apply(e[, -3], 1, str_sort) %>%\n  t %>%\n  data.frame(stringsAsFactors = FALSE) %>%\n  mutate(w = e$w))\n\n# newman fowler weights\nsystem.time(e <- group_by(e, X1, X2) %>%\n  summarise(w = sum(w)) %>%\n  filter(X1 != X2))\n\nhead(e)\ntail(e)\n\n# network object\nn <- network(e[, -3], directed = FALSE)  # undirected network\n\nstopifnot(nrow(e) == network.edgecount(n))\nset.edge.attribute(n, \"weight\", e$w)\n\n# weighted degree at alpha = 1\nt <- as.edgelist(n, attrname = \"weight\") %>%\n  symmetrise_w %>%\n  as.tnet %>%\n  degree_w\n\nstopifnot(nrow(t) == network.size(n))\nset.vertex.attribute(n, \"degree_w\", t[, \"output\" ])\n\n# show only keywords at or above median weighted degree\nl <- n %v% \"degree_w\"\nl <- ifelse(l >= median(l), network.vertex.names(n), NA)\n\nstopifnot(length(l) == network.size(n))\nset.vertex.attribute(n, \"label\", l)\n\n\n\nggplot(n, aes(x, y, xend = xend, yend = yend)) +\n  geom_edges(aes(color = weight)) +\n  geom_nodes(color = \"grey50\") +\n  geom_nodelabel(aes(size = degree_w, label = label),\n                 color = \"grey20\", label.size = NA) +\n  scale_size_continuous(range = c(2, 8)) +\n  scale_color_gradient2(low = \"grey25\", midpoint = 0.75, high = \"black\") +\n  guides(size = FALSE, color = FALSE) + \n  theme_blank()\n\n\n",
-			"file": "/Users/chadeliason/Documents/UT/projects/phenome/scripts/word_cooccur.R",
-			"file_size": 2322,
-			"file_write_time": 131220553570000000,
-			"settings":
-			{
-				"buffer_size": 2320,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "# Code to do correlations between trait scorings and trait ontology location (anatomical distance)\n\nsetwd(\"/Users/chadeliason/Documents/UT/projects/phenome\")\n\nlibrary(ape)\n\ndevtools::load_all(\"~/github/nexustools\")\n\n# Build matrix\n\nmattext <- readLines(\"data/theropods/xu2011_matrix.txt\")\nchartext <- readLines(\"data/theropods/xu2011_charlist.txt\")\nmat <- text2mat(mattext)\ncharlabs <- text2charlabels(chartext)\n\ntwig2 <- buildnex2(data=mat, charlabels=charlabs)\n\ntwig2\n\n# Trait correlations\n\ntwig2.cor <- traitcor(x = twig2, parallel = TRUE, cores = 4)\n\nhist(twig2.cor$cor)\n\nsaveRDS(twig2.cor, file=\"output/twig2_traitcor.RDS\")\n\ntwig2.cor <- readRDS(file=\"output/twig2_traitcor.RDS\")\n\nclass(twig2.cor$cor)\n\ncors <- twig2.cor$cor\nclass(cors) <- \"dist\"\nattr(cors, \"Size\") <- ncol(twig2$data)\n\ncorsmat <- as.matrix(cors)\ncorsmat <- na.omit(corsmat)\ndropped <- as.numeric(attr(corsmat, \"na.action\"))\ncorsmat <- corsmat[, -dropped]\n\npal <- colorRampPalette(rev(brewer.pal(7, \"RdBu\")))\n# pal <- colorRampPalette(rev(brewer.pal(7, \"PiYG\")))\n\ndiag(corsmat) <- 1\n\nimage(abs(corsmat), zlim=c(0, 1), col = pal(25))\n\n\n\n# Trait ontology \"distances\":\n\n# Create trait ontology from tabbed text file (baumel & whitmer 1993)\ntree <- read_ontology(file=\"/Users/chadeliason/Documents/UT/projects/phenome/baumel ontology.txt\")\ntree <- simplify(tree, edge.attr.comb = \"first\")\n\n# stem latin words in ontology\nV(tree)$name <- schinke(V(tree)$name)\n\n# plot a subtree\nsubtree <- induced_subgraph(tree, subcomponent(tree, grep(\"tarsometat\", V(tree)$name), mode=\"out\"))\npar(mar=c(0,0,0,0))\nplot(subtree, layout=-layout.reingold.tilford(subtree)[,2:1], vertex.size=0, edge.arrow.size=0,\n     vertex.label.cex=1, vertex.label.color = \"black\")\n\ntwig2.ss <- twig2[, -dropped]\n\n# Link terms in nexus file to trait ontology\n# takes a few seconds:\ntree2 <- stem_search(tree=tree, x=twig2.ss)\n\npar(mar=rep(0, 4))\n\nplot(induced_subgraph(tree2, subcomponent(tree2, V(tree2)$name==\"char2\", mode=\"in\")),\n     vertex.color=\"gray\", vertex.label.color=\"black\", vertex.label.cex=.5)\n\nplot(induced_subgraph(tree2, subcomponent(tree2, V(tree2)$name==\"char24\", mode=\"in\")),\n     vertex.color=\"gray\", vertex.label.color=\"black\", vertex.label.cex=.5)\n\nid <- which(V(tree2)$name==\"char3\")\n\nroots <- which(igraph::degree(tree2, v = V(tree2), mode = \"in\")==0, useNames = T)\n\n# what is a given character most connect to..?\nlapply(id, all_shortest_paths, graph=tree2, to=roots, mode=\"in\")[[1]][[1]]\n\n# how many characters were \"linked in\" to the trait ontology?\nid <- grep(\"char\", V(tree2)$name)\nlength(id)\nncol(twig2.ss$data)\n# 349/353 = 98.9%\n\n# how many were unambiguously linked to part of the body?\n# takes ~9 seconds\nsystem.time(twig2.traitlink <- lapply(id, all_shortest_paths, graph=tree2, to=roots, mode=\"in\"))\n\nnms <- V(tree2)$name[id]\n\n# number of paths in the ontology\n\npaths <- setNames(lapply(twig2.traitlink, \"[[\", 1), nms)\nnumpaths <- sapply(paths, length)\n\nMASS::truehist(numpaths, prob=FALSE, ylab=\"number of traits\", xlab=\"unique paths along ontology\")\n\n\n# Find which nodes in tree character is most attached to and compute distance matrix between all characters\n\ncharsmat <- distances(tree2, v = id, to = id)\n\nimage(charsmat, col=pal(25))\n\ncolnames(charsmat) <- gsub(\"char\", \"\", colnames(charsmat))\nrownames(charsmat) <- gsub(\"char\", \"\", rownames(charsmat))\n\n\n# Correlate two matrices:\n\nlibrary(vegan)\n\nmat1 <- corsmat\nmat2 <- charsmat\n\nsamenames <- intersect(colnames(mat2), colnames(mat1))\n\nmat1 <- mat1[samenames, samenames]\n\nmat2 <- mat2[samenames, samenames]\n\nord <- order(as.numeric(colnames(mat2)))\n\n# plot(twig2.ss)\n\nlibrary(viridis)\n\npdf(width=8.7, height=2.8, file=\"figs/trait_cor_mantel.pdf\")\npar(mfrow=c(1, 3), mar=c(3,3,3,1), ps=8, mgp=c(1.5, .5, 0), mex=.75)\nimage(mat1[ord,ord], col=viridis(20), zlim=c(-1, 1))\ntitle(main=\"Trait correlation distance\")\nimage(max(mat2)-mat2[ord,ord], zlim=c(0, 6), col=viridis(20))\ntitle(main=\"Trait ontology distance\")\nboxplot(as.numeric(as.dist(abs(mat1))) ~ as.factor(as.numeric(as.dist(mat2))))\ndev.off()\n\nres.pe <- mantel(xdis=as.dist(abs(mat1)), ydis=as.dist(mat2), method=\"pearson\", permutations=999)\nres.pe\n\n# res.sp <- mantel(xdis=as.dist(mat1), ydis=as.dist(mat2), method=\"spearman\", permutations=999)\n# res.sp\n\nggplot(data=NULL, aes(y=as.numeric(as.dist(mat1)), x=as.factor(as.dist(mat2)))) +\n\t# geom_violin() +\n\t# geom_point(alpha=.1, pch=1) +\n\t# geom_jitter(width=.1, height=.1, alpha=.3, cex=1) +\n\tgeom_boxplot() +\n\t# geom_smooth(method=\"lm\") +\n\tlabs(y=\"Trait correlation\", x=\"Distance in trait ontology\")\n\n",
-			"file": "/Users/chadeliason/Documents/UT/projects/phenome/matrix correlation tests.R",
-			"file_size": 4537,
-			"file_write_time": 131199780500000000,
-			"settings":
-			{
-				"buffer_size": 4537,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "we could have the user input some basic formats for characters\n\ne.g., \n\na:b1, b2\n\nOR\n\na\nb1\nb2\nb3\n\nwhere a= character, b = character states\n\n\nbasic parts you would need:\ncharacter number\ncharacter label\ncharacters states (text)\ncharacter states (numeric, optional?)\n\n",
-			"settings":
-			{
-				"buffer_size": 266,
-				"line_ending": "Unix",
-				"name": "we could have the user input some basic formats fo"
-			}
-		},
-		{
-			"file": "/Users/chadeliason/Documents/UT/projects/phenome/theropods.Rmd",
-			"settings":
-			{
-				"buffer_size": 2384,
-				"encoding": "UTF-8",
-				"line_ending": "Unix",
-				"name": "Analysis of theropod datasets"
-			}
-		},
-		{
-			"contents": "# find all unique words in characters\n\nlibrary(tm)\n\nchars <- twig12$charlabels\n\n# only non-colon characters from the beginning\n# chars <- str_match(twig12$charlabels, \"^[^:]+\")\n\ntocut <- c(\"with\", \"than\", \"then\", \"those\", \"with\", \"to\", \"the\", \"and\", \"an\", \"a\", \"or\", \"of\", \"for\", \"not\")\ntocut <- paste0(\"\\\\b\", tocut, \"\\\\b\", collapse=\"|\")\n# newcharnames <- gsub(tocut, \"\", newcharnames)\nchars <- gsub(\"[[:punct:]]\", \" \", chars)\nchars <- gsub(\"[[:digit:]]\", \" \", chars)\nchars <- gsub(tocut, \"\", chars, ignore.case=TRUE)\n\n# remove vague terms\n# TODO: fix it so this will remove things like \"posteroventral\"\ntocut <- c(\"along\", \"less\", \"below\", \"above\", \"around\", \"longer\", \"shorter\", \"sits\", \"absent\", \"present\", \"form\", \"process\", \"state\", \"view\", \"margin\", \"shape\", \"placed\", \"recess\", \"(UN)?ORDERED\", \"(un)?ordered\")\ntocut <- paste0(\"\\\\b\", tocut, \"\\\\b\", collapse=\"|\")\n# newcharnames <- gsub(tocut, \"\", newcharnames)\nchars <- gsub(tocut, \"\", chars, ignore.case=TRUE)\n\n# remove positional terms\ntocut <- c(\"lateral\", \"distal\", \"ventral\", \"posterior\", \"anterior\", \"medial\", \"dors\", \"external\")\ntocut <- paste0(\"\\\\b\", tocut, \"(\\\\w*)?\", collapse=\"|\")\n# newcharnames <- gsub(tocut, \"\", newcharnames)\nchars <- gsub(tocut, \"\", chars, ignore.case=TRUE)\n\n# clean up character names:\n# newstatenames <- cleantext(newstatenames)\n# newcharnames <- cleantext(newcharnames)\nchars <- cleantext(chars)\n\n\ncorpus <- Corpus(VectorSource(chars))\n\ncorpus <- tm_map(corpus, removePunctuation)\n\ncorpus <- tm_map(corpus, function(x) removeWords(x, stopwords(\"en\")))\n\n# assign weights based on commonality\n\ntdm <- TermDocumentMatrix(corpus)\n\nfreq <- slam::row_sums(tdm)\n\n# make matrix of terms x characters (whether each character has a given term in it)\n\nsystem.time(maps <- sapply(seq_along(freq), function(x) {\n    nm <- names(freq)[x]\n    pattern <- paste0(\"\\\\b\", nm, \"\\\\b\")\n    grep(pattern, chars)\n}))\n\n# plot(c(3.923, 5.981, 7.676, 9.782, 11.367, 15.792, 23) ~ c(200, 300, 400, 500, 600, 800, 1227), type='o')\n\nM <- matrix(0, nrow=length(maps), ncol=length(chars))\n\nfor (i in seq_along(maps)) {\n    M[i, maps[[i]]] <- 1/freq[i]\n}\n\ndimnames(M) <- list(paste0(\"term\", seq_along(maps)), paste0(\"trait\", seq_along(chars)))\n\n\n# make a network graph\n\nlibrary(igraph)\n\ng <- graph_from_incidence_matrix(M, weighted=TRUE)\n\nhist(E(g)$weight)\n\n# plot(g, vertex.size=3, vertex.label=NA)\n\nwc <- cluster_walktrap(g)\n\nwc\n\ngrps <- communities(wc)\n\nhead(grps)\n\ntwig12$charlab[c(92,370,576,658,946,947)]\n\ntwig12$charlab[c(83, 1113)]\ntwig12$charlab[c(721, 819)]\n\nnames(freq)[c(811, 947, 1114, 2024)]\n\ntwig12$charlab[c(300, 482)]\n\n\n\nchars[c(307, 900, 981, 988, 1000)]\n\n\n# plot(g, vertex.size=5, vertex.label=NA, vertex.color = V(g)$type)\n\nplot(wc, g, vertex.size=5, vertex.label=NA)\n\n",
-			"settings":
-			{
-				"buffer_size": 2745,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/Users/chadeliason/Documents/UT/projects/phenome/output/twig12_clusters.txt",
-			"settings":
-			{
-				"buffer_size": 23564,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/Users/chadeliason/Documents/UT/projects/phenome/twig analysis (Brusatte).R",
-			"settings":
-			{
-				"buffer_size": 8398,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/Users/chadeliason/Documents/UT/projects/phenome/twig analysis (Xu 2011).R",
-			"settings":
-			{
-				"buffer_size": 1499,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/Users/chadeliason/Documents/UT/projects/phenome/data/theropods/xu2011_charlist.txt",
-			"settings":
-			{
-				"buffer_size": 46583,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/Users/chadeliason/Documents/UT/projects/phenome/data/theropods/brusatte2014_charlist.txt",
-			"settings":
-			{
-				"buffer_size": 250109,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		}
 	],
 	"build_system": "Packages/LaTeXing/LaTeX.sublime-build",
 	"build_system_choices":
@@ -547,16 +400,20 @@
 	"command_palette":
 	{
 		"height": 341.0,
-		"last_filter": "r",
+		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"wrap",
+				"Word Wrap: Toggle"
+			],
 			[
 				"r",
 				"Set Syntax: R"
 			],
 			[
-				"wrap",
-				"Word Wrap: Toggle"
+				"renam",
+				"File: Rename"
 			],
 			[
 				"rmark",
@@ -589,10 +446,6 @@
 			[
 				"mark",
 				"Set Syntax: Markdown GFM"
-			],
-			[
-				"renam",
-				"File: Rename"
 			],
 			[
 				"rena",
@@ -1084,10 +937,50 @@
 	},
 	"expanded_folders":
 	[
-		"/Users/chadeliason/Documents/UT/projects/phenome"
 	],
 	"file_history":
 	[
+		"/Users/chadeliason/github/pavo/DESCRIPTION",
+		"/Users/chadeliason/github/phenotools/R/write.nex.R",
+		"/Users/chadeliason/github/phenotools/R/traitlink.R",
+		"/Users/chadeliason/github/phenotools/R/stringdistmatrix.R",
+		"/Users/chadeliason/github/phenotools/R/searchtree.R",
+		"/Users/chadeliason/github/phenotools/R/remove.invar.R",
+		"/Users/chadeliason/github/phenotools/R/read.nex.R",
+		"/Users/chadeliason/github/phenotools/R/read_ontology.R",
+		"/Users/chadeliason/github/phenotools/R/printout.R",
+		"/Users/chadeliason/github/phenotools/R/plot.nex.R",
+		"/Users/chadeliason/github/phenotools/R/merge.nex.R",
+		"/Users/chadeliason/github/phenotools/R/internal.R",
+		"/Users/chadeliason/github/phenotools/R/ggplotphylo.R",
+		"/Users/chadeliason/github/phenotools/R/generate_ontology.R",
+		"/Users/chadeliason/github/phenotools/R/findpaths.R",
+		"/Users/chadeliason/github/phenotools/R/filter.nex.R",
+		"/Users/chadeliason/github/phenotools/R/duplicated.nex.R",
+		"/Users/chadeliason/github/phenotools/R/computeBicliques.R",
+		"/Users/chadeliason/github/phenotools/R/collapse.nex.R",
+		"/Users/chadeliason/github/phenotools/R/cleantext.R",
+		"/Users/chadeliason/github/phenotools/R/capture_comments.R",
+		"/Users/chadeliason/github/phenotools/R/buildnex.R",
+		"/Users/chadeliason/github/phenotools/DESCRIPTION",
+		"/private/var/folders/wq/746rdnwn32jd20_jdckxt5tc0000gn/T/Rtmp2tp0up/phenotools.Rcheck/00install.out",
+		"/Users/chadeliason/github/phenotools/R_temp/traitlink_toadd.R",
+		"/Users/chadeliason/github/phenotools/R_temp/addmeta.R",
+		"/Users/chadeliason/github/phenotools/R/addmeta.R",
+		"/Users/chadeliason/github/phenotools/old/buildnex.R",
+		"/Users/chadeliason/github/phenotools/man/filter.nex.Rd",
+		"/Users/chadeliason/github/phenotools/man/cleantext.Rd",
+		"/Users/chadeliason/Documents/UT/projects/phenome/data/theropods/brusatte2014_charlist.txt",
+		"/Users/chadeliason/Documents/UT/projects/phenome/data/theropods/xu2011_charlist.txt",
+		"/Users/chadeliason/Documents/UT/projects/phenome/output/twig12_clusters.txt",
+		"/Users/chadeliason/Documents/UT/projects/phenome/theropods.Rmd",
+		"/Users/chadeliason/Documents/UT/projects/phenome/matrix correlation tests.R",
+		"/Users/chadeliason/github/phenotools/tmp/word_cooccur.R",
+		"/Users/chadeliason/Documents/UT/projects/phenome/twig analysis (Xu 2011).R",
+		"/Users/chadeliason/Documents/UT/projects/phenome/twig analysis (Brusatte).R",
+		"/Users/chadeliason/github/phenotools/R/text_convert_functions.R",
+		"/Users/chadeliason/github/phenotools/example/workflow.Rmd",
+		"/Users/chadeliason/github/phenotools/R/duptree.R",
 		"/Users/chadeliason/github/nexustools/R/buildnex2.R",
 		"/Users/chadeliason/github/nexustools/R/duptree.R",
 		"/Users/chadeliason/github/nexustools/R/stem_search.R",
@@ -1099,12 +992,8 @@
 		"/Users/chadeliason/Documents/UT/projects/phenome/scripts/word cooccurrences.R",
 		"/Users/chadeliason/Documents/UT/projects/phenome/scripts/plot datasets as nodes.R",
 		"/Users/chadeliason/Documents/UT/projects/phenome/output/twig-potential duplicates.txt",
-		"/Users/chadeliason/Documents/UT/projects/phenome/twig analysis (Brusatte).R",
-		"/Users/chadeliason/Documents/UT/projects/phenome/twig analysis (Xu 2011).R",
 		"/Users/chadeliason/github/nexustools/R/duplicated.nex.R",
 		"/Users/chadeliason/github/nexustools/R/text_convert_functions.R",
-		"/Users/chadeliason/Documents/UT/projects/phenome/data/theropods/xu2011_charlist.txt",
-		"/Users/chadeliason/Documents/UT/projects/phenome/data/theropods/brusatte2014_charlist.txt",
 		"/Users/chadeliason/github/nexustools/R/cleantext.R",
 		"/Users/chadeliason/Documents/UT/projects/phenome/calculate precision and recall.R",
 		"/Users/chadeliason/github/nexustools/temp/get_comments.R",
@@ -1178,52 +1067,15 @@
 		"/Users/chadeliason/github/nexustools/temp/computeBicliques.R",
 		"/Users/chadeliason/Documents/School/PhD/Projects/Kingfishers/kifi_diversity.Rmd",
 		"/Users/chadeliason/Downloads/mammals2.tsv",
-		"/Users/chadeliason/Downloads/mammals1.tsv",
-		"/Users/chadeliason/Downloads/reptiles.tsv",
-		"/Users/chadeliason/Downloads/amphibians.tsv",
-		"/Users/chadeliason/Downloads/birds.tsv",
-		"/Users/chadeliason/Documents/UT/projects/bmr/bmr analysis.Rmd",
-		"/Users/chadeliason/Documents/School/PhD/Projects/Duck evolvability/dropbox_duck_evolvability/duck_analysis3.Rmd",
-		"/Users/chadeliason/Dropbox/Lagerstattenfolder/R/datamunge.R",
-		"/Users/chadeliason/Dropbox/Lagerstattenfolder/R/fossil_binning.R",
-		"/Users/chadeliason/Dropbox/Lagerstattenfolder/R/new fossil analysis.R",
-		"/Users/chadeliason/Desktop/miocene ostrich photos from zhiheng/methods2016_introR.R",
-		"/Users/chadeliason/MEEP/src/tri-rods-solid_incid.ctl",
-		"/Users/chadeliason/R/src/photonics/runMeep.R",
-		"/Users/chadeliason/Desktop/shell biophotonics/field plots2.r",
-		"/Users/chadeliason/MEEP/src/biolum_aragonite_periodic.ctl",
-		"/Users/chadeliason/Dropbox/Chad/Paraanchiornis/para_analyses2.Rmd",
-		"/Users/chadeliason/MEEP/src/output/test.txt",
-		"/Users/chadeliason/Dropbox/Chad/Paraanchiornis/R/morphospace emptiness.R",
-		"/Users/chadeliason/Documents/UT/projects/vocalizations/voc_analysis_20151110.Rmd",
-		"/Users/chadeliason/MEEP/src/test.txt",
-		"/Users/chadeliason/Dropbox/Chad/Paraanchiornis/para_analyses.Rmd",
-		"/Users/chadeliason/.Rprofile",
-		"/Users/chadeliason/MEEP/src/multilayer.ctl",
-		"/Users/chadeliason/MEEP/src/ring.ctl",
-		"/Users/chadeliason/MEEP/src/amorphous2.ctl",
-		"/Applications/Fiji.app/plugins/Radial_Profile.class",
-		"/Users/chadeliason/Desktop/eyecolor.R",
-		"/Users/chadeliason/Dropbox/Notes/SICB 2016 notes.txt",
-		"/Users/chadeliason/Dropbox/Notes/lab meeting 1-15.txt",
-		"/Users/chadeliason/MEEP/src/spheres3d.ctl",
-		"/Users/chadeliason/Dropbox/Notes/vocalization PI meeting.txt",
-		"/Users/chadeliason/Dropbox/Chad/Paraanchiornis/R/cda.R",
-		"/Users/chadeliason/Desktop/README",
-		"/Users/chadeliason/Documents/UT/projects/vocalizations/reconstruct body size using full tree.Rmd",
-		"/Users/chadeliason/Documents/UT/projects/vocalizations/contingent_states.R",
-		"/Users/chadeliason/Desktop/testCCT.txt",
-		"/Users/chadeliason/Desktop/test treerogue/tipnames.txt",
-		"/Users/chadeliason/Desktop/test treerogue/tips.txt",
-		"/Users/chadeliason/Box Sync/Lithornithidae/specimen notes.txt"
+		"/Users/chadeliason/Downloads/mammals1.tsv"
 	],
 	"find":
 	{
-		"height": 70.0
+		"height": 54.0
 	},
 	"find_in_files":
 	{
-		"height": 94.0,
+		"height": 134.0,
 		"where_history":
 		[
 			""
@@ -1234,6 +1086,62 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"collapseNex",
+			"collapse",
+			"commasep",
+			"\\.\\.\\.",
+			"colour",
+			"weightTfIdf",
+			"weight",
+			"head.nex",
+			"weightTfIdf",
+			"weight",
+			"TermDocumentMatrix",
+			"setNames",
+			"file",
+			"filename",
+			"read.nexus",
+			"head",
+			"library",
+			"require",
+			"text2mat",
+			"text2charlab",
+			"text2charla",
+			"text2charlabels",
+			"setNames",
+			"read.table",
+			"na.locf",
+			"count",
+			"str_",
+			"str_extract",
+			"str_sub",
+			"fixed",
+			"text_spec",
+			"str_count",
+			"drop.tip",
+			"Ntip",
+			"branches",
+			"ggplot",
+			"combn",
+			"polychor",
+			"head",
+			"na.omit",
+			"symbols",
+			"addroot",
+			"str_match",
+			"phy",
+			"do_dist",
+			"[^\\x00-\\x7F]",
+			"library\\(",
+			"library(",
+			"dplyr",
+			"comma",
+			"cleantext\\(charlabs",
+			"comma \\=",
+			"comma",
+			"comma = FALSE",
+			"comma",
+			"pdftools",
 			"part1",
 			"oldcharnames",
 			"part1",
@@ -1305,63 +1213,7 @@
 			"tont",
 			"test2",
 			"res",
-			"test",
-			"dupid",
-			"max_cliques",
-			"max_",
-			"clique",
-			"commun",
-			"communi",
-			"communities",
-			"ld",
-			"res",
-			"intercondyl",
-			"fibul",
-			"1820",
-			"1820:2027",
-			"1856",
-			"1756",
-			"dups[,1]",
-			"force",
-			"truedup$target",
-			"commun",
-			"communiti",
-			"[,\"duplicate\"]",
-			"[,\"target\"]",
-			"id3",
-			"\"duplicate\"",
-			"truedup",
-			"charpart",
-			"final$data",
-			"polychor",
-			"treeRatchet1",
-			"Laurasiatherian",
-			"tnt",
-			"newfile1",
-			"sort",
-			"newfile1",
-			"newfile",
-			"clique",
-			"tnt",
-			"tree2",
-			"text",
-			"x",
-			"x.com",
-			"test",
-			"occip",
-			"\\d+\\..*?occip.+",
-			"file",
-			"`",
-			"charlabels",
-			"newcharlabs",
-			"matches[, 3]",
-			"dup",
-			"fad",
-			"missing",
-			"figure",
-			",2",
-			",1",
-			"file"
+			"test"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1465,528 +1317,18 @@
 	"groups":
 	[
 		{
-			"selected": 1,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "R/duptree.R",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 656,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								384,
-								384
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/R-Box/syntax/R Extended.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "R/duplicated.nex.R",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 14379,
-						"regions":
-						{
-							"bookmarks":
-							{
-								"flags": 144,
-								"icon": "bookmark",
-								"regions":
-								[
-									[
-										13908,
-										13908
-									]
-								],
-								"scope": "bookmarks"
-							}
-						},
-						"selection":
-						[
-							[
-								5697,
-								5697
-							]
-						],
-						"settings":
-						{
-							"WordCount":
-							{
-								"changes": 0,
-								"count": 1016,
-								"modified": false,
-								"selection": false,
-								"status": -1,
-								"syntax": "plain text"
-							},
-							"syntax": "Packages/R-Box/syntax/R Extended.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 2676.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "R/cleantext.R",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 870,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								695,
-								695
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/R-Box/syntax/R Extended.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 52.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "R/merge.nex.R",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2466,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								602,
-								602
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/R-Box/syntax/R Extended.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 13,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "example/workflow.Rmd",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 38053,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								28363,
-								28363
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/knitr/knitr-Markdown.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 12766.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "R/text_convert_functions.R",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2605,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1725,
-								1725
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/R-Box/syntax/R Extended.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 493.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 8,
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "/Users/chadeliason/Documents/UT/projects/phenome/scripts/word_cooccur.R",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2320,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								172,
-								172
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/R-Box/syntax/R Extended.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 7,
-					"type": "text"
-				},
-				{
-					"buffer": 7,
-					"file": "/Users/chadeliason/Documents/UT/projects/phenome/matrix correlation tests.R",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 4537,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								575,
-								575
-							]
-						],
-						"settings":
-						{
-							"r_box_status": false,
-							"syntax": "Packages/R-Box/syntax/R Extended.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 15,
-					"type": "text"
-				},
-				{
-					"buffer": 8,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 266,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								90,
-								90
-							]
-						],
-						"settings":
-						{
-							"auto_name": "we could have the user input some basic formats fo",
-							"default_dir": "/Users/chadeliason/Documents/UT/projects/phenome",
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 14,
-					"type": "text"
-				}
-			]
-		},
-		{
-			"selected": 0,
-			"sheets":
-			[
-				{
-					"buffer": 9,
-					"file": "/Users/chadeliason/Documents/UT/projects/phenome/theropods.Rmd",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2384,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								177,
-								177
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/knitr/knitr-Markdown.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 312.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 10,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2745,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2468,
-								2468
-							]
-						],
-						"settings":
-						{
-							"default_dir": "/Users/chadeliason/Documents/UT/projects/phenome",
-							"syntax": "Packages/R/R.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 1135.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 11,
-					"file": "/Users/chadeliason/Documents/UT/projects/phenome/output/twig12_clusters.txt",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 23564,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3564,
-								3572
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/MarkdownEditing/Markdown (Standard).tmLanguage",
-							"word_wrap": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 892.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				},
-				{
-					"buffer": 12,
-					"file": "/Users/chadeliason/Documents/UT/projects/phenome/twig analysis (Brusatte).R",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 8398,
-						"regions":
-						{
-							"bookmarks":
-							{
-								"flags": 144,
-								"icon": "bookmark",
-								"regions":
-								[
-									[
-										161,
-										161
-									]
-								],
-								"scope": "bookmarks"
-							}
-						},
-						"selection":
-						[
-							[
-								1478,
-								1590
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/R-Box/syntax/R Extended.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 581.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 9,
-					"type": "text"
-				},
-				{
-					"buffer": 13,
-					"file": "/Users/chadeliason/Documents/UT/projects/phenome/twig analysis (Xu 2011).R",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1499,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								189,
-								197
-							]
-						],
-						"settings":
-						{
-							"r_box_status": false,
-							"syntax": "Packages/R-Box/syntax/R Extended.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 11,
-					"type": "text"
-				},
-				{
-					"buffer": 14,
-					"file": "/Users/chadeliason/Documents/UT/projects/phenome/data/theropods/xu2011_charlist.txt",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 46583,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"color_scheme": "Packages/MarkdownEditing/MarkdownEditor.tmTheme",
-							"syntax": "Packages/MarkdownEditing/Markdown (Standard).tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 10,
-					"type": "text"
-				},
-				{
-					"buffer": 15,
-					"file": "/Users/chadeliason/Documents/UT/projects/phenome/data/theropods/brusatte2014_charlist.txt",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 250109,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"color_scheme": "Packages/MarkdownEditing/MarkdownEditor.tmTheme",
-							"syntax": "Packages/MarkdownEditing/Markdown.tmLanguage",
-							"word_wrap": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 12,
-					"type": "text"
-				}
 			]
 		}
 	],
 	"incremental_find":
 	{
-		"height": 26.0
+		"height": 27.0
 	},
 	"input":
 	{
-		"height": 35.0
+		"height": 49.0
 	},
 	"layout":
 	{
@@ -1997,12 +1339,6 @@
 				0,
 				1,
 				1
-			],
-			[
-				0,
-				1,
-				1,
-				2
 			]
 		],
 		"cols":
@@ -2013,7 +1349,6 @@
 		"rows":
 		[
 			0.0,
-			0.5,
 			1.0
 		]
 	},
@@ -2034,11 +1369,15 @@
 	{
 		"height": 122.0
 	},
+	"output.mdpopups":
+	{
+		"height": 0.0
+	},
 	"pinned_build_system": "",
 	"project": "nexustools.sublime-project",
 	"replace":
 	{
-		"height": 48.0
+		"height": 50.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -2047,6 +1386,138 @@
 		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"collaps",
+				"R/collapse.nex.R"
+			],
+			[
+				"duplic",
+				"R/duplicated.nex.R"
+			],
+			[
+				"clean",
+				"R/cleantext.R"
+			],
+			[
+				"plot.ne",
+				"R/plot.nex.R"
+			],
+			[
+				"trait",
+				"R/traitlink.R"
+			],
+			[
+				"duplica",
+				"R/duplicated.nex.R"
+			],
+			[
+				"captu",
+				"R/capture_comments.R"
+			],
+			[
+				"search",
+				"R/searchtree.R"
+			],
+			[
+				"printout",
+				"R/printout.R"
+			],
+			[
+				"collapse",
+				"R/collapse.nex.R"
+			],
+			[
+				"buildn",
+				"R/buildnex.R"
+			],
+			[
+				"write.nex",
+				"R/write.nex.R"
+			],
+			[
+				"tratli",
+				"R/traitlink.R"
+			],
+			[
+				"read_",
+				"R/read_ontology.R"
+			],
+			[
+				"read.nex",
+				"R/read.nex.R"
+			],
+			[
+				"plot.nex",
+				"R/plot.nex.R"
+			],
+			[
+				"generate",
+				"R/generate_ontology.R"
+			],
+			[
+				"duplicated",
+				"R/duplicated.nex.R"
+			],
+			[
+				"compute",
+				"R/computeBicliques.R"
+			],
+			[
+				"cleante",
+				"R/cleantext.R"
+			],
+			[
+				"capture",
+				"R/capture_comments.R"
+			],
+			[
+				"desc",
+				"DESCRIPTION"
+			],
+			[
+				"buildnex",
+				"R/buildnex.R"
+			],
+			[
+				"addmet",
+				"R_temp/addmeta.R"
+			],
+			[
+				"write.n",
+				"R/write.nex.R"
+			],
+			[
+				"addmeta",
+				"R/addmeta.R"
+			],
+			[
+				"filter.n",
+				"R/filter.nex.R"
+			],
+			[
+				"duplicated.nex",
+				"phenotools/R/duplicated.nex.R"
+			],
+			[
+				"traitlink",
+				"phenotools/R/traitlink.R"
+			],
+			[
+				"filter.nex",
+				"phenotools/R/filter.nex.R"
+			],
+			[
+				"filter",
+				"phenotools/man/filter.nex.Rd"
+			],
+			[
+				"cleantex",
+				"phenotools/man/cleantext.Rd"
+			],
+			[
+				"cleantext",
+				"phenotools/man/cleantext.Rd"
+			],
 			[
 				"cleant",
 				"nexustools/R/cleantext.R"
@@ -2088,18 +1559,6 @@
 				"phenome/data/theropods/brusatte2014_charlist.txt"
 			],
 			[
-				"clean",
-				"nexustools/R/cleantext.R"
-			],
-			[
-				"duplicated",
-				"nexustools/R/duplicated.nex.R"
-			],
-			[
-				"duplica",
-				"nexustools/R/duplicated.nex.R"
-			],
-			[
 				"brusa",
 				"phenome/data/theropods/brusatte2014_charlist.txt"
 			],
@@ -2108,16 +1567,8 @@
 				"nexustools/R/buildnex2.R"
 			],
 			[
-				"read.nex",
-				"nexustools/R/read.nex.R"
-			],
-			[
 				"genera",
 				"nexustools/R/generate_ontology.R"
-			],
-			[
-				"buildnex",
-				"nexustools/R/buildnex2.R"
 			],
 			[
 				"builndex2",
@@ -2160,24 +1611,12 @@
 				"nexustools/temp/ontology from chars in nexus file.R"
 			],
 			[
-				"duplic",
-				"nexustools/R/duplicated.nex.R"
-			],
-			[
 				"ontol",
 				"nexustools/temp/ontology from text file.R"
 			],
 			[
 				"write",
 				"nexustools/R/write.nex.R"
-			],
-			[
-				"search",
-				"nexustools/R/searchtree.R"
-			],
-			[
-				"plot.ne",
-				"nexustools/R/plot.nex.R"
 			],
 			[
 				"read_on",
@@ -2204,10 +1643,6 @@
 				"nexustools/R/treechart.R"
 			],
 			[
-				"collapse",
-				"nexustools/R/collapse.nex.R"
-			],
-			[
 				"merge.ne",
 				"nexustools/R/merge.nex.R"
 			],
@@ -2222,10 +1657,6 @@
 			[
 				"dupli",
 				"nexustools/R/duplicated.nex.R"
-			],
-			[
-				"write.n",
-				"nexustools/R/write.nex.R"
 			],
 			[
 				"plot.",
@@ -2244,16 +1675,8 @@
 				"nexustools/R/internal.R"
 			],
 			[
-				"write.nex",
-				"nexustools/R/write.nex.R"
-			],
-			[
 				"livezey",
 				"phenome/data/livezey_2006.nex"
-			],
-			[
-				"plot.nex",
-				"nexustools/R/plot.nex.R"
 			],
 			[
 				"bertelli",
@@ -2286,10 +1709,6 @@
 			[
 				"inter",
 				"R/internal.R"
-			],
-			[
-				"buildn",
-				"R/buildnex.R"
 			],
 			[
 				"read",
@@ -2478,86 +1897,6 @@
 			[
 				"vismodel",
 				"R/vismodel.R"
-			],
-			[
-				"coldi",
-				"R/coldist.R"
-			],
-			[
-				"meep",
-				"data/2012-08-13 disorder/runmeep.r"
-			],
-			[
-				"procsp",
-				"R/procspec.R"
-			],
-			[
-				"aggspe",
-				"R/aggspec.R"
-			],
-			[
-				"pavo",
-				"vignette/pavo.rnw"
-			],
-			[
-				"summary.s",
-				"R/summary.rspec.R"
-			],
-			[
-				"vignette",
-				"vignette/pavo.rnw"
-			],
-			[
-				"new",
-				"NEWS"
-			],
-			[
-				"msbody",
-				"manuscript/MSbody.Rnw"
-			],
-			[
-				"des",
-				"DESCRIPTION"
-			],
-			[
-				"getspe",
-				"R/getspec.R"
-			],
-			[
-				"gets",
-				"R/getspec.R"
-			],
-			[
-				"procspe",
-				"R/procspec.R"
-			],
-			[
-				"projplo",
-				"R/projplot.R"
-			],
-			[
-				"tcs",
-				"R/tcs.R"
-			],
-			[
-				"plotsmoo",
-				"R/plotsmooth.R"
-			],
-			[
-				"pltsmo",
-				"R/plotsmooth.R"
-			],
-			[
-				"explore",
-				"R/explorespec.R"
-			],
-			[
-				"plotsmooth",
-				"R/plotsmooth.R"
-			],
-			[
-				"aggplot.r",
-				"R/aggplot.R"
 			]
 		],
 		"width": 0.0
