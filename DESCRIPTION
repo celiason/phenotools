@@ -21,7 +21,8 @@ Imports:
 	kableExtra,
 	gridExtra,
 	knitr,
-	pdftools
+	pdftools,
+	utils
 License: GPL (>= 2)
 LazyData: true
 RoxygenNote: 6.1.0

@@ -8,12 +8,11 @@
 #' 
 #' @return an object of class \code{nex} for use in further \code{nexustools} functions
 #' 
-#' @importFrom stringr str_extract_all
-#' @importFrom stringr str_length
-#' 
 #' @author Chad Eliason \email{chad_eliason@@utexas.edu}
 #' 
-collapse.nex <- function(x, map, method = c('retain', 'merge')) {
+#' @export
+#' 
+collapse <- function(x, map, method = c('retain', 'merge')) {
 
 # TODO maybe use mutate? or merge?
 
@@ -90,13 +89,13 @@ collapse.nex <- function(x, map, method = c('retain', 'merge')) {
         if (any(id.diff)) {
             warning('Different character scorings [characters ', paste0(id.diff, sep=' '), '] between taxa ', df$from[i], ' and ', df$to[i], '; converting to polymorphisms')
             # splits into digits
-            char1 <- str_extract_all(res$data[id1, id.diff], '[\\d\\-]', simplify=T)
-            char2 <- str_extract_all(res$data[id2, id.diff], '[\\d\\-]', simplify=T)
+            char1 <- stringr::str_extract_all(res$data[id1, id.diff], '[\\d\\-]', simplify=T)
+            char2 <- stringr::str_extract_all(res$data[id2, id.diff], '[\\d\\-]', simplify=T)
             chars <- cbind(char1, char2)
             # convert to polymorphic characters
             newchars <- sapply(seq_along(id.diff), function(z) paste0(sort(unique(chars[z, ])), collapse=""))
             # add parentheses
-            newchars <- ifelse(str_length(newchars) > 1, paste0('(',newchars,')'), newchars)
+            newchars <- ifelse(stringr::str_length(newchars) > 1, paste0('(',newchars,')'), newchars)
             # check if any gaps coded with normal scorings
             id.gap <- grep('-', newchars)
             if (any(id.gap)) {
