@@ -1,0 +1,290 @@
+#NEXUS
+
+BEGIN TAXA;
+	DIMENSIONS NTAX=54;
+	TAXLABELS
+		Apteryx_australis
+		Pterocnemia_pennata
+		Rhea_americana
+		Tinamus_solitarius
+		Tinamus_major
+		Tinamus_tao
+		Tinamus_guttatus
+		Tinamus_osgoodi
+		Nothocercus_bonapartei
+		Nothocercus_julius
+		Nothocercus_nigrocapillus
+		Crypturellus_undulatus
+		Crypturellus_soui
+		Crypturellus_tataupa
+		Crypturellus_parvirostris
+		Crypturellus_obsoletus
+		Crypturellus_erythropus
+		Crypturellus_noctivagus
+		Crypturellus_duidae
+		Crypturellus_variegatus
+		Crypturellus_cinereus
+		Crypturellus_boucardi
+		Crypturellus_kerriae
+		Crypturellus_cinnamomeus
+		Crypturellus_atrocapillus
+		Crypturellus_bartletti
+		Crypturellus_berlepschi
+		Crypturellus_casiquiare
+		Crypturellus_strigulosus
+		Crypturellus_transfasciatus
+		Crypturellus_ptaritepui
+		Crypturellus_brevirostris
+		Nothura_minor
+		Nothura_maculosa
+		Nothura_chacoensis
+		Nothura_boraquira
+		Nothura_darwinii
+		Nothoprocta_ornata
+		Nothoprocta_kalinowski
+		Nothoprocta_cinerascens
+		Nothoprocta_pentlandii
+		Nothoprocta_perdicaria
+		Nothoprocta_taczanowskii
+		Nothoprocta_curvirostris
+		Eudromia_elegans
+		Eudromia_elegans_albida
+		Eudromia_formosa
+		Rhynchotus_rufescens_pallescens
+		Rhynchotus_rufescens_macullocollis
+		Rhynchotus_rufescens_rufescens
+		Tinamotis_pentlandii
+		Tinamotis_ingoufi
+		Taoniscus_nanus
+		New_species
+	;
+END;
+
+BEGIN CHARACTERS;
+	DIMENSIONS NTAX=54 NCHAR=80;
+	FORMAT DATATYPE=STANDARD MISSING=? GAP=- SYMBOLS="01234567";
+	CHARLABELS
+		[0] 'Bill shape'
+		[1] 'Rostrum maxillare (upper mandible), dorsal plate, lateral grooves'
+		[2] 'Rostrum maxillare (upper mandible), length of proximal dorsal plate relative to distal dorsal plate'
+		[3] 'Rostrum mandibulare (lower mandible), ventral plate, lateral grooves, shape'
+		[4] 'Rostrum mandibulare (lower mandible), ventral plate, lateral grooves'
+		[5] 'Color of maxilla'
+		[6] 'Color of mandible (This is the single character in which Crypturellus boucardi and C. kerriae differ.)'
+		[7] 'Naris (nostrils), position in upper mandible (Character state 3 applies only to Apteryx, which has nostrils at the tip of its elongated bill.)'
+		[8] 'Color of iris'
+		[9] 'Digitus pedis I (hallux or first digit of hind limb). Salvadori (1895) first used this trait to define the subfamilies Tinaminae (posessing hallux) and Tinamotidinae (lacking hallux).'
+		[10] 'Vexillum, Pars pennacea, feather structure'
+		[11] 'Corona + occiput (crown + nape), occipital feathers'
+		[12] 'Corona + occiput (crown + nape), feather pattern'
+		[13] 'Corona, supercilium (eyebrow + postocular eyeline)'
+		[14] 'Regio malaris, moustachial stripe'
+		[15] 'Regio auricularis (ear patch), auricular stripe'
+		[16] 'Jugulum (chin), feather pattern'
+		[17] 'Pars cervicalis (dorsal neck), feather pattern'
+		[18] 'Pars interscapularis (dorsal collar), feather pattern'
+		[19] 'Pars interscapularis (dorsal collar), V-shaped ocelli'
+		[20] 'Pars spinalis + pars pelvica + pteryla scapulohumeralis (dorsum + mantle + rump), feather pattern: (We joined the three parts of the dorsum in a single character because feather pattern covaries in these three parts without exception, i.e., they scored the same for all taxa. Therefore, we considered them mutually dependent.)'
+		[21] 'Pars spinalis + pars pelvica + pteryla scapulohumeralis (dorsum, mantle, and rump), V-shaped ocelli'
+		[22] 'Pars cervicalis (lateral neck), feather pattern'
+		[23] 'Pars cervicalis (lateral neck), dorsal light stripe (We joined the three parts of the dorsum in a single character because feather pattern covaries in these three parts without exception, i.e., they scored the same for all taxa. Therefore, we considered them mutually dependent)'
+		[24] 'Pars cervicalis (lateral neck), ventral light stripe (This line runs ventral and in paralel to the dorsal light stripe of the lateral neck (character 23)'
+		[25] 'Pars cervicalis (ventral neck), feather pattern'
+		[26] 'Parscervicalis(ventralneck,throat), rounded ocelli'
+		[27] 'Pars cervicalis (lateral and ventral neck, throat), feathers with white rachis'
+		[28] 'Pars pectoralis (breast), feather pattern:'
+		[29] 'Pars pectoralis (ventral collar), ocelli'
+		[30] 'Pars sternalis, superior (breast), feather pattern'
+		[31] 'Pars sternalis, inferior (abdomen)'
+		[32] 'Pars abdominalis (belly), feather pattern'
+		[33] 'Pars venti (undertail coverts), feather pattern'
+		[34] 'Pars sternalis + pars abdominalis + pars venti (chest + belly + undertail coverts), furlike aspect of feathers'
+		[35] 'Pteryla lateralis (flank, upper side), feather pattern'
+		[36] 'Pteryla lateralis (flank, upper side), rounded ocelli'
+		[37] 'Rectrices (tail); The tail in Tinamidae comprises 10 weak and short feathers hidden under the rump. The genera Tinamus, Nothocercus, and Crypturellus have a distinct tail'
+		[38] 'Remiges alulae (bastard wing), vexillum pennae externum (outer vane), feather pattern'
+		[39] 'Remiges alulae (bastard wing), vexilum pennae internum (inner vane), feather pattern'
+		[40] 'Remiges primarii (primary remiges), vexillae pennae externum (outer vane), feather pattern'
+		[41] 'Remiges primarii (primary remiges), vexillae pennae internum (inner vane), feather pattern'
+		[42] 'Remiges secundarii externa (outer secundary remiges, i.e., the secondaries adjacent to primaries), vexillae pennae externum (outer vane), feather pattern'
+		[43] 'Remiges secundarii externa (outer secundary remiges, i.e., the secondaries adjacent to primaries), vexillae pennae internum (inner vane), feather pattern'
+		[44] 'Remiges secundarii interna (inner secundary remiges, i.e., the secondaries next to the body), vexillae pennae externum (outer vane), feather pattern'
+		[45] 'Remiges secundarii interna (inner secundary remiges, i.e., the secondaries next to the body), vexillae pennae internum (inner vane), feather pattern'
+		[46] 'Tectrices primariae dorsales (greater primary coverts), vexillae pennae externum (outer vane), feather pattern'
+		[47] 'Tectrices primariae dorsales (greater primary coverts), vexillae pennae externum (inner vane), feather pattern'
+		[48] 'Tectrices secundariae dorsales (lesser and median coverts), inner and outer vane, feather pattern:'
+		[49] 'Tectrices secundariae dorsales (lesser and median coverts), V-shaped ocelli'
+		[50] 'Tectrices dorsales (greater, median and lesser coverts), rounded ocelli'
+		[51] 'Tectrices primariae ventrales minores (lesser underprimary coverts), feather pattern'
+		[52] 'Tectrices primariae ventrales mediae (median underprimary coverts), feather pattern'
+		[53] 'Tectrices primariae ventrales majores (greater underprimary coverts), feather pattern'
+		[54] 'Tectrices secundariae ventrales minores (lesser underwing coverts), feather pattern'
+		[55] 'Tectrices secundariae ventrales mediae (median underwing coverts), feather pattern'
+		[56] 'Tectrices secundariae ventrales majores (greater underwing coverts), feather pattern'
+		[57] 'Pars femoralis (flank, lower side), feather pattern:'
+		[58] 'Pars femoralis (flank, lower side), rounded ocelli'
+		[59] 'Pars cruralis (thigh), feather pattern'
+		[60] 'Pars cruralis (thigh), rounded ocelli'
+		[61] 'Podoteca lateralis, lateral-tarsi scutes, general aspect on medial view'
+		[62] 'Podoteca ventralis, plantar-tarsi scutes, number'
+		[63] 'Podoteca ventralis, plantar-tarsi scutes, surface aspect'
+		[64] 'Podoteca ventralis (plantar-tarsi scutes), scale pattern (As already noted by Blake (1977), in Pterocnemia pennata the plantar surface in the upper tarsus is reticulate, whereas the lower half of the tarsus has transverse scutes. Accordingly, we coded P. pennata as having both states.'
+		[65] 'Acrotarsium, dorsal-tarsi scutes, adjacent scutes of proximal end'
+		[66] 'Acrotarsium, dorsal-tarsi scutes, distal end'
+		[67] 'Acropodium, scute number on hind toe (Because Tinamotis and Eudromia lack a hallux, we scored these taxa as noncomparable)'
+		[68] 'Tarsi, color pattern'
+		[69] 'Trunk, dorsal surface, overall pattern'
+		[70] 'Rump, pale patch in lower back'
+		[71] 'Dorsal feathers, development of rachis and aftershaft'
+		[72] 'Forehead'
+		[73] 'Preorbital line'
+		[74] 'Supraorbital line'
+		[75] 'Postorbital line'
+		[76] 'Malar line'
+		[77] 'Auricular line'
+		[78] 'Lateral crown'
+		[79] 'Dorsal crown'
+		;
+	STATELABELS
+		0 straight 'slightly decurved' 'decurved toward tip' 'strongly decurved',
+		1 absent present,
+		2 'longer (Fig. 1c)' 'similar (Fig. 1b)' 'shorter (Fig. 1a)',
+		3 'posteriorly convergent and contacting each other (Fig. 1d)' 'parallel (Fig. 1e)' 'posteriorly divergent (Fig. 1f)',
+		4 absent present,
+		5 blackish horn brownish reddish olive grayish,
+		6 blackish 'pale with dark tip' 'pink to reddish' brownish olive grayish horn yellowish,
+		7 'posterior, contacting pterilio capitalis' 'contacting and medial' 'not contacting, medial' 'not contacting, anterior' 'not contacting, extreme anterior',
+		8 brownish yellowish reddish whitish,
+		9 present absent,
+		10 absent present,
+		11 indistinct 'forming a crest like in Nothoprocta' 'long, recurved, and filamentous like in Eudromia',
+		12 streaked immaculate 'bicolored barred' 'Nothura-like pattern',
+		13 absent 'slightly marked' 'strongly marked and white',
+		14 absent present,
+		15 absent present,
+		16 'whitish immaculate' 'brownish-rufous immaculate' 'grayish immaculate' streaked 'bicolored barred',
+		17 immaculate 'bicolored barred' 'Nothura-like pattern' streaked,
+		18 immaculate 'bicolored barred' 'Nothura-like pattern' 'tricolored barred' 'mixed pattern' 'ingoufi-like pattern',
+		19 absent present,
+		20 immaculate 'bicolored barred' 'Nothuralike pattern' 'tricolored barred' 'mixed pattern' 'ingoufi-like pattern' 'dimorphic: male immaculate, female bicolored barred',
+		21 absent present,
+		22 'bicolored barred' immaculate streaked 'dimorphic: male immaculate, female bicolored barred',
+		23 absent 'slightly marked' 'strongly marked',
+		24 absent present,
+		25 'bicolored barred' immaculate streaked 'dimorphic: male immaculate, female bicolored barred',
+		26 absent present,
+		27 absent present,
+		28 immaculate 'bicolored barred' streaked 'mixed pattern' 'Nothura-like pattern' 'dimorphic:  male immaculate, female bicolored barred',
+		29 absent 'rounded light spots' 'V-shaped light spots',
+		30 'brownish or rufous immaculate' 'whitish inmaculate' 'bicolored barred',
+		31 'brownish or rufous immaculate' 'whitish inmaculate' 'bicolored barred',
+		32 'brownish immaculate' 'whitish inmaculate' 'rufous immaculate' 'bicolored barred' 'scalloped',
+		33 'immaculate' 'bicolored barred' 'scalloped' 'rufous immaculate',
+		34 absent 'present in the belly' 'present from the chest to the belly. Fjelsa and Krabbe (1990: 58) noted that in some andean Nothoprocta species “the rear of the body has an exceptionally fur-like plumage.” We observed that in Nothoprocta ornata, N. kalinowski, N. taczanowski, N. pentlandii, and N. perdicaria furlike feathers extend up to the chest (state 2). The two species of Tinamotis also bear these feathers but restricted to the pars abdominalis and pars venti (state 1).',
+		35 immaculate 'bicolored barred' 'scalloped' 'Nothura-like pattern' 'tricolored barred',
+		36 absent present,
+		37 rudimentary 'indistinct from upper tail coverts' 'poorly developed but distinct from upper tail coverts',
+		38 'bicolored barred' 'brownish immaculate' 'rufous immaculate',
+		39 'bicolored barred' 'brownish immaculate' 'rufous immaculate',
+		40 'bicolored barred' 'brownish immaculate' 'rufous immaculate',
+		41 'bicolored barred' 'brownish immaculate' 'rufous immaculate',
+		42 'brownish immaculate' 'rufous immaculate' 'bicolored barred',
+		43 'brownish immaculate' 'rufous immaculate' 'bicolored barred',
+		44 'brownish immaculate' 'rufous immaculate' 'bicolored barred' 'tricolored barred',
+		45 immaculate 'bicolored barred' 'tricolored barred',
+		46 'rufous immaculate' 'brownish immaculate' 'bicolored barred' 'Nothura-like pattern',
+		47 'rufous immaculate' 'brownish immaculate' 'bicolored barred' 'Nothura-like pattern',
+		48 'brownish immaculate' 'bicolored barred' 'Nothura-like pattern' 'tricolored barred' 'mixed pattern' 'ingoufi-like pattern' 'dimorphic: male immaculate, female bicolored barred',
+		49 absent present,
+		50 absent present,
+		51 'rufous immaculate' 'brownish immaculate' 'whitish immaculate' 'bicolored barred',
+		52 'rufous immaculate' 'brownish immaculate' 'whitish immaculate' 'bicolored barred',
+		53 'rufous immaculate' 'brownish immaculate' 'whitish immaculate' 'bicolored barred',
+		54 'rufous immaculate' 'brownish immaculate' 'whitish immaculate' 'bicolored barred',
+		55 'rufous immaculate' 'brownish immaculate' 'whitish immaculate' 'bicolored barred',
+		56 'rufous immaculate' 'brownish immaculate' 'whitish immaculate' 'bicolored barred',
+		57 immaculate 'bicolored barred' scalloped 'tricolored barred' 'Nothura-like pattern' 'dimorphic: male immaculate, female bicolored barred.',
+		58 absent present,
+		59 'brownish immaculate' 'bicolored barred' scalloped 'tricolored barred' 'rufous immaculate',
+		60 absent present,
+		61 'one row' 'two or three rows (Figs. 1i, 1k)' 'more than three rows' 'without longitudinal array (Fig. 1m)',
+		62 'numerous scutes (Fig. 1n)' 'two or three rows of medium-sized scutes (Fig. 1j)' 'one row of large scutes (Fig. 1l)',
+		63 'relatively smooth (Fig. 1l)' 'relatively roughened' 'distinctly rasplike (Fig. 1j)',
+		64 'transverse scutes (Fig. 1l)' 'reticulate scutes (Figs. 1j, 1n)',
+		65 juxtaposed imbricated,
+		66 'base of the third and fourth toes covered by separated scutes (0; Fig. 1g)' 'base of the third and fourth toe covered by a single scute (Fig. 1h)',
+		67 one two three 'four or five',
+		68 brownish grayish 'pinkish to reddish' yellowish 'greenish to olive',
+		69 'brown or straight' 'lightly barred' 'barred with black',
+		70 present absent,
+		71 'both rudimentary' 'both developed',
+		72 pale 'undifferentiated from the crown',
+		73 absent present,
+		74 absent present,
+		75 absent present,
+		76 absent present,
+		77 absent present,
+		78 'not bordered by lines' 'bordered by simple whitish line' 'bordered by double line' 'whitish and dark',
+		79 'line absent' 'single line' 'double line',
+	;
+	MATRIX
+		Apteryx_australis					11001234000--------------------------------------------------301100(01)0-----------
+		Pterocnemia_pennata 				01111231010--------------------------------------------------301(01)00-0-----------
+		Rhea_americana						01111231010--------------------------------------------------221010-0-----------
+		Tinamus_solitarius    				11201003001021014100100100000002310001111120202210011311110(01)010210021?0001111100
+		Tinamus_major    					1120157300102101010010010000002231000111112020221001(13)(13)33310101021001100001111100
+		Tinamus_tao    						111010(56)20010210141101001000000023101011111000022100103003303010210021???????????
+		Tinamus_guttatus    				11201??30010200101001000000000000000011111222022100100300303010210014???????????
+		Tinamus_osgoodi    					111010520010200120000010000000000100011111000011000103003303010210021???????????
+		Nothocercus_bonapartei  			11201073001010001110101001000022310101010022212210013133310411011003121001100000
+		Nothocercus_julius    				11201013001010000110100000001000010111111120202210013333310401011003121001100010
+		Nothocercus_nigrocapillus			112010(50)30010100000101010010000023100011111202021100022222100110110031???????????
+		Crypturellus_undulatus    			111010720010200001101000000010000101011111200022100131??140101200001(14)11001111101
+		Crypturellus_soui    				111012(15)2101010000000001001000000000001111100001100013111110101200013301001100000
+		Crypturellus_tataupa    			1111132200101000000000100100000042000111110000110001311111010300111-1?1001111101
+		Crypturellus_parvirostris   		11111322001010000000001001000000420001111100001100001111110102001113(13)0??????????
+		Crypturellus_obsoletus    			1110125210101000200000100100000042000111110000110010111111010200111310??????????
+		Crypturellus_erythropus    			11101062001010000000101001000000010101111120002210001111100002001113(13)0??????????
+		Crypturellus_noctivagus    			1110106200101100000010100100000111010111112000221011333331110200111-(14)???????????
+		Crypturellus_duidae    				1110107200101100000010100100000001010111112000221010111111110200111-1???????????
+		Crypturellus_variegatus    			11101062001010000000101001000001110101111120002210101111111101200011301001111101
+		Crypturellus_cinereus    			111010522010100010000010010100000100011111000011000021121101012000130???????????
+		Crypturellus_boucardi    			111012?2001010000000601001000000010001111120202260001111100001200000(34)21001111101
+		Crypturellus_kerriae    			111012?2001010002000001001000000010001111120202210001111120200200001211001111101
+		Crypturellus_cinnamomeus    			111010720010210001001030030050001101011111222022100011111202002000002?1001111101
+		Crypturellus_atrocapillus   		111010720010100010001010010000003100011111000022100011111202012000004???????????
+		Crypturellus_bartletti    			111015520010100000001010010000011001011111000022100021121101002000012???????????
+		Crypturellus_berlepschi    			111010522010100010000010010100000100011111000011000021121101002000013???????????
+		Crypturellus_casiquiare    			11101??2?010100000001010010000111?01011111000022100021121101002000011???????????
+		Crypturellus_strigulosus    		1110107220101000100000100100000001000111112000220000211211010020000130??????????
+		Crypturellus_transfasciatus 		11101072?0102100010010000000(01)0111101011111222022100011111000012000010???????????
+		Crypturellus_ptaritepui				1110121230101000200000100100000000000111110000000000111115000120000020??????????
+		Crypturellus_brevirostris			11101052?0101000000010100100000111010111110000221000111110000120000020??????????
+		Nothura_minor    					11011270101030110320202002002000011100(01)10(01)2(02)2(01)222000111111010120000020??????????
+		Nothura_maculosa    				11011230(01)01030110320202002002000011(13)000(01)002221222000211211010?2000002?1110011120
+		Nothura_chacoensis    				11011230(01)01030110320202002000000011(13)0000012(02)2121410021121101012000001?1110011120
+		Nothura_boraquira    				110112701010301103202020020020000111000122123222300011111000022000010???????????
+		Nothura_darwinii    				11011230001030110320202002002000011(13)0001221132223000?11?1101012000003???????????
+		Nothoprocta_ornata    				31021010(01)011301142302000000010200121000122123222300021111000012000000?1110011120
+		Nothoprocta_kalinowski    			31021??0?011201142302000000010200121000101202121400021121101012000002???????????
+		Nothoprocta_cinerascens    			210115500011301102202000001011000114100122121122510011111000012000114?1110011120
+		Nothoprocta_pentlandii    			3102103000113011422020000(01)1001000123100111000022(12)00021121101012000001?1110011120
+		Nothoprocta_perdicaria    			310210500011301142102000000000000123000111222122200??????100012000113?1110011120
+		Nothoprocta_taczanowskii    		3102103000113011422020000110110000211001002221222001333330000210001(12)(13)0??????????
+		Nothoprocta_curvirostris    		310212100011301142202000000010000023000101202022200133333101021000133?1110011120
+		Eudromia_elegans    				21011000011202110341412202003022010100000(01)22212220010130110002100012301110011122
+		Eudromia_elegans_albida    			2101100001120211034141220200302001010000012021213001333331010300111-101110011122
+		Eudromia_formosa    				2101100001120211034141220200322001010001002221222001333331000300111-10??????????
+		Rhynchotus_rufescens_pallescens 	100-0050101000110030301001001020310400020120202220011311110001200013301110011120
+		Rhynchotus_rufescens_macullocollis  100-005010100011033030200200102201040022002221224101313331000120001(12)3?1110011120
+		Rhynchotus_rufescens_rufescens    	100-0050101000111030301001000000310400220022212241011311110(01)012000133?1110011120
+		Tinamotis_pentlandii    			21011230011002110340402212003022231100010121212130010(03)3031000210001230????011120
+		Tinamotis_ingoufi    				210114401110021133515122120022222311002201202021(123)001333331010210001(12)????????????
+		Taoniscus_nanus    					1101127010103011032020000000100001110011012020212001313331000210001(12)101?10011120
+		New_species   						1101123010102011312020000(02)00403351130011011010222000111110100110001210?1????????
+		;
+END;
+
+BEGIN SETS;
+	CHARPARTITION bodyparts=skull:1-5,integument:6-80;
+END;

@@ -1,0 +1,1153 @@
+SKELETON AXIALE
+	CRANIUM
+		Zona flexoria [Ginglymus] craniofacialis
+	CALVARIA
+		Lamina externa
+			Frons
+			Depressio frontalis
+			Fossa temporalis
+		Meatus acusticus externus
+		Fossa glandulae nasalis
+		Occiput
+		Prominentia cerebellaris
+		Crista [Linea] nuchalis sagittalis
+		Crista [Linea] nuchalis transversa
+		Facies nuchalis
+		Foramen rami occipitalis ophthalmicae externae
+		Lamina interna
+			Crista vallecularis
+			Crista frontalis interna
+		Tuberculum pineale
+		Fossa cerebelli
+			Crista maginalis
+			Impressio erninentiae sagittalis
+			Sulcus sinus sagittalis dorsalis
+			Cellulae pneumaticae
+	BASIS CRANII EXTERNA
+		Lamina parasphenoidalis [Lamina basitemporalis]
+			Ala parasphenoidalis
+			Basis rostri parasphenoidali
+				Proc. basipterygoideus
+		Proc. lateralis parasphenoidalis
+		Proc. medialis parasphenoidalis
+		Os basioccipitale
+			Canales n. hypoglossi
+			Condylus occipitalis
+			Tuberculum basilare
+		Os exoccipitale
+			Fossa parabasalis
+				Crista fossae parabasalis
+		Proc. paroccipitalis [Po paroticus]
+		Foramen magnum
+		Os laterosphenoidale [Os pleurosphenoidale]
+	BASIS CRANII INTERNA
+		Eminentia aqueductus vestibuli
+		Fossa cranii caudalis
+			Canales n. hypoglossi
+			Eminentia canalis semicircularis
+			Foramen magnum
+			Fossa acustica interna
+			Fossa medullae oblongatae
+			Fovea ganglii vagoglossopharyngealis
+		Fossa cranii media
+			Fossa tecti mesencephali (CNS)
+				Fossa ganglii trigemini
+				Crista tentorialis
+		Fossa cranii rostralis
+			Crista frontalis interna
+			Foramen ethmoidale
+			Foramen n. olfactorii
+			Foramen opticum
+			Fossa bulbi olfactorii
+				Septum osseum fossae bulbi
+		Fossa cerebelli
+			Crista marginalis
+			Fossa auriculae cerebelli
+			Sulcus V. semicircularis
+	OSSA CRANII
+		Os basioccipitale
+			Condylus occipitalis
+				Incisura mediana condyli
+				Tuberculum basilare
+			Facies externa
+			Facies medullae oblongatae
+			Fossa subcondylaris
+			Fovea ganglii vagoglossopharyngealis
+		Os exoccipitale
+			Canalis semicircularis posterior
+			Facies cerebralis
+			Facies externa (see Cay. cran.)
+			Fossa parabasalis
+				Crista fossae parabasalis
+				Foramen n. glossopharyngealis
+				Foramen n. vagi
+				Ostium canalis carotici
+				Ostium canalis ophthalmici externi
+			Incisura foraminis magni
+			Proc. condylaris
+				Canales n. hypoglossi
+			Proc. paroccipitalis
+		Os supraoccipitale
+			Crista [Linea] nuchalis transversa
+			Facies cerebellaris (see Cay. cran.)
+			Facies nuchalis
+			Fonticulus occipitalis
+			Foramen V. occipitalis externae
+		Os laterosphenoidale [Os pleurosphenoidale]
+			Facies orbitalis
+				Area muscularis aspera
+				Proc. postorbitalis
+			Facies cerebralis
+				Canalis n. maxillomandibularis
+				Foramen n. maxillomandibularis
+				Foramen n. abducentis
+				Foramen n. oculomotorii
+				Foramen n. trochlearis
+				Foramen n. ophthalmici
+				Incisura n. optici
+			Facies tecti mesencephali
+				Fossa ganglii trigemini
+				Sulcus n. ophthalmici
+				Sulcus n. trochlearis
+			Facies temporalis
+		Os basisphenoidale
+			Facies cerebralis
+				Canalis n. abducentis
+				Sella turcica
+					Dorsum sellae
+					Fossa hypophysialis
+					Foramen ophthalmicum internum
+					Ostium canalis carotici (Canalis craniopharyngealis)
+		Os parasphenoidale
+			Rostrum parasphenoidale
+				Canalis orbitalis
+				Facies articularis palatina
+				Facies articularis pterygoidea
+				Facies articularis vomeralis
+				Basis rostri parasphenoidalis
+				Proc. basipterygoideus
+				Canalis orbitalis
+			Lamina parasphenoidalis [L. basitemporalis]
+				Ala parasphenoidalis
+				Proc. lateralis parasphenoidalis
+				Proc. medialis parasphenoidalis
+				Canalis caroticus cranialis
+				Crista basilaris transversa
+				Crista fossae parabasalis
+			Tuba auditiva [pharyngotympanica] communis
+			Tuba auditiva [pharyngotympanica]
+				Ostium pharyngeale
+				Ostium tympanicum
+		Os squamosum [Squamosum]l
+			Facies cerebralis
+			Facies externa
+			Cotyla quadratica squamosi
+			Fossa temporalis
+				Crista temporalis
+			Fossa subtemporalis
+			Proc. postorbitalis
+			Proc. suprameaticus
+			Proc. zygomaticus
+		Ossa otica
+			Os epioticum
+			Os opisthoticum
+			Os prooticum
+			Os metoticum
+			Cotyla quadratica otici
+			Pila otica
+			Proc. paroccipitalis [Po parotica]
+			Vestibulum
+			Canales sernicirculares ossei
+				Canalis sernicircularis anterior
+					Canalis y. sernicircularis anterioris
+				Canalis sernicircularis lateralis
+					Canalis v. sernicircularis lateralis
+				Canalis sernicircularis posterior
+			Cochlea
+				Lagena
+			Fossa acustica interna
+				Foramen n. ampullaris caudalis
+				Foramen n. ampullaris lateralis
+				Foramen n. ampullaris rostralis
+				Foramen n. cochlearis
+				Foramen n. facialis
+		Os parietale
+			Crista [Linea] nuchalis
+			Facies externa
+			Facies interna
+		Os frontale
+			Facies cerebralis
+				Crista vallecularis
+				Impressio erninentiae sagittalis
+				Crista frontalis interna
+					Sulcus sinus sagittalis dorsalis
+			Facies dorsalis
+				Fossa glandulae nasalis
+				Foramina neurovascularia
+			Facies orbitalis
+				Impressio glandulae nasalis
+				Margo supraorbitalis
+				Proc. lacrimalis [P. prefrontalis]
+		Os mesethmoidale
+			Lamina dorsalis
+			Septum nasale osseum
+			Sulcus n. olfactorii
+		Os ectethmoidale [Os latero-ethmoidale]
+			Facies nasalis
+			Facies orbitalis
+		Os lacrimale [Os prefrontale]
+			Facies articularis frontonasalis
+			Incisura ductus nasolacrimalis
+			Proc. orbitalis
+			Proc. supraorbitalis
+		Paries caudalis orbitae
+	CAVUM TYMPANICUM [CAVITAS TYMPANICA]
+		Canalis ophthalmicus externus
+		Cotylae quadratica otici
+		Cotyla quadratica squamosi
+		Ostium canalis tubae auditivae [pharyngotympanicae]
+		Columella
+		Foramen m. columellae
+		Hiatus subtympanicus
+		Pila otica [Po prootica]
+		Recessus columellae [R. antevestibularis]
+		Fenestra vestibuli
+		Fenestra cochleae [F. pseudorotunda]
+		Recessus pneumatici paratympanici
+			Recessus tympanicus caudalis
+				Foramen pneumaticum caudale
+			Recessus tympanicus dorsalis
+				Foramen pneumaticum dorsale
+			Recessus tympanicus rostralis
+				Foramen pneumaticum rostrale
+			Cellulae pneumaticae
+				Siphonium
+	ORBITA
+		Paries caudalis orbitae
+			Os laterosphenoidale [Os pleurosphenoidale]
+				Proc. postorbitalis
+		Paries dorsalis orbitae
+		Impressio gl. nasalis
+			Os frontale
+		Paries medialis orbitae
+			Septum interorbitale
+		Paries rostralis orbitae
+			Os ectethmoidale
+			Fonticuli interorbitales
+			Fonticuli orbitocraniales
+			Foramen n. maxillomandibularis
+			Foramen n. olfactorii
+			Foramen n. ophthalmici
+			Foramen opticum (see Os lat. sphen.)
+			Foramen orbitonasale laterale
+			Foramen orbitonasale mediale
+			Margo supraorbitalis
+			Margo infraorbitalis
+				Arcus suborbitalis
+			Sulcus n. olfactorii
+	FACIES
+		MAXILLA
+			Fenestra antorbitalis [F. orbitonasalis]
+			Hiatus craniofacialis septi
+			Arcus jugalis
+			Arcus suborbitalis
+			Rostrum maxillae
+			Palatum osseum
+				Concavitas palati
+				Fissura interpalatina
+				Fenestra palatinal
+			Canalis neurovascularis maxillae
+				Canaliculi neurovasculares
+				Foramina neurovascularia
+				Foveae corpusculorum nervosorum
+			Dentes
+	CAVUM NASI [CAVITAS NASALIS]
+		Apertura nasi [nasalis] ossea
+		Pila supranasalis
+		Septum nasi [nasale] osseum
+		Conchae nasales
+		Recessus pneumatici paranasales
+		Fossa antorbitalis
+		Os ectethmoidale
+	MANDIBULA
+		Rostrum [Symphysis] mandibulae
+		Ramus mandibulae
+			Pars caudalis
+			Pars intermedia
+			Pars symphysialis
+			Angulus mandibulae
+			Crista tomialis
+			Facies lateralis
+			Facies medialis
+			Proc. coronoideus
+			Proc. lateralis mandibulae
+			Proc. medialis mandibulae
+				Facies articularis parasphenoidalis
+			Fenestra caudalis mandibulae
+			Fenestra rostralis mandibulae
+			Fossa aditus canalis neurovascularis
+			Fossa lateralis mandibulae
+			Canalis neurovascularis mandibulae
+				Canaliculi neurovasculares
+				Foramina neurovascularia
+				Foveae corpusculorum nervosorum
+			Tuberculum pseudotemporale
+			Fossa articularis quadratica
+				Cotylae fossae articularis
+					Cotyla caudalis
+					Cotyla lateralis
+						Cotyla rostralis
+					Cotyla medialis
+					Sulcus intercotylaris
+					Tuberculum intercotylare [Crista intercotylaris]
+					Foramen pneumaticum articulare
+			Proc. retroarticularis
+			Incisura retroarticularis
+			Fossa caudalis
+				Crista transversa fossae
+			Recessus conicalis
+			Dentes
+		Os nasale Proc. Proc. Proc.
+OSSA FACIEI
+	OSSA MAXILLAE ET PALATI
+		Os nasale
+			Proc. frontalis
+			Proc. maxillaris
+			Proc. premaxillaris
+		Os premaxillare
+			Corpus ossis premaxillare
+				Proc. frontalis
+				Proc. maxillaris
+				Proc. palatinus
+				Crista tomialis
+				Canalis neurovascularis maxillae
+					Canaliculi neurovasculares
+					Foramina neurovascularia
+					Foveae corpusculorum nervosorum
+			Rostrum maxillae
+		Os maxillare
+			Crista tomialis
+			Proc. jugalis
+			Proc. nasalis
+			Proc. maxillopalatinus [P. palatinus]
+			Proc. premaxillaris
+			Canalis neurovascularis
+				Canaliculi neurovasculares
+				Foramina neurovascularia
+				Foveae corpusculorum nervosorum
+		Os palatinum [Os pterygopalatinum]
+			Pars choanalis
+				Angulus caudomedialis
+				Crista dorsolateralis
+				Crista medialis
+				Crista ventralis
+				Facies articularis parasphenoidalis
+				Facies articularis vomeralis
+				Fossa choanalis
+				Lamella choanalis
+				Lamella dorsalis
+				Proc. caudomedialis
+				Proc. rostralis
+			Pars lateralis [Lamella caudolateralis]
+				Angulus caudolateralis
+				Crista lateralis
+				Facies articularis pterygoidea
+				Fossa ventralis
+				Proc. maxillaris
+				Proc. pterygoideus
+		Vomer
+			Corpus vomeris
+			Facies articularis palatina
+			Facies articularis parasphenoidalis
+			Facies articularis pterygoidea
+			Facies articularis maxillaris
+			Facies articularis premaxillaris
+			Proc. pterygoideus
+		Os pterygoideum
+			Facies articularis basipterygoidea
+			Facies articularis quadratica
+			Pes pterygoidei
+				Facies articularis palatina
+				Facies articularis parasphenoidalis
+				Pars palatina
+			Proc. dorsalis
+			Proc. quadraticus
+		Os jugale
+			Tuberculum lacrimale [T. prefrontale]
+		Os quadratojugale
+			Condylus quadraticus
+		Os quadratum [Quadratum]
+			Corpus ossis quadrati
+			Facies tympanica
+				Crista tympanica
+				Foramen pneumaticum
+				Sulcus pneumaticus
+			Proc. mandibularis
+			CondyIus caudalis
+			Condylus lateralis
+				Cotyla quadratojugalis
+				Condylus rostralis
+				Condylus medialis
+				Condylus pterygoideus
+				Sulcus intercondylaris
+			Proc. orbitalis
+			Proc. oticus
+				Capitulum [Condylus] oticum
+				Capitulum [Condylus] squamosum
+				Crista tympanica
+				Incisura intercapitularis
+				Sulcus pneumaticus
+	OSSA MANDIBULAE
+		Os dentale
+			Pars dorsalis
+			Pars ventralis
+			Pars symphysialis
+		Os angulare
+			Proc. retroarticularis
+		Os articulare
+			Foramen pneumaticum articulare
+			Proc. medialis mandibulae
+		Os coronoideum
+		Os prearticulare
+		Os spleniale
+		Os supra-angulare
+			Proc. lateralis mandibulae
+	OSSA ACCESSORIA CRANII
+		Anulus [Annulus] tympanicus
+		Os nuchale
+		Ossa sclerae
+		Os siphonium [Siphonium]
+		Os suprajugale
+		Ossa supraorbitalia
+		Os lacrimopalatinum
+		Ossa suturarum
+		Os uncinatum
+	LARYNX
+	SYRINX
+	APPARATUS HYOBRANCHIALIS [A. HYOLINGUALIS]
+		Paraglossum
+			Cornua
+		Basihyale [Basibranchiale rostrale]
+			Crista dorsalis
+			Proc. parahyalis
+			Arcus parahyalis
+		Urohyale [Basibranchiale caudale]
+		Cornu branchiale
+			Ceratobranchiale
+			Epibranchiale
+			Pharyngobranchiale
+COLUMNA VERTEBRALIS
+	PARTES VERTEBRAE
+		Corpus vertebrae
+			Facies articularis caudalis
+			Facies articularis cranialis
+			Facies lateralis corporis
+				Concavitas lateralis
+				Sulcus lateralis
+				Eminentia costolateralis
+					Fovea costalis
+				Proc. costalis
+				Tuberositas lig. collateralis
+				Foramina pneumatica
+			Facies ventralis corporis
+				Proc. postlateralis
+				Proc. caroticus
+				Sulcus caroticus
+				Crista [Proc.] ventralis corporis
+					Alae cristae ventralis
+					Crista ventrolateralis
+				Fovea cranioventralis
+			Facies dorsalis corporis
+		Arcus vertebrae [A. neuralis]
+			Lamina lateralis arcus [Pediculus arcus]
+				Incisura cranialis arcus
+				Incisura caudalis arcus
+			Lamina dorsalis arcus
+				Area lig. elastici
+				Proc. spinosus [arcus]
+			Proc. transversus vertebrae
+				Facies dorsalis
+				Facies ventralis
+				Fovea costalis
+			Zygapophysis [Proc. articularis] caudalis
+				Crista transverso-obliqua
+				Facies articularis
+				Torus dorsalis
+			Zygapophysis [Proc. articularis] cranialis
+				Facies articularis
+			Ansa costotransversaria
+				Foramen transversarium
+				Tuberculum ansae
+				Cristae laterales ansae
+				Proc. costalis
+			Lamina arcocostalis
+				Foramen laterale arcus
+			Lamina corporocostalis
+			Foramen vertebrale
+			Canalis vertebralis
+			Canalis caroticus cervicalis
+			Hiatus interarcualis
+				Lacuna interzygapophysialis
+			Foramen intervertebrale
+			Foramen transversarium
+			Canalis vertebrarterialis
+VERTEBRAE CERVICALES SPECIALES
+	Atlas
+		Corpus atlantis
+			Facies articularis axialis
+			Fossa condyloidea
+			Facies articularis dentalis
+			Foramen fossae
+			Incisura fossae
+			Tuberositas lig. transversi
+			Proc. ventralis corporis
+		Arcus atlantis
+			Ansa costotransversaria
+			Foramen transversarium
+			Incisura caudalis arcus
+			Zygapophysis [Proc. articularis] caudalis
+				Facies articularis
+			Proc. spinosus [Po dorsalis]
+	Axis
+		Corpus axis
+			Dens
+				Fovea aspera
+			Facies articularis atlantica
+			Fovea lig. collateralis atlantoaxialis
+			Proc. ventralis corporis
+		Arcus axis
+			Lamina dorsalis arcus
+			Ansa costotransversaria
+				Foramen transversarium
+			Proc. costalis axis
+			Proc. spinosus [P. dorsalis]
+			Lacuna .interzygapophysialis
+			Lamina lateralis arcus
+				Incisura caudalis arcus
+				Incisura cranialis arcus
+			Zygapophysis [Proc. articularis] caudalis
+				Facies articularis
+			Zygapophysis [Proc. articularis] cranialis
+				Facies articularis
+VERTEBRAE THORACICAE, [LUMBICALES), ET SACRALES
+	NOTARIUM [Os dorsale]
+		Canalis notarii [C. vertebralis]
+		Crista spinosa [dorsalis] notarii
+		Lamina transversa notarii
+			Fenestrae intertransversariae
+		Corpus notarii
+		Crista ventralis notarii
+			Fenestrae intercristales
+		Foramina intervertebralia
+		Eminentia costolateralis
+VERTEBRAE SYNSACRALES
+	SYNSACRUM (see Os coxae)
+		Canalis synsacri [C. vertebralis]
+		Extremitas cranialis synsacri
+		Facies dorsalis synsacri
+			Crista spinosa [C. dorsalis] synsacri
+			Lamina transversa synsacri
+				Margo lateralis laminae transversae
+			Fenestrae intertransversariae
+		Facies lateralis synsacri
+			Foramina intervertebralia
+			Eminentia costolateralis
+		Facies visceralis synsacri
+			Corpus synsacri
+				Crista ventralis synsacri
+				Sulcus ventralis corporis
+			Vertebra acetabularis
+		Proc. costalis
+		Proc. transversus
+		Fossae renales (see Pelvis)
+		Extremitas caudalis synsacri
+VERTEBRAE CAUDALES
+	Vertebrae caudales stabiles
+	Vertebrae caudales liberae
+		Proc. haemalis
+	Pygostylus [Coccyx]
+		Apex pygostyli
+		Basis pygostyli
+		Corpus pygostyli
+			Crista ventralis
+			Facies articularis cranialis
+			Proc. haemalis
+			Canalis vascularis
+		Lamina pygostyli
+			Proc. transversus
+			Canalis pygostyli [C. vertebralis]
+		Margo cranialis
+		Margo caudalis
+			Discus pygostyli
+CAVUM THORACIS [CAVITAS THORACICA)
+	Apertura thoracica caudalis
+	Apertura thoracica cranialis
+	Facies visceralis stemi (see Sternum)
+	Spatium intercostale
+	Sulcus pulmonalis
+COSTAE
+	Costa vertebralis
+		Extremitas dorsalis costae
+			Capitulum costae
+			Collum costae
+			Tuberculum costae
+			Incisura capitulotubercularis
+			Angulus costae
+		Corpus costae
+			Facies medialis [F. pulmonalis]
+			Facies lateralis
+			Margo caudalis
+			Margo cranialis
+			Proc. uncinatus
+		Extremitas ventralis costae
+		Facies articularis intercostalis
+	Costa sternalis
+		Extremitas dorsalis costae
+		Facies articularis intercostalis
+		Extremitas ventralis costae
+			Facies articularis sternalis
+SKELETON APPENDICULARE
+	OSSA CINGULI MEMBRI THORACICI
+	STERNUM
+		Corpus sterni
+			Facies muscularis sterni
+				Linea intermuscularis
+				Planum postcarinale
+			Facies visceralis sterni
+				Pars cardiaca
+				Pars hepatica
+				Foramen pneumaticum
+				Pori pneumatici
+				Sulcus medianus sterni
+			Margo costalis [lateralis] sterni
+				Incisurae costales
+				Loculus costalis
+				Pila costalis
+				Proc. articularis sternocostalis
+					Facies articularis costalis
+			Margo cranialis sterni
+				Pila coracoidea
+				Sulcus articularis coracoideus
+				Labrum externum
+					Tuberculum labri externi
+				Labrum internum
+				Proc. craniolateralis sterni
+				Impressio m. sternocoracoidei
+		Rostrum sterni
+			Foramen rostri
+			Spina externa rostri
+				Alae spinae sternae
+				Spina interna rostri
+				Spina communis
+				Septum interarticulare
+				Spatium intercoracoidale
+		Margo caudalis sterni
+			Fenestra lateralis
+			Fenestra medialis
+			Incisura lateralis
+			Incisura medialis
+			Trabecula intermedia
+			Trabecula lateralis
+			Trabecula mediana
+			Proc. caudolateralis sterni
+		Carina sterni
+			Apex carinae
+			Facies articularis furculae
+			Tuberositas lig. sternoclavicularis
+			Facies lateralis carinae
+				Linea intermuscularis
+			Margo cranialis carinae
+				Crista lateralis carinae
+				Crista mediana carinae
+				Pila carinae
+				Sulcus carinae
+			Margo ventralis carinae
+	CLAVICULA [FURCULA]
+		Extremitas omalis claviculae [Epicleideum]
+			Proc. acrocoracoideus claviculae
+				Facies articularis acrocoracoidea
+			Proc. acromialis claviculae
+				Facies articularis acromialis
+		Extremitas sternalis claviculae
+			Apophysis furculae [Hypocleideum]
+			Scapus [Corpus] claviculae
+			Proc. interclavicularis
+	SCAPULA 
+		Extremitas cranialis [Caput] scapulae
+			Acromion
+			Crista lig. acrocoracoacromiali
+			Facies articularis clavicularis
+			Sulcus supracoracoideus
+			Proc. glenoidalis scapulae
+				Facies articularis humeralis
+				Labrum glenoidale
+			Facies articularis coracoidea
+				Tuberculum coracoideum
+			Collum scapulae
+			Corpus scapulae
+				Facies medialis [F. costalis]
+				Facies lateralis
+				Margo dorsalis [M. vertebralis]
+				Margo ventralis
+				Tuberculum m. scapulotricipitis
+			Extremitas caudalis [Spina] scapulae
+	CORACOIDEUM [OS CORACOIDEUM]
+		Extremitas omalis coracoidei
+			Proc. acrocoracoideus
+				Facies articularis clavicularis
+				Impressio lig. acrocoracohumeralis
+				Tuberculum brachiale
+			Proc. glenoidalis coracoidei
+				Facies articularis humeralis
+					Labrum glenoidale
+				Facies articularis scapularis
+					Cotyla scapularis
+				Proc. procoracoideus
+					Facies articularis scapularis
+					Sulcus supracoracoideus
+			Corpus coracoidei
+				Facies dorsalis
+					Cotyla scapularis
+				Facies ventralis
+					Margo lateralis
+					Margo medialis
+					Foramen [Incisura] n. supracoracoidei
+					Linea intermuscularis ventralis
+			Extremitas sternalis coracoidei
+				Crista articularis sternalis
+					Facies externa
+					Crista intermedia
+					Facies interna
+				Facies articularis intercoracoidea
+					Angulus medialis
+					Proc. lateralis
+						Angulus lateralis
+						Margo supra-angularis
+						Impressio m. sternocoracoidei
+				Canalis triosseus
+				Cavitas glenoidalis
+OSSA ALAE [MEMBRI THORACICI]
+	SKELETON BRACHII
+		HUMERUS
+			Extremitas proximalis humeri
+				Caput humeri
+					Incisura capitis humeri
+					Crista incisurae capitis
+					Tuberculum dorsale
+				Crista deltopectoralis
+					Angulus cristae
+					Impressio m. pectoralis
+					Crista m. supracoracoidei
+				Tuberculum ventrale
+					Crista bicipitalis
+				Fossa pneumotricipitalis [F. tricipitalis]
+					Foramen pneumaticum
+					Crus dorsale fossae
+					Crus ventrale fossae
+					Margo caudalis
+				Planum intertuberculare
+					Sulcus [Canalis] n. coracobrachialis
+					Intumescentia humeri
+					Sulcus transversus
+					Impressio coracobrachialis
+				Corpus humeri
+					Facies caudalis
+						Margo caudalis
+					Facies cranialis
+						Margo caudalis
+						Margo dorsalis
+						Margo ventralis
+							Linea m. latissimi dorsi
+							Sulcus n. radialis
+				Extremitas distalis humeri
+					Condylus dorsalis humeri
+					Condylus ventralis humeri
+					Incisura ihtercondylaris
+					Fossa m. brachialis
+					Epicondylus dorsalis [Ectepicondylus]
+					Epicondylus ventralis [Entepicondylus]
+					Proc. flexorius
+					Tuberculum supracondylare dorsale
+						Proc. supracondylaris dorsalis
+					Tuberculum supracondylare ventrale
+					Fossa olecrani
+						Sulcus scapuiotricipitalis
+						Sulcus humerotricipitalis
+						Os sesamoideum m. scapuiotricipitis
+	SKELETON ANTEBRACHII
+		ULNA
+			Extremitas proximalis ulnae
+				Proc. cotylaris dorsalis
+					Cotyla dorsalis
+					Cotyla ventralis
+					Crista intercotylaris
+					Impressio m. brachialis
+					Impressio m. scapulotricipitis
+					Incisura radialis
+					Olecranon
+					Sulcus tendinosus
+					Tuberculum bicipitale ulnae
+					Tuberculum lig. collateralis ventraJis
+			Corpus ulnae
+				Facies caudodorsalis
+				Facies caudoventralis
+				Facies cranialis
+				Lineae intermusculares
+				Margo caudalis
+				Margo dorsalis
+				Margo interosseus [M. cranialis]
+				Papillae remigales caudales
+				Papillae remigales ventrales
+			Extremitas distalis ulnae
+				Trochlea carpalis
+					Condylus dorsalis ulnae
+						Labrum condyli dorsalis
+					Condylus ventralis ulnae
+					Sulcus intercondyiaris
+				Tuberculum carpale
+					Incisura tuberculi carpalis
+				Depressio radialis
+				Incisura tendinosa
+		RADIUS
+			Extremitas proximalis radii
+				Caput radii
+					Cotyla humeralis
+				Facies articularis ulnaris
+				Tuberculum bicipitaie radii
+			Corpus radii
+				Lineae intermusculares
+				Margo dqrsalis
+				Margo interosseus [caudalis]
+				Margo ventralis
+			Extremitas distalis radii
+				Facies articularis radiocarpalis
+				Facies articularis ulnaris
+				Depressio ligamentosa
+				Sulcus tendinosus
+				Tuberculum aponeurosis ventralis
+	SKELETON MANUS
+		OSSA CARPI
+			(Ossa carpi proximalia)
+			(Ossa carpi centralia)
+			(Ossa carpi distalia)
+			Os carpi radiale
+				Facies articularis metacarpalis
+				Facies articularis radialis
+				Facies articularis ulnaris
+			Os carpi ulnare
+			Corpus
+			Crus longum
+			Crus breve
+			Incisura metacarpalis
+			Proc. muscularis
+			Facies articularis ulnaris
+			Facies articularis metacarpalis
+			Os prominens
+		CARPOMETACARPUS
+			Extremitas proximalis carpometacarpi
+				Os metacarpale alulare
+				Proc. alularis
+					Facies articularis alularis
+					Proc. extensorius
+				Trochlea carpalis
+					Facies articularis radiocarpalis
+					Facies articularis ulnocarpalis
+				Fossa infratrochlearis
+				Fossa supratrochlearis
+				Fovea carpalis caudalis
+				Fovea carpalis cranialis
+				Proc. pisifonnis
+			Corpus carpometacarpi
+				Facies dorsalis
+				Facies ventralis
+				Margo caudalis
+				Margo cranialis
+				Os metacarpale majus
+					Sulcus tendinosus
+					Proc. inter:metacarpalis
+					Protuberantia metacarpalis
+				Os metacarpale minus
+				Spatium intermetacarpale
+			Extremitas distalis carpometacarpi
+				Symphysis metacarpalis distalis
+					Sulcus interosseus
+				Facies articularis digitalis major
+				Facies articularis digitalis minor
+		OSSA DIGITORUM MANUS
+			Phalanx digiti alulae
+			Phalanx proximalis digiti majoris
+				Facies articularis metacarpalis
+				Facies articularis phalangealis
+				Fossa dorsalis
+				Fossa ventralis
+				Pila cranialis phalangis
+			Phalanx distalis digiti majoris
+				Facies articularis metacarpalis
+			Phalanx digiti minoris
+OSSA CINGULI MEMBRI PELVICI
+	PELVIS ET OS COXAE
+		Acetabulum
+			Foramen acetabuli
+		Antitrochanter
+		Canalis [Sulcus] iliosynsacralis
+		Crista iliosynsacralis
+		Concavitas infracristalis
+		Fenestra ischiopubica
+		Foramen ilioischiadicum
+		Foramen obturatum
+		Fossa renalis
+			Pars ischiadica fossae
+			Pars pudenda fossae
+			Recessus caudalis fossae
+		Incisura caudalis pelvis
+		Incisura marginis caudalis
+		Proc. marginis caudalis
+	ILIUM
+		Ala [Pars] preacetabularis ilii
+			Facies dorsalis
+				Fossa iliaca dorsalis
+				Crista iliaca dorsalis
+				Crista iliaca lateralis
+			Facies ventralis
+				Areae articulares vertebrales
+				Margo cranialis
+				Margo lateralis
+				Margo medialis [M. vertebralis]
+		Ala [Pars] postacetabularis ilii
+			Facies dorsalis
+				Fossa iliocaudalis
+				Crista dorsolateralis ilii
+				Spina dorsolateralis ilii
+			Facies lateralis
+				Crista dorsolateralis ilii
+				Lamina infracristalis ilii
+					Concavitas infracristalis
+					Margo foraminis ilioischiadici
+			Facies ventralis
+				Facies renalis ilii
+				Crista caudalis fossae renalis
+				Margo caudalis
+				Margo lateralis
+				Pila postrenalis
+				Recessus caudalis fossae
+				Spina dorsolateralis ilii
+		Corpus ilii
+			Crista iliaca obliqua
+			Pila ilioischiadica
+			Crista iliaca intermedia
+			Facies renalis ilii
+			Incisura acetabularis
+			Antitrochanter
+				Facies articularis femoralis
+				Sulcus antitrochantericus
+			Tuberculum preacetabulare [Proc. pectinealis]
+	ISCHIUM 
+		Corpus ischii
+			Incisura acetabuiaris
+			Margo [Incisura] foraminis ilioischiadici
+			Incisura foraminis obturatorii
+			Margo ventralis [M. pubica]
+			Pila ilioischiadica
+			Proc. antitrochantericus
+				Facies articularis femoralis
+				Proc. obturatorius
+		Ala ischii
+			Facies lateralis
+			Facies medialis
+			Margo ventralis [M. pubica]
+			Proc. terminalis ischii
+			Sulcus obturatorius
+	PUBIS
+		Corpus pubis
+			Incisura acetabularis
+			Tuberculum preacetabulare [Proc. pectinealis]
+		Scapus pubis
+		Apex pubis
+OSSA MEMBRI PELVICI
+	FEMUR [OS FEMORIS]
+		Extremitas proximalis femoris
+			Caput femoris
+				Facies articularis acetabularis
+				Fovea lig. capitis
+			Collum femoris
+				Facies articularis antitrochanterica
+			Trochanter femoris
+				Crista trochanteris
+				Fossa trochanteris
+				Impressiones musculares trochanteris
+				Impressiones ligamentosae trochanteris
+		Corpus femoris
+			Facies caudalis
+				Linea intermuscularis
+			Facies cranialis
+				Linea intermuscularis
+			Facies lateralis
+			Facies medialis
+		Extremitas distalis femoris
+			Condylus lateralis
+				Fovea tendinis m. tibialis cranialis
+				Impressio lig. cruciati caudalis
+				Impressio lig. cruciati cranialis
+				Trochlea fibularis
+				Crista tibiofibularis
+				Crista supracondylaris lateralis
+					Tuberculum m. gastrocnemialis lateralis
+			Condylus medialis
+				Crista supracondylaris medialis
+					Tuberculum m. gastrocnemialis medialis
+			Epicondylus lateralis
+				Impressio lig. collateralis lateralis
+			Epicondylus medialis
+				Impressio lig. collateralis medialis
+			Fossa poplitea
+			Impressiones ansae m. iliofibularis
+			Sulcus intercondylaris
+				Impressio lig. cruciati cranialis
+			Sulcus patellaris
+				Facies articularis patellaris
+				Crista lateralis sulci patellaris
+				Crista medialis sulci patellaris
+		Patella
+			Facies articularis femoralis
+			Facies cranialis
+			Sulcus [Canalis] m. ambientis
+	TIBIOTARSUS
+		Extremitas proximalis tibiotarsi
+			Caput tibiae
+				Area interarticularis
+				Crista cnemialis cranialis
+				Crista cnemialis lateralis
+				Crista patellaris
+				Facies articularis lateralis
+				Facies articularis medialis
+				Facies articularis fibularis
+				Facies gastrocnemialis
+				Fossa flexoria
+				Fossa retropatellaris
+				Impressio lig. collateralis medialis
+				Incisura tibialis
+				Sulcus intercnemialis
+		Corpus tibiotarsi
+			Crista fibularis
+			Facies caudalis
+			Facies cranialis
+			Facies medialis
+			Linea extensoria
+			Lineae m. fibularis [peronei]
+			Margo lateralis [M. fibularis]
+			Margo medialis
+			Tuberositas poplitea
+		Extremitas distalis tibiotarsi
+			Condylus lateralis
+			Condylus medialis
+			Epicondylus lateralis
+				Depressio epicondylaris lateralis
+			Epicondylus medialis
+				Depressio epicondylaris medialis
+			Incisura intercondylaris
+				Area intercondylaris
+					Impressio lig. intercondylaris
+			Sulcus m. fibularis [peronei]
+			Trochlea cartilaginis tibialis
+				Cristae trochleae
+				Tuberculum retinaculi m. fibularis [peronei]
+				Sulcus extensorius
+				Tuberositas retinaculi extensori
+				Pons supratendineus
+				Canalis extensorius
+	FIBULA
+		Caput fibulae
+			Facies articularis femoralis
+			Facies articularis tibialis
+			Fovea m. poplitei
+			Tuberositas lig. collateralis lateralis
+		Corpus fibulae
+			Crista articularis tibialis
+			Tuberculum m. iliofibularis
+		Spina fibulae
+		Os sesamoideum intertarsale
+OSSA PEDIS
+	OSSA TARSI
+		Ossa proximalia tarsi
+			Tibiale [Astragalus]
+			Fibulare [Calcaneum]
+		Os tarsi distale
+	OSSA METATARSALIA
+		Os metatarsale I [primum] [hallucis]
+			Proc. articularis tarsometatarsalis
+			Trochlea metatarsi I [primi] [hallucis]
+				Tuberculum laterale
+				Tuberculum mediale
+		Os metatarsale II [secundum]
+		Os metatarsale III [tertium]
+		Os metatarsale IV [quartum]
+	TARSOMETATARSUS
+		Extremitas proximalis tarsometatarsi
+			Area intercotylaris
+				Fovea menisci lateralis
+			Sulcus ligamentosus
+			Cotyla lateralis
+			Cotyla medialis
+				Eminentia intercotylaris
+			Impressio lig. collateralis lateralis
+			Impressiones retinaculi extensorii
+			Sulcus m. fibularis [peronei] longus
+				Tuberculum m. fibularis [peronei] brevis
+		Hypotarsus
+			Canales hypotarsi
+			Crista lateralis hypotarsi
+			Crista intermedia hypotarsi
+			Crista medialis hypotarsi
+			Fossa parahypotarsalis lateralis
+			Fossa parahypotarsalis medialis
+			Sulci hypotarsi
+		Corpus tarsometatarsi
+			Facies dorsalis
+			Facies plantaris
+			Crista medianoplantaris
+			Facies subcutanea lateralis
+			Facies subcutanea medialis
+			Fossa metatarsi I [hallucis]
+			Proc. calcaris
+			Fossa infracotylaris dorsalis
+			Foramen vasculare proximale
+			Tuberositas m. tibialis cranialis
+			Sulcus extensorius
+				Arcus extensorius
+				Impressiones retinaculi extensorii
+				Tuberositas m. tibialis cranialis
+				Sulcus flexorius
+					Crista plantaris lateralis
+					Crista plantaris medialis
+			Extremitas distalis tarsometatarsi
+				Canalis interosseus distalis
+				Foramen vasculare distale
+				Fossa supratrochlearis plantaris
+				Incisura intertrochlearis lateralis
+				Incisura intertrochlearis medialis
+				Trochlea metatarsi II (secundi)
+					Foveae ligg. collateralium
+				Trochlea metatarsi III [tertii]
+					Foveae ligg. collateralium
+				Trochlea metatarsi IV [quarti]
+					Foveae ligg. collateralium
+				Trochlea accessoria
+				Os cuneatum
+	OSSA DIGITORUM PEDIS
+		Phalanges proximales et intennediae
+			Basis phalangis
+				Cotyla articularis
+			Corpus phalangis
+				Facies dorsalis
+				Facies plantaris
+			Capitulum phalangis
+				Trochlea articularis
+				Fovea lig. collateralis
+		Phalanx ungualis [terminalis]
+			Basis phalangis
+				Cotyla articularis
+				Tuberculum extensorium
+				Tuberculum flexorium
+			Corpus phalangis
+				Sulcus neurovascularis
+			Apex phalangis

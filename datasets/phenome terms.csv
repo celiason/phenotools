@@ -1,0 +1,170 @@
+﻿order,partition,body part,search term
+1,skull,external cranium,[Bb]ill|[Bb]eak
+2,skull,external cranium,(^|\s)[Ss]kull
+3,skull,external cranium,Condylus\soccipitalis|Cond\.\soccipitalis|Occipital\scondy
+4,skull,external cranium,Foramen magnum
+5,skull,external cranium,surface\scranium
+6,skull,external cranium,naris
+7,skull,external cranium,Cranium|Cavum\scrani|[Pp]latycalvaria|\w+\scrani
+8,skull,external cranium,[Cc]raniofac
+9,skull,external cranium,[Oo]ss.*?\ssutur
+10,skull,basis cranii interna,Fossa cranii media
+11,skull,basis cranii interna,Fossa cerebelli
+12,skull,basis cranii interna,Fossa cranii rostralis
+13,skull,ossa cranii,Os basioccipitale
+14,skull,ossa cranii,Os exoccipitale
+15,skull,ossa cranii,paroccipit
+16,skull,ossa cranii,Os supraoccipital
+17,skull,ossa cranii,([Oo]s)?(^|\s)laterosphen
+18,skull,ossa cranii,Os basisphenoidale|[Bb]asisphenoid
+19,skull,basicranium,Basi|Proc.*?basi
+20,skull,basicranium,choana
+21,skull,basicranium,\bophthalm
+22,skull,basicranium,[Oo]ptic\sforam
+23,skull,ossa cranii,(Os\s)?parasphenoidal
+24,skull,ossa cranii,Lamina parasphenoidalis
+25,skull,ossa cranii,[Tt]ub.*?audit
+26,skull,ossa cranii,[Ss]quam|Os squamosal|Os squamosum
+27,skull,ossa cranii,[Ff]ossa\stemporal
+28,skull,ossa cranii,Proc(\.|essus)\szygomaticus
+29,skull,ossa cranii,(^|\b)(pro)?otic
+30,skull,ossa cranii,Os opisthoticum
+31,skull,ossa cranii,Os frontale|Sutura frontoparietalis|Front|Depre.*?\bfrontal|interpariet
+32,skull,ossa cranii,\sinterfrontal
+33,skull,ossa cranii,Os prefrontale
+34,skull,ossa cranii,(Os\s)?[Mm]esethmoid
+35,skull,ossa cranii,[Oo]s ect(o)?ethmoid
+36,skull,ossa cranii,Os ethmoid
+37,skull,ossa cranii,Os lacrima|(?<!\-)(\b|^)[Ll]acr
+38,skull,ossa cranii,\sjugolacrim
+39,skull,cavum tympanicum,paratympanici
+40,skull,cavum tympanicum,meaticus
+41,skull,cavum tympanicum,[Cc]olumella
+42,skull,cavum tympanicum,Canalis semicircularis
+43,skull,cavum tympanicum,[Ee]ustach
+44,skull,cavum tympanicum,[Cc]avum\stympan
+45,skull,orbit,Orbita
+46,skull,orbit,\sinterorb|\sorbito
+47,skull,nasal,Cavum\snasi|nasi\sossea|[Cc]onchae\snas|nasal\schamb
+48,skull,nasal,[^\-]nas
+49,skull,maxilla,(^|\b)([Oo]s\s|[Ss]ept.*?|[Cc]onch.*?)?[Nn]asal|Olfact
+50,skull,ossa faciei,Rostrum
+51,skull,ossa faciei,Premaxilla|Os(sa)?\spremaxill
+52,skull,ossa faciei,Dentes\s(premaxill|maxil)
+53,skull,ossa faciei,[Ff]acial\smargin
+54,skull,ossa faciei,([Pp]roc.*?)?(^|\b)[Mm]axill|Os maxillare|Teeth.*?maxilla
+55,skull,ossa faciei,(^|\b)([Oo]s(sa)?\s)?[Pp]alat
+56,skull,ossa faciei,[Vv]omer
+57,skull,ossa faciei,Pterygoid|Os pterygoideum|(^|\b)[Pp]terygo
+58,skull,ossa faciei,Os quadratojugale
+59,skull,ossa faciei,[Qq]uadrat|Os quadratum|Cranioquad
+60,skull,ossa faciei,quadrato\-cranii
+61,skull,ossa faciei,Fossa articularis quadratica
+62,skull,ossa faciei,[Cc]otyla
+63,skull,ossa mandibulae,(Lower mandible|Mandib(ula|le))
+64,skull,ossa mandibulae,[Mm]andib(ula|le)(\ssymphysis)?|Symphysis mandibularis
+65,skull,ossa mandibulae,Os dentale|Dentaries|Dentary|Dentes dentales
+66,skull,ossa mandibulae,Os mentomandibulare
+67,skull,ossa mandibulae,Angulare|Os angulare
+68,skull,ossa mandibulae,Os articulare
+69,skull,ossa mandibulae,(Os\s)?[Cc]oronoid
+70,skull,ossa mandibulae,Os prearticulare
+71,skull,ossa mandibulae,Splenial|Os spleniale
+72,skull,eyes,[Ss]clera
+73,skull,eyes,([Os]s(sa)?\s)?supraorbit
+74,hyoid,hyobranchialis,Os basihyale
+75,hyoid,hyobranchialis,Os urohyale
+76,hyoid,hyobranchialis,gloss|hyoi|ling|(^|\s)aryten
+77,hyoid,hyobranchialis,[Ss]yrinx
+78,hyoid,hyobranchialis,\btrach|\bbranch
+79,hyoid,hyobranchialis,[Tt]ongue
+80,axial,skeleton,Atlas
+81,axial,skeleton,Axis
+82,axial,skeleton,[Cc]ervical vertebra(e)?|[Vv]ertebrae cervicales
+83,axial,skeleton,[Tt]horacic\svertebra(e)?|[Vv]ertebra(e)?\sthorac
+84,axial,skeleton,Notarium
+85,axial,skeleton,[Cc]osta(e|l)?|[Rr]ibs|uncinat
+86,axial,skeleton,[Cc]audal vertebra(e)?|[Vv]ertebra(e)?\scaudal|caudals
+87,axial,skeleton,(pre)?[Ss]acral\svertebrae
+88,axial,skeleton,Vertebrae acetabulares
+89,axial,skeleton,Vertebrae synsacrales
+90,axial,skeleton,Pygostyl
+91,axial,skeleton,appendicu
+92,pectoral,,[Pp]ect.*?gird
+93,pectoral,sternum,[Ss]ternum|Carina sterni|Corpus sterni definitivum|Corpus sterni|Costa sternalis
+94,pectoral,sternum,Articulatio sternocoracoidea
+95,pectoral,clavicle,Scapus claviculae|[Ff]urcula|[Cc]lavic
+96,pectoral,clavicle,(Angulus|Junctura).*?interclavicularis
+97,pectoral,scapula,Scapula|(Corpus.*?)?scapulae|Scapula-coracoid|Ossa scapula
+98,pectoral,scapula,Scapulocoracoid|Os scapulocoracoideum
+99,pectoral,corocoid,Angulus juncturae.*?coracoscapularis
+100,pectoral,corocoid,[Cc]oracoid(al)?|Corpus coracoidei
+101,pectoral,corocoid,\sprocor[ao]
+102,pectoral,corocoid,\sacrocor
+103,pectoral,corocoid,\boma
+104,pectoral,corocoid,[Gg]lenoid
+105,forelimb,humerus,Extremitas proximalis humeri
+106,forelimb,humerus,Corpus humeri|Humerus|Os humerus
+107,forelimb,humerus,Deltoid
+108,forelimb,humerus,Extremitas distalis humeri
+109,forelimb,ulna,Extremitas proximalis ulnae
+110,forelimb,radius,Corpus ulnae|Ulna|Os ulna|Ulna-radius
+111,forelimb,ulna,Extremitas distalis ulnae
+112,forelimb,carpal,(C|\bc)arpal
+113,forelimb,radius,Extremitas proximalis radii
+114,forelimb,radius,Radius|Corpus radii
+115,forelimb,radius,Extremitas distalis radii
+116,forelimb,radius,[Oo]ssa carpi distalia
+117,forelimb,carpal,Os carpi radiale
+118,forelimb,carpometacarpus,Ulnare|Os carpi ulnare|cubit
+119,forelimb,carpometacarpus,prox.*?carpometacarp
+120,forelimb,carpometacarpus,[Oo]s metacarpale|Ossa metacarpalia|Carpometacarpus|Corpus carpometacarpi
+121,forelimb,carpometacarpus,[Mm]etacarpal
+122,forelimb,carpometacarpus,(^|\s)[Cc]arpometacarp
+123,forelimb,carpometacarpus,dist.*?carpometacarp
+124,forelimb,carpometacarpus,metacarpophalangealis
+125,forelimb,carpometacarpus,Intermetacarp
+126,forelimb,hand,[Pp]halange(s)|interphalangealis|Phalanx
+127,forelimb,hand,interphalangealis
+128,forelimb,hand,Manual digit
+129,forelimb,forearm,(^|\s)antebrach
+130,pelvic,pelvis,[Pp]elvi[sc]
+131,pelvic,ilium,Acetabulum|Pars acetabularis
+132,pelvic,ilium,[Ii]li(um|o|a)|os\\silium
+133,pelvic,ilium,([Pp]re|[Pp]ost)acetab.*?ilium
+134,pelvic,ilium,Ala(e)?.*?(postacetabularis|preacetabularis)\silii
+135,pelvic,synsacrum,(^|\b)[Aa]ntitrochant
+136,pelvic,acetabulum,preacet|postacet
+137,pelvic,ischium,Ala\sischii|[Ii]schium|Corpus ischii|Scapus ischii|(Junctura|Symphysis|Sutura).*?ischi
+138,pelvic,ischium,Foramen ilioischiadicum|ischiopub|puboisch|[Pp]ubi
+139,pelvic,synsacrum,Synsacrum|(Junctura[e]\s)synsacr|[Ss]ynsacr
+140,pelvic,synsacrum,(^|\s)obtur
+141,pelvic,ischium,[Pp]uboisch
+142,pelvic,synsacrum,[Ff]ossa\srenalis
+143,pelvic,synsacrum,Extremitas\s(caudalis|cranialis)\ssynsacri
+144,pelvic,synsacrum,Facies visceralis synsacri
+145,pelvic,synsacrum,Facies lateralis synsacri
+146,hindlimb,femur,Extremitas proximalis femoris
+147,hindlimb,femur,Femur
+148,hindlimb,femur,Corpus femoris
+149,hindlimb,femur,Extremitas distalis femoris|[Ff]ibular\stroch
+150,hindlimb,femur,[Pp]atell
+151,hindlimb,tibiotarsus,Extremitas proximalis tibiotarsi
+152,hindlimb,tibiotarsus,(^|\s)[Cc]nemial
+153,hindlimb,tibiotarsus,[Tt]ibiotar(s)?us|Corpus tibiotarsi
+154,hindlimb,tibiotarsus,Fibula|Caput fibulae|Corpus fibulae
+155,hindlimb,tibiotarsus,Tibia\/tarsal|Os\s(pre)tibial|tibial
+156,hindlimb,tibiotarsus,tibiofib
+157,hindlimb,tibiotarsus,Extremitas distalis tibiotarsi
+158,hindlimb,tarsometatarsus,(^|\s)tars.*?dist
+159,hindlimb,tarsometatarsus,Extremitas proximalis tarsometatarsi
+160,hindlimb,tarsometatarsus,Tarsometatarsus|Corpus tarsometatarsi|metatarsal|Os metatarsale
+161,hindlimb,tarsometatarsus,Hypotarsus
+162,hindlimb,tarsometatarsus,Extremitas distalis tarsometatarsi
+163,hindlimb,tarsometatarsus,[Dd]ist.*?vasc.*?fora
+164,hindlimb,foot,Pes
+165,hindlimb,tarsometatarsus,[Mm]etatars
+166,hindlimb,foot,Hallux
+167,hindlimb,foot,Digiti.*?ped|[Dd]igit.*?ped|[Oo]ssa(\s)?digit
+168,hindlimb,foot,\stoes
+169,hindlimb,foot,claw

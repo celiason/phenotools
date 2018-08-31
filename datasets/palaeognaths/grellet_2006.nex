@@ -1,0 +1,76 @@
+#NEXUS
+
+[Grellet-Tinner. Phylogenetic interpretation of eggs and eggshells: implications for phylogeny of Palaeognathae. Alcheringa 30: 141-181 (2006).]
+
+BEGIN TAXA;
+	DIMENSIONS NTAX=11;
+	TAXLABELS
+		Gallus_gallus
+		Anser_anser
+		Dinornis_spp
+		Rhea_americana
+		Struthio_camelus
+		Struthiolithus
+		Eudromia_elegans
+		Aepyornis_maximus
+		Casuarius_casuarius
+		Dromaius_novaehollandiae
+		Apteryx_australis
+	;
+END;
+
+BEGIN CHARACTERS;
+	DIMENSIONS NCHAR=15;
+	FORMAT DATATYPE=STANDARD MISSING=? GAP=- SYMBOLS="";
+	CHARLABELS
+		[1] 'General egg symmetry'
+		[2] 'Egg shape variation'
+		[3] 'Surficial eggshell ornamentation'
+		[4] 'Surficial ornamentation morphologies'
+		[5] 'Pore canal shape'
+		[6] 'Pore aperture'
+		[7] 'Spherulite'
+		[8] 'Layer 3'
+		[9] 'Layer 4'
+		[10] 'Morphology of layer3'
+		[11] 'Delimitation between eggshell layers 1 and 2'
+		[12] 'Delimitation between eggshell layers 2 and 3'
+		[13] 'Delimitation between eggshell layers 3 and 4'
+		[14] 'Ratio of layer 1 to layer 2'
+		[15] 'Ratio of layer 3 to layer 2'
+	;
+	STATELABELS
+		1 'Titanosaurid eggs' 'Other eggs',
+		2 'long elliptical shape where there is a visible broadening of the egg toward one pole with a tapering toward the opposite pole, which still retains a very rounded aspect' 'definite oval shape in which the widening is located close to but not at one pole and where the tapering is obvious and results in a pointed shape at the other pole' 'subelliptical shape but in which the egg broadening although still off center is more medially located than that observed in character states (0 and 1). This egg has an overall oval shape' 'short and sub-elliptical with so little tapering that these eggs could appear nearly round, and where the egg broadening is medially located',
+		3 'displaying some type of ornamentation' 'absence of ornamentation',
+		4 nodular linearituberculate smooth 'rugose to slightly rugose' granulated,
+		5 'straight and bifurcate once before reaching eggshell surface' 'angustiprismatic type of pore canals (synonymous to straight pore canals) my observations show that this eggshell displays an oblique pore canals (Fig. 7D) with a round aperture are common',
+		6 'round aperture' 'slit-like aperture',
+		7 acicular rhombohedric calcite crystals' 'short bladed calcite crystals' 'long bladed calcite crystals',
+		8 absent present,
+		9 absent present,
+		10 absent amorphous 'blocky crystals'  porous,
+		11 absent 'one-layered, prismatic' aprismatic,
+		12 absent 'one-layered, prismatic' aprismatic,
+		13 absent 'one-layered, prismatic' aprismatic,
+		14 'layer 2 absent, no ratio' 'greater than or equal to 0.955' '0.5-0.8' 'less than 0.49'
+		15 'layer 3 absent, no ratio' 'less than 0.1'
+	;
+	MATRIX
+		Gallus_gallus				111220110111031
+		Anser_anser					111220110111021
+		Dinornis_spp				121221210222021
+		Rhea_americana				1212(12)0210122022
+		Struthio_camelus			131230210122032
+		Struthiolithus				13032(01)210122032
+		Eudromia_elegans			131220010122022
+		Aepyornis_maximus			130321210122032
+		Casuarius_casuarius			120440111322121
+		Dromaius_novaehollandiae		120440111322121
+		Apteryx_australis			120(12)20110222021
+		;
+END;
+
+BEGIN SETS;
+	CHARPARTITION bodyparts=eggs:1-15;
+END;

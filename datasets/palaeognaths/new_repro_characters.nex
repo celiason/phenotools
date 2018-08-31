@@ -1,0 +1,112 @@
+#NEXUS
+
+[new reproductive characters]
+
+BEGIN TAXA;
+	DIMENSIONS NTAX=22;
+	TAXLABELS
+		Apteryx
+		Apteryx_mantelli
+		Struthio_camelus
+		Rhea_americana
+		Dromaius_novaehollandiae
+		Casuarius
+		Eudromia_elegans
+		Tinamus_tao
+		Tinamus_solitarius
+		Crypturellus_parvirostris
+		Crypturellus_tataupa
+		Rhynchotus_rufescens
+		Nothura_maculosa
+		Nothura_minor
+		Nothura_boraquira
+		Dinornithidae
+		Megalapteryx_didinus
+		Euryapteryx_curtus
+		Nothoprocta_perdicaria
+		Tinamus_major
+		Anas
+		Chauna_torquata
+	;
+END;
+
+BEGIN CHARACTERS;
+	DIMENSIONS NCHAR=22;
+	FORMAT DATATYPE=STANDARD MISSING=? GAP=- SYMBOLS="01234";
+	CHARLABELS
+		[1] 'Right ovary'
+		[2] 'Oviduct, wall between magnum and isthumus'
+		[3] 'Uterus, morphology of mucosal folds'
+		[4] 'Oviduct, junction between vagina and uterus, sperm storage tubules. See Parizzi et al. 2008'
+		[5] 'Cloaca, location of ureter emptying [see Oliveira et al. (2004)]'
+		[6] 'Copulatory apparatus in males, type: [Oliveira et al. 2000, Brennen et al. 2008]'
+		[7] 'Phallus, erectile mechanism: [See Brennand and Prum (2012)]'
+		[8] 'Male copulatory apparatus, tubular cavity that inserts into fibrous body supporting ejaculatory groove. Oliveira et al. (2000)'
+		[9] 'Phallus, erectile/eversible phallus'
+		[10] 'Phallus, elastic ligament attaching to tubular portion of phallus. See Oliveira et al. (2000).'
+		[11] 'Spermatozoa, acrosomal rod extends into nucleus:'
+		[12] 'Spermatozoa, dense fibers -- where __? (Asa et al. 1986)'
+		[13] 'Spermatozoa, acrosome, subacrosomal space:'
+		[14] 'Spermatozoa, acrosome, perforatorium shape'
+		[15] 'Spermatozoa, acrosome, endonuclear canal'
+		[16] 'Spermatozoa, distal centriole, number of mitochondria:'
+		[17] 'Spermatozoa, distal centriole, accessory fibers:'
+		[18] 'Spermatozoa, distal centriole, fibrous sheath'
+		[19] 'Spermatozoa, distal centriole, extra axonemal glycogen (=??):'
+		[20] 'Eggshell, human-perceived color. See Igic et al. 2009.'
+		[21] 'Eggshell, biliverdin pigment:'
+		[22] 'Mating system (taken from Handford and Mares 1985)'
+		;
+	STATELABELS
+		1 'poorly developed or non-functional (?)' 'well-developed',
+		2 absent present,
+		3 'primary+secondary folds' continuous [not sure what this means; see Reed et al. 2011, Parizzi et al. 2008],
+		4 absent present,
+		5 'into urodeum (=portion of cloaca that receives feces)' 'into coprodeum (=portion of cloaca that receives genital ducts)'
+		6 'non-intromittent' intromittent,
+		7 'non-lymphatic' lymphatic,
+		8 absent present,
+		9 absent present,
+		10 absent present,
+		11 no yes,
+		12 absent present,
+		13 narrow ample [maybe use wide?],
+		14 'rodlike, mostly endonuclear' 'rodlike, completely endonuclear' 'reduced (few microfilaments), completely extranuclear'
+		15 absent present,
+		16 20 25 30 40-45,
+		17 absent present,
+		18 absent present,
+		19 absent present,
+		20 white beige brown green blue,
+		21 absent present,
+		22 monogamy 'sequential polyandry' 'simultaneous polygyny' promiscuity,
+	;
+	MATRIX
+		Apteryx						1????1?01????????????0
+		Apteryx_mantelli			?????1?????????????(04)00
+		Struthio_camelus			01?1?110??11101111010(0123)
+		Rhea_americana				??10111?0?110012110(04)13
+		Dromaius_novaehollandiae	?00?011?????020311031(012)
+		Casuarius					?????1???????????????(01)
+		Eudromia_elegans			?????1????000110011???
+		Tinamus_tao					????11????????????????
+		Tinamus_solitarius			????11????????????????
+		Crypturellus_parvirostris	????10????????????????
+		Crypturellus_tataupa		????10????????????????
+		Rhynchotus_rufescens		????11????????????????
+		Nothura_maculosa			????11?110????????????
+		Nothura_minor				????11????????????????
+		Nothura_boraquira			????11????????????????
+		Dinornithidae				???????????????????10?
+		Megalapteryx_didinus		???????????????????(34)1?
+		Euryapteryx_curtus			???????????????????11?
+		Nothoprocta_perdicaria		???????????????????21?
+		Tinamus_major				?????1?????????????41?
+		Anas						?????1????????????????
+		Chauna_torquata				?????1????????????????
+		;
+END;
+
+BEGIN SETS;
+	CHARPARTITION bodyparts=urogenital:1-19, eggs:20-21, behavior:22;
+END;
