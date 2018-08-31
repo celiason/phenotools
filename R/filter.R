@@ -17,7 +17,9 @@
 #' sum(is.na(xx$data))/length(xx$data)  # 86.3% missing data
 #' }
 #' 
-filter.nex <- function(x, dups=NULL) {
+#' @export
+#' 
+filter <- function(x, dups=NULL) {
     if (class(dups)=="list") {      	
       	# dups <- matrix(unlist(dups), ncol=length(dups))
       	dups <- cbind(as.numeric(rep(names(dups), sapply(dups, length))), as.numeric(unlist(dups)))

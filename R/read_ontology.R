@@ -16,9 +16,6 @@
 #' 
 read_ontology <- function(file, root=FALSE){
 	
-	# require(psych)
-	# require(zoo)
-	
 	fields <- max(utils::count.fields(file, sep = "\t"))
 	
 	dat <- utils::read.table(file, sep="\t",col.names = paste0("V", sequence(fields)), header=FALSE, fill=TRUE, strip.white=TRUE, stringsAsFactors=FALSE, na.strings="")

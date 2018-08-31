@@ -25,6 +25,7 @@
 #' duplicated(x, method = 'user', map=list(c(2,3)))
 #' }
 #' 
+#' @import igraph
 #' @importFrom textmineR TermDocFreq
 #' @importFrom utils combn
 #' @importFrom stats as.dist
@@ -37,7 +38,14 @@
 #' @importFrom pbmcapply pbmclapply
 #' 
 #' @author Chad Eliason \email{celiason@@fieldmuseum.org}
+#' 
+#' @export
 #'
+
+# x=twig1
+# opt="terms"
+# cluster="infomap"
+
 duplicated.nex <- function(x, opt=c("fuzzy", "terms", "comments", "traitcor"),
   method=NULL, within_dataset=FALSE, commasep=FALSE, weighting=c(1,1,1),
   K=1, cluster = c("infomap", "fast_greedy", "walktrap", "label_prop", "leading_eigen",
@@ -46,17 +54,6 @@ duplicated.nex <- function(x, opt=c("fuzzy", "terms", "comments", "traitcor"),
 # TODO write a lda.nex() function? separate the dup finding and dropping? maybe filter.nex()?
 # TODO add option to "nest" state labels in the network graph (so things like "size of distal end" wouldn't be matched across all characters, only those with state label as, say, "Humerus...")
 # TODO be able to plot "subclusters" (looking at all connections among characters, keeping only terms in common between the two)
-
-  require(stringdist)
-  require(tm)
-  require(MASS)
-  require(igraph)
-  require(textmineR)
-  require(parallel)
-  require(polycor)
-  require(psych)
-  require(pbapply)
-  require(pbmcapply)
 
   cutoff <- Inf # I previously had this as an argument, but i think it's better in the printout function (that way all possible dups will be output and their string distances for later subsetting)
 
@@ -94,14 +91,13 @@ duplicated.nex <- function(x, opt=c("fuzzy", "terms", "comments", "traitcor"),
     chars <- paste(oldcharnames, oldstatenames)
     chars <- gsub("\\-\\s", "", chars)    
     termlist <- cleantext(chars)
-    
     # make document matrix, sort by term frequency
     if (K == 1) {
       dtm <- tm::TermDocumentMatrix(termlist, control = list(wordLengths = c(2, Inf), weighting = function(x) tm::weightTfIdf(x, normalize = TRUE), stemming=FALSE))
       m <- as.matrix(dtm)
-      g <- graph_from_incidence_matrix(m, weighted=TRUE)
+      g <- igraph::graph_from_incidence_matrix(m, weighted=TRUE)
       cl <- clustfun(g, E(g)$weight)
-      grps <- communities(cl)  # get clusters
+      grps <- igraph::communities(cl)  # get clusters
     }
     if (K > 1) {
       dtm <- tm::TermDocumentMatrix(termlist, control = list(wordLengths = c(2, Inf), stemming=FALSE))
@@ -113,15 +109,15 @@ duplicated.nex <- function(x, opt=c("fuzzy", "terms", "comments", "traitcor"),
       csim <- tfidf / sqrt(rowSums(tfidf * tfidf))
       csim <- csim %*% t(csim)
       cdist <- as.dist(1 - csim)
-      hc <- hclust(cdist, "ward.D")
-      clust <- cutree(hc, K)
+      hc <- stats::hclust(cdist, "ward.D")
+      clust <- stats::cutree(hc, K)
       grps <- split(names(clust), clust)
     }
 
     # make all possible combinations within groups/clusters
     verts <- grepl("\\d+", V(g)$name)
     sdist <- as.dist(distances(g, v=verts, to=verts, weights=E(g)$weight))
-    dups <- t(combn(1:ncol(x$data), m=2))
+    dups <- t(utils::combn(1:ncol(x$data), m=2))
     dups <- cbind(dups, sdist)    
     dups <- dups[dups[,3]!=Inf, ]
     # old way:
@@ -145,7 +141,7 @@ duplicated.nex <- function(x, opt=c("fuzzy", "terms", "comments", "traitcor"),
       method <- "jw"
     }
     if (commasep) {
-      matches <- str_match(oldcharnames, "^((.*?),)?(.*)")
+      matches <- stringr::str_match(oldcharnames, "^((.*?),)?(.*)")
       part1 <- matches[, 3]
       part2 <- matches[, 4]
       id <- is.na(part1)
@@ -166,9 +162,9 @@ duplicated.nex <- function(x, opt=c("fuzzy", "terms", "comments", "traitcor"),
     # individual text distance matrix
     sdist <- lapply(seq_along(splits), function(z) {
       nms <- splits[[z]]
-      sd1 <- as.matrix(stringdistmatrix(part1[splits[[z]]], part1[splits[[z]]], method=method))
-      sd2 <- as.matrix(stringdistmatrix(part2[splits[[z]]], part1[splits[[z]]], method=method))
-      sd3 <- as.matrix(stringdistmatrix(part3[splits[[z]]], part1[splits[[z]]], method=method))
+      sd1 <- as.matrix(stringdist::stringdistmatrix(part1[splits[[z]]], part1[splits[[z]]], method=method))
+      sd2 <- as.matrix(stringdist::stringdistmatrix(part2[splits[[z]]], part1[splits[[z]]], method=method))
+      sd3 <- as.matrix(stringdist::stringdistmatrix(part3[splits[[z]]], part1[splits[[z]]], method=method))
       dimnames(sd1) <- dimnames(sd2) <- dimnames(sd3) <- list(nms, nms)
       list(sd1, sd2, sd3)
     })
@@ -207,7 +203,7 @@ duplicated.nex <- function(x, opt=c("fuzzy", "terms", "comments", "traitcor"),
   if (opt == "comments") {
     chars <- paste(oldcharnames, oldstatenames)
     # Search for author-year references (e.g., Eliason et al. 2015 character 13)
-    m <- str_match_all(chars, "([A-Z][a-z]+\\s(?:et\\sal\\.\\s|(?:\\&|and)\\s[A-Z][a-z]+\\s)?)[\\(]?(\\d{4})[\\)]?.{1,5}[Ch]ar(\\.|acter)?\\s(\\d+)")
+    m <- stringr::str_match_all(chars, "([A-Z][a-z]+\\s(?:et\\sal\\.\\s|(?:\\&|and)\\s[A-Z][a-z]+\\s)?)[\\(]?(\\d{4})[\\)]?.{1,5}[Ch]ar(\\.|acter)?\\s(\\d+)")
     names(m) <- seq_along(chars)
     # convert to matrix with only non-missing cases
     dups <- suppressWarnings(lapply(seq_along(m), function(z) {cbind(df_name = z, m[[z]])}))
@@ -240,7 +236,7 @@ duplicated.nex <- function(x, opt=c("fuzzy", "terms", "comments", "traitcor"),
     mat <- gsub("\\?|\\-", NA, mat)  # convert '?' or '-' scorings to NA:
     pairids <- combn(1:ncol(mat), m=2)  # get all pairs of characters
     if (method == "polycor") {
-      dmat <- pbmclapply(1:ncol(pairids), function(i) {
+      dmat <- pbmcapply::pbmclapply(1:ncol(pairids), function(i) {
         id1 <- pairids[1, i]
         id2 <- pairids[2, i]
         char1 <- mat[, id1]
@@ -254,7 +250,7 @@ duplicated.nex <- function(x, opt=c("fuzzy", "terms", "comments", "traitcor"),
       weights <- rep(1, length(cors))
     }
     if (method == "hamming") {
-      dmat <- pbmclapply(1:ncol(pairids), function(i) {
+      dmat <- pbmcapply::pbmclapply(1:ncol(pairids), function(i) {
         id1 <- pairids[1, i]
         id2 <- pairids[2, i]
         char1 <- mat[, id1]
@@ -262,7 +258,7 @@ duplicated.nex <- function(x, opt=c("fuzzy", "terms", "comments", "traitcor"),
         M <- na.omit(cbind(char1,char2))
         wt <- nrow(M)
         M <- apply(M, 2, paste0, collapse="")
-        sdist <- as.numeric(stringdistmatrix(M, method="hamming"))
+        sdist <- as.numeric(stringdist::stringdistmatrix(M, method="hamming"))
         sdist <- sdist/str_length(M[1])  # standardize by number of characters
         sdist <- abs(sdist-0.5)
         sdist <- sdist/0.5
@@ -294,9 +290,9 @@ duplicated.nex <- function(x, opt=c("fuzzy", "terms", "comments", "traitcor"),
   }
   
   if (opt == "fuzzy" & nrow(dups) != 0) {
-    g <- graph_from_edgelist(t(apply(dups[,1:2,drop=F], 1, as.character)), directed=FALSE)
+    g <- igraph::graph_from_edgelist(t(apply(dups[,1:2,drop=F], 1, as.character)), directed=FALSE)
     # if (cutoff == Inf) {
-      grps <- communities(components(g))
+      grps <- igraph::communities(igraph::components(g))
     # } else {
       # E(g)$weight <- 1/dups[,'stringdist']
       # cl <- clustfun(g, E(g)$weight)
@@ -306,9 +302,9 @@ duplicated.nex <- function(x, opt=c("fuzzy", "terms", "comments", "traitcor"),
   }
 
   if (opt == "comments" & nrow(dups) != 0) {
-    g <- graph_from_edgelist(t(apply(dups[,1:2,drop=F], 1, as.character)), directed=FALSE)
+    g <- igraph::graph_from_edgelist(t(apply(dups[,1:2,drop=F], 1, as.character)), directed=FALSE)
     cl <- clustfun(g)
-    grps <- communities(cl)  # get clusters
+    grps <- igraph::communities(cl)  # get clusters
     res$clusters <- grps
   }
   
@@ -319,26 +315,38 @@ duplicated.nex <- function(x, opt=c("fuzzy", "terms", "comments", "traitcor"),
 }
 
 
-## sub-function to get groups of duplicated characters based on input map (char1 in column 1, char2 in column 2)
+#' Sub-function to get groups of duplicated characters based on input map (char1 in column 1, char2 in column 2)
+#' 
+#' @param x a nex object
+#' 
+#' @export
+#' 
 findgroups <- function(x) {
   g <- graph_from_data_frame(x, directed=FALSE)
-  grps <- max_cliques(g)
+  grps <- igraph::max_cliques(g)
   grps <- sapply(1:length(grps), function(x) {as.numeric(names(grps[[x]]))})
   names(grps) <- paste('dup', seq_along(grps),sep='')
   grps
 }
 
-# Small function to update a duplicated nex object
-# changing cutoff will affect the characters identified as duplicates for later
-# visualization (e.g., with `printout` or `duptree` functions)
+#' Small function to update a duplicated nex object
+#' 
+#' changing cutoff will affect the characters identified as duplicates for later
+#' visualization (e.g., with `printout` or `duptree` functions)
+#' 
+#' @param x nex object
+#' @param cutoff cuttoff to filter duplicates/overlapping characters by
+#' 
+#' @export
+#' 
 update.nex <- function(x, cutoff=Inf) {
   dups <- x$dups
   newdups <- dups[dups$stringdist < cutoff, ]
   if (nrow(newdups)==0) {
     stop("No duplicates below the set cutoff")
   }
-  g <- graph_from_edgelist(t(apply(newdups[,c('char1','char2'),drop=F], 1, as.character)), directed=FALSE)
-  grps <- communities(components(g))
+  g <- igraph::graph_from_edgelist(t(apply(newdups[,c('char1','char2'),drop=F], 1, as.character)), directed=FALSE)
+  grps <- igraph::communities(igraph::components(g))
   x$clusters <- grps
   x$cutoff <- cutoff
   return(x)

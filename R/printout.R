@@ -17,18 +17,13 @@
 #' @export
 #' 
 printout <- function(x, maxsize=NULL, file, statelabels=TRUE) {
-
-# TODO scale text by number of occurrences in cluster/weight
-
-# TODO add color option
-
-	require(RColorBrewer)
-	require(kableExtra)
+	# TODO scale text by number of occurrences in cluster/weight
+	# TODO add color option
 	dark2 <- brewer.pal(8, "Dark2")
 	clust <- x$cluster
 	clust <- clust[stringr::str_count(string=clust, pattern="\\d+")!=0]
 	if (!is.null(maxsize)) {
-		csize <- sapply(sapply(sapply(clust, str_extract, "\\d+"), na.omit), length)
+		csize <- sapply(sapply(sapply(clust, stringr::str_extract, "\\d+"), na.omit), length)
 		keep <- csize < maxsize
 		clust <- clust[keep]
 	}
@@ -61,7 +56,7 @@ printout <- function(x, maxsize=NULL, file, statelabels=TRUE) {
 		nm <- rep(ids, times=sapply(chars, length))
 		names(chars) <- ids
 		if (length(hlite) > 8) {
-			pal <- colorRampPalette(brewer.pal(11, "Spectral"))(length(hlite))
+			pal <- colorRampPalette(RColorBrewer::brewer.pal(11, "Spectral"))(length(hlite))
 		} else {
 			pal <- dark2[seq_along(hlite)]
 		}

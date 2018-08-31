@@ -8,12 +8,14 @@
 #' @examples \dontrun{
 #' x <- read.nex('example/toy1.nex')
 #' y <- read.nex('example/toy2.nex')
-#' xy <- merge.nex(list(x, y), taxa = c('species1', 'species2'))
+#' xy <- concat(list(x, y), taxa = c('species1', 'species2'))
 #' xy
 #' }
 #' @author Chad Eliason \email{chad_eliason@@utexas.edu}
 #' 
-merge.nex <- function(x, taxa=NULL) {
+#' @export
+#' 
+concat <- function(x, taxa=NULL) {
   mat <- lapply(x, '[[', 'data')
   alltaxlabels <- unique(unlist(lapply(x, '[[', 'taxlabels')))
   taxbydataset <- sapply(x, '[[', 'taxlabels')

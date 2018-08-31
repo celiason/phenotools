@@ -31,6 +31,7 @@ subset.nex <- function(x, condition) {
 #' @param j columns (characters) to keep
 #' @param drop unused
 #' @rdname subset.nex
+#' @export
 #' 
 '[.nex' <- function(x, i, j=NULL, drop = FALSE, ...) {
   res <- x

@@ -15,7 +15,7 @@
 #' 
 #' @export
 #'
-capture_comments <- function(file) {
+getcomments <- function(file) {
 
 	# read text
 	txt <- readLines(file)

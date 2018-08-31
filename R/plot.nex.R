@@ -20,6 +20,8 @@
 #' @importFrom stats reorder
 #' @importFrom grDevices colorRampPalette
 #' 
+#' @export
+#' 
 plot.nex <- function(x, phy = NULL, legend.pos = c("none", "left", "right",
           "bottom", "top"), bw = FALSE, na.value = 'lightgray', fsize = 8, fill = c('statelabels', 'charpartition', 'charset', 'file')) {
 
@@ -34,6 +36,7 @@ plot.nex <- function(x, phy = NULL, legend.pos = c("none", "left", "right",
   	# source('/Users/chadeliason/R/ggplotphylo.R')
 
   	fill <- match.arg(fill)
+  	legend.pos <- match.arg(legend.pos)
 
 	xx <- 1:ncol(x$data)
 	yy <- x$taxlabels
@@ -69,7 +72,7 @@ plot.nex <- function(x, phy = NULL, legend.pos = c("none", "left", "right",
 	if (length(levels(df$fill)) < 12) {
 		# pal <- scale_fill_brewer(palette = 'Set3', na.value = na.value)
 		colourCount = length(unique(df$fill))
-		pal <- scale_fill_manual(values = colorRampPalette(brewer.pal(12, "Set3"))(colourCount))
+		pal <- ggplot2::scale_fill_manual(values = colorRampPalette(brewer.pal(12, "Set3"))(colourCount))
 	} else {
 		pal <- scale_fill_discrete(na.value = na.value)
 	}
