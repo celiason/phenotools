@@ -1,0 +1,477 @@
+# Dataset assembly and analysis in palaeognathous birds
+
+## Palaeognath supermatrix
+
+### Setup
+
+```{r}
+# might be necessary to install:
+# install.packages("rlang")
+devtools::install_github('phenotools', dependencies=TRUE, build_vignettes=FALSE)
+
+library(phenotools)
+library(Claddis)
+library(dplyr)
+library(igraph)
+library(readxl)
+library(gridExtra)
+library(rwty)
+library(phangorn)
+library(dplyr)
+library(stringr)
+library(ggdendro)
+library(gridExtra)
+library(ggplot2)
+library(scales)
+```
+
+### Read in a set of nexus files
+
+```{r}
+files <- list.files('datasets/palaeognaths', pattern='\\.nex', full.names = TRUE)
+
+system.time(nexs <- lapply(files, read.nex))
+# ~4 seconds
+
+nexs[[1]]
+
+plot(nexs[[1]])
+```
+
+### Convert supraspecific terminals in datasets to species (based on specimens evaluated)
+
+```{r}
+nexs[[grep("bertelli_2014", files)]] <- collapse(nexs[[grep("bertelli_2014", files)]],
+  map = list("Lithornis_spp" = c("Lithornis_celetius", "Lithornis_vulturinus")))
+
+nexs[[grep("bertelli_chiappe", files)]] <- collapse(nexs[[grep("bertelli_chiappe", files)]],
+  map = list("Lithornis" = c("Lithornis_hookeri", "Lithornis_vulturinus", "Lithornis_nasi", "Lithornis_plebius")))
+
+nexs[[grep("bledsoe", files)]] <- collapse(nexs[[grep("bledsoe", files)]],
+  map = list('Ancestor' = c('Tinamus_solitarius', 'Crypturellus_undulatus', 'Rhynchotus_rufescens', 'Nothoprocta_perdicaria', 'Nothoprocta_cinerascens', 'Nothura_darwinii', 'Nothura_maculosa', 'Eudromia_elegans'),
+    'Struthio' = 'Struthio_camelus', 'Rhea' = 'Rhea_americana',
+    'Dromaius' = 'Dromaius_novaehollandiae',
+    'Apteryx' = c('Apteryx_australis','Apteryx_owenii'),
+    'Dinornithidae' = c('Pachyornis_elephantopus', 'Euryapteryx_sp.', 'Dinornis_maximus', 'Dinornis_gracilis', 'Dinornis_struthoides')))
+
+# Bourdon et al. (2009) - 20 ordered  multistate characters (6, 7, 14, 16, 18, 21, 28, 34, 43, 44, 70, 71, 87, 88, 93, 103, 109, 114, 117, and 122) 
+nexs[[grep("bourdon", files)]] <- collapse(nexs[[grep("bourdon", files)]],
+  map = list('Apteryx_spp' = 'Apteryx_haastii',
+    'Tinamidae_' = c('Rhynchotus_rufescens', 'Eudromia_elegans')))
+nexs[[grep("bourdon", files)]]$taxlabels[grep("Emeus", nexs[[grep("bourdon", files)]]$tax)] <- "Emeus_crassus"
+
+nexs[[grep("johnston", files)]] <- collapse(nexs[[grep("johnston", files)]],
+  map = list('Casuarius_spp' = 'Casuarius_casuarius',
+    'Apteryx_spp' = c('Apteryx_mantelli', 'Apteryx_australis'),
+    'Tinamidae_' = c('Tinamus_major', 'Eudromia_elegans'), 'Dinornithiformes' = c('Megalapteryx_didinus', 'Anomalopteryx_didiformis', 'Euryapteryx_gravis', 'Pachyornis_geranoides', 'Dinornis_novaezealandiae'),
+    'Rhea_americana' = c('Rhea_americana', 'Rhea_pennata')))
+
+nexs[[grep("lee_1997", files)]] <- collapse(nexs[[grep("lee_1997", files)]],
+  map = list('Tinamidae' = c('Tinamus_tao', 'Tinamus_major', 'Crypturellus_cinnamomeus', 'Crypturellus_undulatus', 'Crypturellus_noctivagus', 'Nothoprocta_cinerascens', 'Eudromia_elegans', 'Rhynchotus_rufescens'),
+    'Dinornithidae' = c('Megalapteryx_didinus', 'Emeus_crassus', 'Dinornis_maximus', 'Dinornis_robustus', 'Pachyornis_elephantopus', 'Euryapteryx_sp.'),
+    'Struthio' = 'Struthio_camelus',
+    'Rhea' = 'Rhea_americana',
+    'Casuarius' = c('Casuarius_casuarius', 'Casuarius_unappendiculatus'),
+    'Dromaius' = 'Dromaius_novaehollandiae',
+    'Apteryx' = 'Apteryx_australis',
+    'Galloanseres' = c('Megapodius_freycinet', 'Anhima_cornuta', 'Leipoa_ocellata', 'Crax_mitu', 'Nothocrax_urumutum')))
+
+nexs[[grep("livezey", files)]] <- collapse(nexs[[grep("livezey", files)]],
+  map = list('Chauna' = 'Chauna_torquata',
+    'Anas' = 'Anas_platyrhynchos',
+    'Gallus' = 'Gallus_gallus'))
+
+nexs[[grep("mayr_2011", files)]] <- collapse(nexs[[grep("mayr_2011", files)]],
+  map = list('Rheidae' = 'Rhea',
+    'Apterygidae' = 'Apteryx',
+    'Tinamidae' = c('Crypturellus_cinnamomeus', 'Nothura', 'Rhynchotus_rufescens', 'Tinamus_solitarius'),
+    'Galliformes' = 'Gallus',
+    'Anhimidae' = 'Chauna_torquata',
+    'Anatidae' = c('Anas', 'Anser')))
+
+nexs[[grep("mckitrick", files)]] <- collapse(nexs[[grep("mckitrick", files)]],
+  map = list('Chauna' = 'Chauna_torquata',
+    'Anaspiat' = 'Anas_platyrhynchos',
+    'Apteryx_spp' = 'Apteryx_mantelli',
+    'Tinamotis_spp' = c('Tinamotis_ingoufi', 'Tinamotis_pentlandii'),
+    'Tinamus_spp' = c('Tinamus_guttatus', 'Tinamus_major', 'Tinamus_osgoodi', 'Tinamus_tao', 'Tinamus_solitarius'),
+    'Casuarius_spp' = c('Casuarius_bennetti', 'Casuarius_casuarius'),
+    'Nothura_spp' = 'Nothura_maculosa',
+    'Eudromia_spp' = 'Eudromia_elegans',
+    'Dromaius_spp' = 'Dromaius_novaehollandiae',
+    'Crypturellus_spp' = 'Crypturellus_cinnamomeus'))
+
+# remove bad character
+nexs[[grep("mckitrick", files)]] <- nexs[[grep("mckitrick", files)]][, !grepl("Neognath monophyly", nexs[[grep("mckitrick", files)]]$charlab)]
+
+nexs[[grep("zelenitsky", files)]] <- collapse(nexs[[grep("zelenitsky", files)]], map = list('Apteryx_australis_mantelli' = 'Apteryx_mantelli'))
+```
+
+### Concatenate nexus files
+
+```{r}
+# list of all taxa in input files
+taxa <- sort(unique(unlist(sapply(nexs, '[[', 'taxlabels'))))
+taxa <- gsub('\\d', '', taxa)
+
+# taxa to include in concatenated nexus file
+tax <- grep('Aepyorn|Anomalopt|Aptery|Casuar|Cryptur|Dinorn|Dromaius|Emeus|Eudromia|Euryapteryx|Lithorn|Megalapteryx|Mullerornis|Nothocercus|Nothoprocta|Nothura|Pachyornis|Palaeotis|Megapod|Pterocnemia|Rhea|Rhynchotus|Struthio_camelus|Taoniscus|Tinamotis|Tinamus|Gallus|Anas|Anatidae|Chauna|Megapodi|Pseudocrypturus|Paracathartes|Ichthyornis', taxa, value=T)
+
+allnex <- concat(nexs, taxa = tax)
+
+# replace _spp with genus name
+nms <- allnex$tax[grep("_sp[p]*", allnex$tax)]
+fixes <- str_extract(nms, "[A-Z][a-z]+")
+names(fixes) <- nms
+map <- as.list(fixes)
+
+?collapse
+
+allnex <- phenotools::collapse(allnex, map = map, method = "merge")
+
+allnex <- phenotools::collapse(allnex,
+  map = list('Pterocnemia_pennata' = 'Rhea_pennata',
+    'Rhynchotus_rufescens_macullocollis' = 'Rhynchotus_rufescens',
+    'Rhynchotus_rufescens_pallescens' = 'Rhynchotus_rufescens',
+    'Rhynchotus_rufescens_rufescens' = 'Rhynchotus_rufescens',
+    'Eudromia_elegans_albida' = 'Eudromia_elegans'), method = 'merge')
+
+# remove NAs
+allnex <- na.omit(allnex)
+
+allnex
+```
+
+### Subset dataset based on species in genomic dataset and important fossils
+
+```{r}
+ingenome <- c("Apteryx_haastii", "Apteryx_owenii", "Apteryx_rowi", "Casuarius_casuarius", "Crypturellus_cinnamomeus", "Dromaius_novaehollandiae", "Eudromia_elegans", "Nothoprocta_perdicaria", "Rhea_americana", "Rhea_pennata", "Struthio_camelus", "Tinamus_guttatus")
+
+outgroups <- grep('Anas|Anatidae|Anser|Gallus|Chauna|Megapodius|Ichthyornis', allnex$taxlabels, value=TRUE)
+
+fossils <- grep('Aepyornis|Anomalo|olsoni|reai|paludosa|Dinorni|Emeus|Lithorn|Megalapteryx|Mullerornis|Pachyornis|Palaeotis', allnex$taxlabels, value=TRUE)
+
+ingroups <- subset(allnex, taxlabels %in% c(ingenome, fossils))
+
+# remove invariant characters
+allnex2 <- remove.invar(allnex)
+
+
+# add blank rows for species w/genomic data but missing from phenome
+newtax <- setdiff(c(ingenome, "Diogenornis_fragilis", "Opistodactylus_patagonicus"), allnex2$taxlabels)
+allnex2$data <- rbind(allnex2$data, matrix(NA, nrow=length(newtax), ncol=ncol(allnex2$data)))
+allnex2$taxlabels <- c(allnex2$taxlabels, newtax)
+
+# plot(allnex2, fill="file", legend.pos="top", fsize=6)
+
+# sort and subset the final nexus dataset
+allnex.genome <- subset(allnex2, taxlabels %in% c(ingenome, outgroups, fossils, newtax))
+
+allnex.genome <- subset(allnex2, taxlabels %in% c(ingenome, "Apteryx_rowi"))
+
+# remove "combined" lithornithid taxa from Nesbitt et al. (2015)
+allnex.genome <- allnex.genome[!grepl("combined", allnex.genome$tax), ]
+
+allnex.genome
+```
+
+### Make some plots
+
+```{r, eval=FALSE}
+plot(allnex.genome, fill='file', legend.pos="top")
+# plot(na.omit(allnex.genome), fill='file', legend.pos="top")
+
+pdf("figs/allnex2plot.pdf", width=8, height=8)
+plot(na.omit(allnex2), fill='file', legend.pos="top", fsize=6)
+dev.off()
+```
+
+### Sort the dataset taxa
+
+```{r}
+rhea <- sort(grep("Rhea", allnex2$tax, value=T))
+casuarius <- sort(grep("Casuari", allnex2$tax, value=T))
+struthio <- sort(grep("Struthio", allnex2$tax, value=T))
+apteryx <- sort(grep("Apteryx", allnex2$tax, value=T))
+dinornithids <- sort(grep("Emeus|Dinorn|Euryap|Pachy|Anomalo|Megalap", allnex2$tax, value=T))
+aepyornithids <- sort(grep("Muller|Aepyorn", allnex2$tax, value=T))
+tinamous <- sort(grep("Rhyncho|Taoniscus|Nothoproc|Cryptur|Eudrom|Tinamus|Tinamotis|Nothocerc|Nothura", allnex2$tax, value=T))
+tinamous <- tinamous[-grep("olsoni|paludos", tinamous)]
+tinamous <- sort(tinamous)
+lithornithids <- sort(grep("Lithorn|Pseudocryp|Paracath", allnex2$tax, value=T))
+emus <- sort(grep("Dromaius", allnex2$tax, value=T))
+
+setdiff(allnex2$tax, c(outgroups, rhea,casuarius,struthio,apteryx,dinornithids,aepyornithids,tinamous,lithornithids,emus))
+
+foss <- grep("Diogenornis|Opistodactyl|Palaeotis|Nothura_paludosa|Eudromia_olsoni", allnex2$tax, value=T)
+
+# taxon order: tinamous, kiwi, emu, cassowary, rhea, struthio, fossils, outrgoups
+
+allnex2 <- allnex2[match(c(tinamous,apteryx,emus,casuarius,rhea,struthio,dinornithids,aepyornithids,lithornithids,foss,outgroups), allnex2$tax), ]
+
+allnex.genome <- allnex.genome[na.omit(match(c(tinamous,apteryx,emus,casuarius,rhea,struthio,dinornithids,aepyornithids,lithornithids,foss,outgroups), allnex.genome$tax)), ]
+
+clades <- list(rhea,casuarius,struthio,apteryx,dinornithids,aepyornithids,tinamous,lithornithids,emus,foss,outgroups)
+names(clades) <- c("rhea","casuarius","struthio","apteryx","dinornithids","aepyornithids","tinamous","lithornithids","emus","foss","outgroups")
+clades <- data.frame(clade=rep(names(clades), times = sapply(clades, length)), spp=unlist(clades))
+rownames(clades) <- NULL
+```
+
+### Interleave characters based on body region and regex (e.g., humerus)
+
+```{r}
+final <- allnex2
+
+tomatch <- str_extract(final$charlab, ".*?(\\,|\\:|$)")
+tomatch <- tomatch[final$charpartition %in% c("axial", "pectoral", "forelimb", "pelvic", "hindlimb", "skull")]
+names(tomatch) <- which(final$charpartition %in% c("axial", "pectoral", "forelimb", "pelvic", "hindlimb", "skull"))
+
+# load set of REGEX search terms
+terms <- readxl::read_excel("phenome terms.xlsx", sheet=1)
+
+# find which character labels have a given search term
+matches <- lapply(terms$"search term", grep, x = tomatch, perl = TRUE)
+length(unlist(matches))/length(tomatch)
+length(tomatch[-unlist(matches)])  # number of characters not matched
+
+#get list of non-matches
+id <- as.numeric(names(tomatch)[-unlist(matches)])
+cat(paste0("------\n\n", final$charlabel[id], "\n\n", final$state[id]), sep="\n\n")
+
+#sort by order in matched terms
+sortid <- sapply(seq_along(matches), function(x) {names(tomatch[matches[[x]]])})
+sortid <- as.numeric(unlist(sortid))
+sortid <- sortid[!duplicated(sortid)]  # remove dups
+
+# sort integumentary and other soft-tissue characters by original order in the dataset
+nistid <- which(!1:ncol(final$data) %in% as.numeric(names(tomatch)))  # nist - non-integumentary characters
+
+# sort characters at end of group/character partition if they can't be found with REGEX match
+missid <- which(!1:ncol(final$data) %in% c(sortid, nistid))
+
+#combine ids and reorder dataset based on these IDs
+id <- c(sortid,nistid,missid)
+
+# reorder dataset
+final <- final[, id]
+
+# now reorder by character partition
+final$charpartition <- factor(final$charpartition, levels=c("skull", "hyolingual", "axial", "pectoral", "forelimb", "pelvic", "hindlimb", "integument", "muscle", "eggs", "auditory", "digestive", "respiratory", "pericardium", "chromosomes", "urogenital", "cardiovascular", "lymphatic", "nervous", "brain", "metabolism", "reproductive", "behavior", "sensory"))
+
+# add dataset to characters
+final$charlabels <- paste(final$charlabels, ' [', final$file, ' character ', final$charnums, ']', sep="")
+
+# reorder based on character partitions
+final <- final[, order(final$charpart)]
+
+final
+
+# and finally, plot by character partition:
+plot(final, fill="charpartition")
+
+write.nex(final, "final_reordered.nex")
+
+# final <- read.nex("final_reordered.nex")
+```
+
+### Summarize the concatenated dataset
+
+```{r}
+# reorder data matrix
+tmp <- allnex2
+
+tmp$taxlabels[which(tmp$taxlabels %in% ingenome)] <- paste0('*', tmp$taxlabels[which(tmp$taxlabels %in% ingenome)])
+
+df <- as.data.frame(table(allnex2$file, allnex2$charpartition))
+df$type <- as.character(df$Var2)
+df$type[grep('chromosomes|digestive|nervous|respiratory', df$type)] <- "Other"
+df$type <- factor(df$type)
+
+ggplot(df, aes(reorder(Var1, Freq), Freq, fill=type)) +
+      geom_bar(stat='identity') +
+      labs(x='Dataset', y='Number of variable characters') +
+      # coord_fixed(1/50, ylim=c(0, 1000)) +
+      ylim(0,1000) +
+      coord_flip() +
+      theme_bw() +
+      theme(aspect.ratio=1.5)
+```
+
+### Homology, character term assessment
+
+```{r}
+hindlimb <- subset(allnex2, charpartition=="hindlimb")
+hindlimb.dup <- duplicated(hindlimb, opt="terms", cluster="infomap")
+plot(hindlimb)
+printout(hindlimb.dup, file="hindlimb_terms.html")
+```
+
+### Test buildnex function (reading PDF and converting to a nexus object)
+
+```{r}
+tmp1 <- buildnex(file = 'examples/Bertelli_Chiappe_2005.pdf', ntax = 34, nchar = 63, first = 20, last = 22)
+# plot(tmp1, legend.pos = 'right')
+
+pdf_text("examples/Bertelli_Chiappe_2005.pdf")
+
+tmp2 <- buildnex(pdffile = 'examples/Johnston_2011.pdf', ntax = 13, nchar = 57, first = 21, last = 24)
+# plot(tmp2, legend.pos = 'right')
+
+tmp3 <- buildnex(pdffile = 'example/Bertelli_2014.pdf', ntax = 56, nchar = 157, first = 24, last = 25)
+# tmp3 <- sort(tmp3)
+# plot(tmp3, legend.pos = 'right')
+
+tmp4 <- buildnex(pdffile = 'example/Mayr_2003.pdf', ntax = 46, nchar = 148, first = 20, last = 24)
+# plot(tmp4, legend.pos = 'right')
+
+# use character categories in baker et al. 2014?
+# skull
+# wing
+# pectoral girdle
+# pelvic girdle
+# leg & foot
+# vertebrae, trachea & thyroid(?) bone
+```
+
+## Theropod datasets
+
+### Setup
+
+```{r}
+setwd("/Users/chadeliason/Documents/UT/projects/phenome")
+# devtools::load_all("~/github/phenotools")
+library(phenotools)
+library(ape)
+library(dplyr)
+```
+
+### Build matrices
+
+```{r}
+# make matrix from character list and data matrix pasted in as text
+twig1 <- buildnex(file="data/theropods/brusatte2014_matrix.txt", charlabels="data/theropods/brusatte2014_charlist.txt")
+twig2 <- buildnex(file="data/theropods/xu2011_matrix.txt", charlabels="data/theropods/xu2011_charlist.txt")
+```
+
+### Identify potential duplicates
+
+```{r}
+twig1D <- duplicated(x=twig1, opt="terms")
+printout(twig1D, file="output/twig1_terms.html")
+
+twig2D <- duplicated(x=twig2, opt="terms")
+printout(twig2D, file="output/twig2_terms.html")
+
+# bigger cluster sizes in twig1D (because richer/more verbose characters)
+clust <- str_count(twig1D$cluster, "\\d+")
+length(clust[clust>1])
+mean(clust[clust>1])
+range(clust[clust>1])
+
+clust <- str_count(twig2D$cluster, "\\d+")
+length(clust[clust>1])
+mean(clust[clust>1])
+range(clust[clust>1])
+
+# number of words per character
+dtm <- tm::DocumentTermMatrix(cleantext(twig1$charlab))
+sort(apply(as.matrix(dtm),2,sum))
+range(rowSums(as.matrix(dtm)))
+mean(rowSums(as.matrix(dtm)))
+
+dtm <- tm::DocumentTermMatrix(cleantext(twig2$charlab))
+range(rowSums(as.matrix(dtm)))
+mean(rowSums(as.matrix(dtm)))
+```
+
+### Trait ontology
+
+```{r}
+# create trait ontology from tabbed text file
+ont <- read_ontology(file="data/baumel ontology.txt")
+# tree <- simplify(tree, edge.attr.comb = "first")
+
+tl1 <- traitlink(ont, twig1)
+
+tl2 <- traitlink(ont, twig2)
+
+sum(!is.na(tl1$ont))/length(tl1$ont)
+sum(!is.na(tl2$ont))/length(tl2$ont)
+
+write.csv(cbind(tl1$chars, tl1$ont), file="output/twig1_traitcheck.csv")
+write.csv(cbind(tl2$chars, tl2$ont), file="output/twig2_traitcheck.csv")
+
+mean(tl1$nodedepth, na.rm=T)
+mean(tl2$nodedepth, na.rm=T)
+
+
+# how many characters were "linked in" to the trait ontology?
+id <- grep("char", V(tree1)$name)
+length(id)
+ncol(twig1$data)
+843 / 853 # 98.8%
+```
+
+### Output clusters
+
+```{r}
+dup2 <- duplicated(twig2, method="terms", cluster="infomap")
+printout(dup2, file="xu2011_infomap.html")
+
+dup2 <- duplicated(twig2, method="terms", cluster="walktrap")
+printout(dup2, file="xu2011_walktrap.html")
+```
+
+## Comparison between datasets
+
+```{r}
+twig <- concat(list(twig1, twig2))
+
+twig <- collapse(twig, map=list(
+ "Archaeopteryx_lithographi"="Archaeopteryx_lithographica",
+ "Archaeornithomimus_asiati" = "Archaeornithomimus_asiaticus",
+  "Bambiraptor_feinbergi" = "Bambiraptor_feinbergorum",
+ "Buitreraptor_gonzalezorum" = "Buitreraptor_gonzalozorum",
+  "Ingenia_yanshani" = "Ingenia_yanshini",
+"Pelecanimimus_polydon" = "Pelecanimimus_polyodon",
+"Saurornithoides_mongolien" = "Saurornithoides_mongoliensis",
+"Saurornitholestes_langsto" = "Saurornitholestes_langstoni",      
+"Segnosaurus_galbiensis" = "Segnosaurus_galbinensis"), method="merge")
+
+twig <- remove.invar(twig)
+
+twig$data[twig$data=="?"] <- NA
+table(is.na(twig$data))
+162538/(162538+60776) # 72.3% missing data
+
+tmp <- duplicated(twig, opt="terms")
+```
+
+### Network plots
+
+```{r}
+jpeg(file = "figs/theropod_networks2.jpg", width=7, height=2.5, units="in", res=300)
+
+par(mfrow=c(1, 3), mar=c(0,0,0,0))
+
+g <- twig1D$g
+com <- twig1D$clust
+com <- com[str_count(com, "\\d+")>1]
+plot(g, layout=layout_nicely, mark.groups=com, edge.width=.5, mark.col=alpha("blue", .1), mark.border="blue", vertex.frame.color=NA, vertex.color="black", vertex.size=1, vertex.label=NA, edge.color=alpha('black', .1))
+
+g <- twig2D$g
+com <- twig2D$clust
+com <- com[str_count(com, "\\d+")>1]
+plot(g, mark.groups=com, edge.width=.5, mark.col=alpha("red", .1), mark.border="red", vertex.frame.color=NA, vertex.color="black", vertex.size=1, vertex.label=NA, edge.color=alpha('black', .1))
+
+par(mar=c(3,3,1,1), mgp=c(1.5,.5,0), ps=8, mex=.75)
+
+MASS::truehist(degree(twig1D$g), h=2, xlim=c(0, 60), col=alpha('blue', .25), ylim=c(0, .25), xlab="Node degree", ylab="Frequency")
+par(new=TRUE)
+MASS::truehist(degree(twig2D$g), col=alpha("red", 0.25), h=2, xlim=c(0, 60), axes=F, xlab="", ylab="")
+
+dev.off()
+
+modularity(twig1D$cl)
+modularity(twig2D$cl)
+```
