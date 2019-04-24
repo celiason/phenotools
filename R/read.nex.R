@@ -9,7 +9,9 @@
 #' @return an object of class \code{nex} for use in further \code{nexustools} functions
 #' 
 #' @examples \dontrun{
-#' x <- read.nex(file='example/toy1.nex')
+#' x <- read.nex(file = system.file("extdata", "clarke_2006.nex", package = "phenotools"))
+#' x
+#' plot(x)
 #' }
 #' 
 #' @author Chad Eliason \email{celiason@@fieldmuseum.org}

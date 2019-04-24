@@ -19,9 +19,11 @@
 #' @return an object of class \code{nex} for use in further \code{nexustools} functions
 #' 
 #' @examples \dontrun{
-#' tmp <- buildnex('/Users/chadeliason/github/nexustools/example/Bertelli_Chiappe_2005.pdf', ntax = 34,
-#'	nchar = 63, first = 22, last = 22)
-#' plot(tmp, legend.pos = 'top')
+#' # Build a nex object from raw text files:
+#' charpath <- system.file("extdata", "brusatte2014_charlist.txt", package = "phenotools")
+#' matpath <- system.file("extdata", "brusatte2014_matrix.txt", package = "phenotools")
+#' x <- buildnex(matpath, charlabels=charpath)
+#' plot(x, legend.pos = "top")
 #' }
 #' 
 #' @export

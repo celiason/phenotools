@@ -7,7 +7,14 @@
 ```{r}
 # might be necessary to install:
 # install.packages("rlang")
-devtools::install_github('phenotools', dependencies=TRUE, build_vignettes=FALSE)
+# devtools::install_github('phenotools', dependencies=TRUE, build_vignettes=FALSE)
+# devtools::install_local('~/github/phenotools', dependencies=FALSE)
+# devtools::load_all()
+# devtools::document()
+
+# system.file("extdata", "brusatte2014_charlist.txt", package = "phenotools")
+# system.file("extdata", "clarke_2006.nex", package = "phenotools")
+# system.file("extdata", "nesbitt_2015.nex", package = "phenotools")
 
 library(phenotools)
 library(Claddis)
@@ -349,8 +356,13 @@ library(dplyr)
 
 ```{r}
 # make matrix from character list and data matrix pasted in as text
-twig1 <- buildnex(file="data/theropods/brusatte2014_matrix.txt", charlabels="data/theropods/brusatte2014_charlist.txt")
-twig2 <- buildnex(file="data/theropods/xu2011_matrix.txt", charlabels="data/theropods/xu2011_charlist.txt")
+twig1 <- buildnex(file="~/Documents/UT/projects/phenome/data/theropods/brusatte2014_matrix.txt", charlabels="~/Documents/UT/projects/phenome/data/theropods/brusatte2014_charlist.txt")
+twig2 <- buildnex(file="~/Documents/UT/projects/phenome/data/theropods/xu2011_matrix.txt", charlabels="~/Documents/UT/projects/phenome/data/theropods/xu2011_charlist.txt")
+
+# twig <- twig1
+# save(twig, file="data/twig.rda")
+# data(twig)
+# plot(twig)
 ```
 
 ### Identify potential duplicates

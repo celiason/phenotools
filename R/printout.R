@@ -10,8 +10,8 @@
 #' 
 #' @examples \dontrun{
 #' data(twig)
-#' dups <- duplicated(twig, weighted=TRUE)
-#' printout(dups, maxsize=10, file="~/Desktop/twig.html")
+#' dups <- duplicated(twig, opt="terms")
+#' printout(dups, maxsize=10, file="twig.html")
 #' }
 #' 
 #' @export

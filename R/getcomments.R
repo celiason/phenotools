@@ -21,6 +21,7 @@ getcomments <- function(file) {
 	txt <- readLines(file)
 	txt <- paste0(txt, collapse="\n")
 	txt <- str_trim(txt)
+	txt <- paste0("\n", txt)
 
 	# find actions, comments associated with characters
 	tmp <- str_match_all(txt, regex("\n([A-Z\\?]+)(\\d+)", multiline=TRUE, dotall=TRUE))
@@ -57,21 +58,13 @@ getcomments <- function(file) {
 
 	# just duplicates
 	dups <- str_match_all(as.character(res1$comment), "(\\bdupl).*?(\\d+(?:[;,]\\s\\d+)*)")
-
 	# types <- sapply(dups, "[", i=2)
-
 	dups <- lapply(dups, "[", , 3)
-
 	dups <- sapply(dups, strsplit, split = "[;,]")
-
 	dups <- sapply(dups, unlist)
-
 	dups <- sapply(dups, gsub, pattern = "^ ", replacement = "")
-
 	names(dups) <- res1$charnum
-
 	dups <- na.omit(stats::setNames(unlist(dups, use.names=F), rep(names(dups), times = sapply(dups, length))))
-
 	dups <- data.frame(target = as.numeric(names(dups)), duplicate = as.numeric(dups))
 
 	# output stuff
