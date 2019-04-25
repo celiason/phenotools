@@ -21,7 +21,9 @@ A function that reads data stored in nexus files
 }
 \examples{
 \dontrun{
-x <- read.nex(file='example/toy1.nex')
+x <- read.nex(file = system.file("extdata", "clarke_2006.nex", package = "phenotools"))
+x
+plot(x)
 }
 
 }

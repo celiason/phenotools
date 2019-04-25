@@ -11,6 +11,9 @@ dupsum(true, test = list())
 
 \item{test}{list of pairs of potential duplicated characters (each member of list is a different method)}
 }
+\value{
+a data frame object with false negatives (FN), true positives (TP), false positive (FP), along with precision (TP/(TP+FP)), recall (TP/(TP+FN)), and F1 score (2 * (precision * recall) / (precision + recall))
+}
 \description{
 function to output a summary table of precision and recall
 }

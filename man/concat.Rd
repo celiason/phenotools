@@ -19,9 +19,9 @@ a function that combines numerous nexus datasets
 }
 \examples{
 \dontrun{
-x <- read.nex('example/toy1.nex')
-y <- read.nex('example/toy2.nex')
-xy <- concat(list(x, y), taxa = c('species1', 'species2'))
+x <- read.nex(system.file("extdata", "clarke_2006.nex", package = "phenotools"))
+y <- read.nex(system.file("extdata", "nesbitt_2015.nex", package = "phenotools"))
+xy <- concat(list(x, y), taxa = c('Anas_platyrhynchos', 'Gallus_gallus', 'Crypturellus_undulatus'))
 xy
 }
 }

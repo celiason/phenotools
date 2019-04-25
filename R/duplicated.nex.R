@@ -40,17 +40,14 @@
 #' 
 #' @export
 #'
-# x=twig1
-# opt="terms"
-# cluster="infomap"
 duplicated.nex <- function(x, opt=c("fuzzy", "terms", "comments", "traitcor"),
   method=NULL, within_dataset=FALSE, commasep=FALSE, weighting=c(1,1,1),
   K=1, cluster = c("infomap", "fast_greedy", "walktrap", "label_prop", "leading_eigen",
     "louvain", "optimal", "spinglass"), cores=1) {
 
-# TODO write a lda.nex() function? separate the dup finding and dropping? maybe filter.nex()?
-# TODO add option to "nest" state labels in the network graph (so things like "size of distal end" wouldn't be matched across all characters, only those with state label as, say, "Humerus...")
-# TODO be able to plot "subclusters" (looking at all connections among characters, keeping only terms in common between the two)
+  # TODO write a lda.nex() function? separate the dup finding and dropping? maybe filter.nex()?
+  # TODO add option to "nest" state labels in the network graph (so things like "size of distal end" wouldn't be matched across all characters, only those with state label as, say, "Humerus...")
+  # TODO be able to plot "subclusters" (looking at all connections among characters, keeping only terms in common between the two)
 
   cutoff <- Inf # I previously had this as an argument, but i think it's better in the printout function (that way all possible dups will be output and their string distances for later subsetting)
 
@@ -156,6 +153,19 @@ duplicated.nex <- function(x, opt=c("fuzzy", "terms", "comments", "traitcor"),
     part2 <- sapply(cleantext(part2), as.character)
     part3 <- sapply(cleantext(part3), as.character)
     
+#### TEST
+# For this example you need to have the 'hashr' package installed.
+# a <- dat$charlab[1]
+# a <- as.list(cleantext(a))[[1]]
+# a.words <- strsplit(a,"[[:blank:]]+")
+# install.packages("hashr")
+# a.int <- hashr::hash(a.words)
+# b <- c("a little lamb had Mary", "had Mary a little lamb")
+# b <- as.list(cleantext(dat$charlab[1:2]))
+# b <- unlist(b)
+# b.int <- hashr::hash(strsplit(b,"[[:blank:]]+"))
+####
+
     # individual text distance matrix
     sdist <- lapply(seq_along(splits), function(z) {
       nms <- splits[[z]]
@@ -328,7 +338,7 @@ findgroups <- function(x) {
 
 #' Small function to update a duplicated nex object
 #' 
-#' changing cutoff will affect the characters identified as duplicates for later
+#' Changing cutoff will affect the characters identified as duplicates for later
 #' visualization (e.g., with `printout` or `duptree` functions)
 #' 
 #' @param x nex object
@@ -346,5 +356,6 @@ update.nex <- function(x, cutoff=Inf) {
   grps <- igraph::communities(igraph::components(g))
   x$clusters <- grps
   x$cutoff <- cutoff
+  x$dups <- newdups
   return(x)
 }

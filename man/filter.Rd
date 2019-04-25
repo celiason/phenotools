@@ -16,15 +16,18 @@ Given a list of specified duplicates, drop and/or merge characters
 }
 \examples{
 \dontrun{
-dat <- read.nex("/Users/chadeliason/Dropbox/phenome dataset/data/2015-09-02/original/final_reordered.nex")
-drops <- grep("livezey_2006", dat$charlab)
-tmp <- capture_comments(file = "~/Dropbox/phenome dataset/data/2015-09-02/modified/final_reorderedJAC+CME.txt")
-ss <- tmp$markup
-x <- dat[, ss]
-dups <- tmp$dups
-xx <- filter(x, dups=tmp$dups)
-sum(is.na(x$data))/length(x$data)  # 86.5\% missing data
-sum(is.na(xx$data))/length(xx$data)  # 86.3\% missing data
+x <- read.nex(system.file("extdata", "clarke_2006.nex", package = "phenotools"))
+y <- read.nex(system.file("extdata", "nesbitt_2015.nex", package = "phenotools"))
+xy <- concat(list(x,y))
+dups <- duplicated(xy, opt="terms")
+# a pair of duplicate characters
+xy[,c(144,345)]$charlab
+# drop from dataset
+xy2 <- filter(xy, cbind(144,345))
+dups <- update.nex(dups, cutoff = .25)
+xy2 <- filter(xy, dups$dups[, c('char1','char2')])
+xy
+xy2
 }
 
 }

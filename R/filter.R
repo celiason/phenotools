@@ -6,21 +6,23 @@
 #' @param dups an optional matrix or list specifying which character are duplicates (e.g., dups = list('1733' = c(1741,1745,1755)))
 #' 
 #' @examples \dontrun{
-#' dat <- read.nex("/Users/chadeliason/Dropbox/phenome dataset/data/2015-09-02/original/final_reordered.nex")
-#' drops <- grep("livezey_2006", dat$charlab)
-#' tmp <- capture_comments(file = "~/Dropbox/phenome dataset/data/2015-09-02/modified/final_reorderedJAC+CME.txt")
-#' ss <- tmp$markup
-#' x <- dat[, ss]
-#' dups <- tmp$dups
-#' xx <- filter(x, dups=tmp$dups)
-#' sum(is.na(x$data))/length(x$data)  # 86.5% missing data
-#' sum(is.na(xx$data))/length(xx$data)  # 86.3% missing data
+
+#' x <- read.nex(system.file("extdata", "clarke_2006.nex", package = "phenotools"))
+#' y <- read.nex(system.file("extdata", "nesbitt_2015.nex", package = "phenotools"))
+#' xy <- concat(list(x,y))
+#' dups <- duplicated(xy, opt="terms")
+#' # a pair of duplicate characters
+#' xy[,c(144,345)]$charlab
+#' # drop from dataset
+#' xy2 <- filter(xy, cbind(144,345))
+#' xy
+#' xy2
 #' }
 #' 
 #' @export
 #' 
 filter <- function(x, dups=NULL) {
-    if (class(dups)=="list") {      	
+    if (class(dups) == "list") {      	
       	# dups <- matrix(unlist(dups), ncol=length(dups))
       	dups <- cbind(as.numeric(rep(names(dups), sapply(dups, length))), as.numeric(unlist(dups)))
     }
@@ -33,6 +35,7 @@ filter <- function(x, dups=NULL) {
 	drops <- rep(NA, nrow(dups))
 	# drops <- numeric(length = nrow(dups))
 	for (i in seq_along(drops)) {
+	  # i=1
 	  id <- as.numeric(dups[i, ])
 	  # get character scorings
 	  scores <- x$data[, match(id, x$charnum)]
@@ -93,7 +96,9 @@ filter <- function(x, dups=NULL) {
 	    warning('Merging non-overlapping character scorings; dropping character ', id[1], '; check state labels to confirm')
 	  }  
 	}
-	keep <- !res$charnum %in% drops
+
+	keep <- !1:ncol(res$data) %in% drops
+
 	################################################################################
 	# Output, drop duplicated characters, labels, etc.:
 	################################################################################

@@ -39,12 +39,11 @@ handles merging of characters and outputs a new `nex` object
 }
 \examples{
 \dontrun{
-x <- read.nex(file='example/toy1.nex')
-map <- list(c(2, 4), c(156, 157))
-duplicated.nex(x, method = 'user', map = map)
-duplicated.nex(x, method = 'automated', map = map)
-duplicated(x, cutoff = 0.01, method = 'auto')
-duplicated(x, method = 'user', map=list(c(2,3)))
+x1 <- read.nex(system.file("extdata", "clarke_2006.nex", package = "phenotools"))
+x2 <- read.nex(system.file("extdata", "nesbitt_2015.nex", package = "phenotools"))
+x <- concat(list(x1, x2))
+x.dup <- duplicated.nex(x, opt = "terms")
+# printout(x.dup, file="testprintout.html")
 }
 
 }

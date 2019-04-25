@@ -12,6 +12,6 @@
 \item{cutoff}{cuttoff to filter duplicates/overlapping characters by}
 }
 \description{
-changing cutoff will affect the characters identified as duplicates for later
+Changing cutoff will affect the characters identified as duplicates for later
 visualization (e.g., with `printout` or `duptree` functions)
 }
