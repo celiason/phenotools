@@ -21,7 +21,8 @@
 concat <- function(x, taxa=NULL) {
   mat <- lapply(x, '[[', 'data')
   alltaxlabels <- unique(unlist(lapply(x, '[[', 'taxlabels')))
-  taxbydataset <- sapply(x, '[[', 'taxlabels')
+  # get taxon labels for each input dataset
+  taxbydataset <- lapply(x, '[[', 'taxlabels')
   # find overlapping species
   if (!is.null(taxa)) {
     ids <- lapply(1:length(taxbydataset), function(z) {match(taxa, taxbydataset[[z]])})
