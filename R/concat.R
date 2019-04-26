@@ -25,10 +25,12 @@ concat <- function(x, taxa=NULL) {
   taxbydataset <- lapply(x, '[[', 'taxlabels')
   # find overlapping species
   if (!is.null(taxa)) {
-    ids <- lapply(1:length(taxbydataset), function(z) {match(taxa, taxbydataset[[z]])})
+    ids <- lapply(1:length(taxbydataset), function(z) {match(taxa,
+      taxbydataset[[z]])})
     taxlabels <- taxa
   } else {
-    ids <- lapply(1:length(taxbydataset), function(z) {match(alltaxlabels, taxbydataset[[z]])})
+    ids <- lapply(1:length(taxbydataset), function(z) {match(alltaxlabels,
+      taxbydataset[[z]])})
     taxlabels <- alltaxlabels
   }
   # combine data
@@ -37,6 +39,7 @@ concat <- function(x, taxa=NULL) {
   names(dat) <- 1:ncol(dat)
   nchar <- ncol(dat)
   ntax <- nrow(dat)
+  # get metadata for characters
   charlabels <- unlist(lapply(x, '[[', 'charlabels'))
   charnums <- unlist(lapply(x, '[[', 'charnums'))
   charsets <- unlist(lapply(x, '[[', 'charset'))
@@ -45,7 +48,8 @@ concat <- function(x, taxa=NULL) {
   statelabels <- unlist(lapply(x, '[[', 'statelabels'))
   missing <- unlist(lapply(x, '[[', 'missing'))
   gap <- unlist(lapply(x, '[[', 'gap'))
-  symbols <- paste(unique(unlist(strsplit(gsub('[\\(\\)\\??\\-]', '', sort(unique(as.vector(dat)))), ""))),collapse="")
+  symbols <- paste(unique(unlist(strsplit(gsub('[\\(\\)\\??\\-]', '',
+    sort(unique(as.vector(dat)))), ""))),collapse="")
   # symbols <- paste(sort(unique(as.vector(mat))), collapse="")
   symbols <- gsub('[\\?\\-]','',symbols)
   if (length(unique(missing)) != 1) {
@@ -54,7 +58,10 @@ concat <- function(x, taxa=NULL) {
   if (length(unique(gap)) != 1) {
     stop('Datasets differ in characters used for gap data, fix before merging')
   } else { gap <- unique(gap) }
-  res <- list(taxlabels = taxlabels, data = dat, charlabels = charlabels, statelabels = statelabels, charnums = charnums, charset = charsets, missing = missing, gap = gap, charpartition = charpartition, symbols = symbols, file = file)
+  res <- list(taxlabels = taxlabels, data = dat, charlabels = charlabels,
+    statelabels = statelabels, charnums = charnums, charset = charsets,
+    missing = missing, gap = gap, charpartition = charpartition,
+    symbols = symbols, file = file)
   class(res) <- c('nex', 'list')
   res
 }

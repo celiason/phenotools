@@ -313,24 +313,24 @@ plot(hindlimb)
 printout(hindlimb.dup, file="hindlimb_terms.html")
 ```
 
-### Test buildnex function (reading PDF and converting to a nexus object)
+### Test read.nex function (reading PDF and converting to a nexus object)
 
 ```{r}
-tmp1 <- buildnex(file = system.file("extdata", "Bertelli_2005.pdf", package = "phenotools"), ntax = 34, nchar = 63, first = 20, last = 22)
+tmp1 <- read.nex(file = system.file("extdata", "Bertelli_2005.pdf", package = "phenotools"), ntax = 34, nchar = 63, first = 20, last = 22)
 tmp1
 plot(tmp1)
 https://nhm.org/site/sites/default/files/pdf/contrib_science/CS502.pdf
 
 # plot(tmp1, legend.pos = 'right')
 
-tmp2 <- buildnex(pdffile = 'examples/Johnston_2011.pdf', ntax = 13, nchar = 57, first = 21, last = 24)
+tmp2 <- read.nex(pdffile = 'examples/Johnston_2011.pdf', ntax = 13, nchar = 57, first = 21, last = 24)
 # plot(tmp2, legend.pos = 'right')
 
-tmp3 <- buildnex(pdffile = 'example/Bertelli_2014.pdf', ntax = 56, nchar = 157, first = 24, last = 25)
+tmp3 <- read.nex(pdffile = 'example/Bertelli_2014.pdf', ntax = 56, nchar = 157, first = 24, last = 25)
 # tmp3 <- sort(tmp3)
 # plot(tmp3, legend.pos = 'right')
 
-tmp4 <- buildnex(pdffile = 'example/Mayr_2003.pdf', ntax = 46, nchar = 148, first = 20, last = 24)
+tmp4 <- read.nex(pdffile = 'example/Mayr_2003.pdf', ntax = 46, nchar = 148, first = 20, last = 24)
 # plot(tmp4, legend.pos = 'right')
 
 # use character categories in baker et al. 2014?
@@ -358,8 +358,8 @@ library(dplyr)
 
 ```{r}
 # make matrix from character list and data matrix pasted in as text
-twig1 <- buildnex(file="~/Documents/UT/projects/phenome/data/theropods/brusatte2014_matrix.txt", charlabels="~/Documents/UT/projects/phenome/data/theropods/brusatte2014_charlist.txt")
-twig2 <- buildnex(file="~/Documents/UT/projects/phenome/data/theropods/xu2011_matrix.txt", charlabels="~/Documents/UT/projects/phenome/data/theropods/xu2011_charlist.txt")
+twig1 <- read.nex(file="~/Documents/UT/projects/phenome/data/theropods/brusatte2014_matrix.txt", charlabels="~/Documents/UT/projects/phenome/data/theropods/brusatte2014_charlist.txt")
+twig2 <- read.nex(file="~/Documents/UT/projects/phenome/data/theropods/xu2011_matrix.txt", charlabels="~/Documents/UT/projects/phenome/data/theropods/xu2011_charlist.txt")
 
 # twig <- twig1
 # save(twig, file="data/twig.rda")

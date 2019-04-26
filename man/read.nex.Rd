@@ -4,10 +4,31 @@
 \alias{read.nex}
 \title{Read a nexus data file}
 \usage{
-read.nex(file, missing = "?", gap = "-")
+read.nex(file, charlabels = NULL, charnums = NULL,
+  statelabels = NULL, taxlabels = NULL, filename = NULL,
+  ntax = NULL, nchar = NULL, first = NULL, last = NULL,
+  missing = "?", gap = "-")
 }
 \arguments{
-\item{file}{(required) path to nexus file}
+\item{file}{(required) path to either a .NEX, .TXT, or .PDF file containin data}
+
+\item{charlabels}{optional path to text file with character statements}
+
+\item{charnums}{optional vector with character numbers}
+
+\item{statelabels}{optional character vector with state labels for characters}
+
+\item{taxlabels}{optional vector with names of taxa}
+
+\item{filename}{vector with names of files associated with characters}
+
+\item{ntax}{number of taxa (needed for PDF file reading)}
+
+\item{nchar}{number of characters (needed for PDF file reading)}
+
+\item{first}{first page for data matrix in a PDF file}
+
+\item{last}{last page for data matrix in a PDF file}
 
 \item{missing}{character representing missing data}
 
@@ -18,15 +39,34 @@ an object of class \code{nex} for use in further \code{phenotools} functions
 }
 \description{
 A function that reads data stored in nexus files
+NOTE: it is necessary to first install poppler with, e.g., `brew install poppler`
 }
 \examples{
 \dontrun{
-# read in a nexus file:
-x <- read.nex(file = system.file("extdata", "clarke_2006.nex", package = "phenotools"))
+# Build a `nex` object from text files:
+charpath <- system.file("extdata", "brusatte2014_charlist.txt",
+package = "phenotools")
+matpath <- system.file("extdata", "brusatte2014_matrix.txt",
+package = "phenotools")
+x <- read.nex(matpath, charlabels=charpath)
+plot(x, legend.pos = "top")
+
+# Build a `nex` object from a PDF file (Bertelli & Chiappe 2005):
+x <- read.nex(file = system.file("extdata", "Bertelli_2005.pdf",
+package = "phenotools"), ntax = 34, nchar = 63, first = 20, last = 22)
 x
 plot(x)
+
+# Read in a nexus file:
+x <- read.nex(file = system.file("extdata", "clarke_2006.nex",
+package = "phenotools"))
 }
 
+}
+\references{
+Bertelli, S., & Chiappe, L. M. (2005). Earliest Tinamous (Aves: Palaeognathae)
+from the Miocene of Argentina and Their Phylogenetic Position. Contributions
+in Science, 502, 1–20.
 }
 \author{
 Chad Eliason \email{celiason@fieldmuseum.org}

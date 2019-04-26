@@ -2,7 +2,7 @@
 % Please edit documentation in R/collapse.R
 \name{collapse}
 \alias{collapse}
-\title{Write a nexus data object to a file}
+\title{Collapse taxa in a `nex` object}
 \usage{
 collapse(x, map, method = c("retain", "merge"))
 }
@@ -17,7 +17,24 @@ collapse(x, map, method = c("retain", "merge"))
 an object of class \code{nex} for use in further \code{phenotools} functions
 }
 \description{
-Function to collapse taxa and merge data in taxon 1 with other taxa
+Function to collapse and merge data across taxa
+}
+\examples{
+\dontrun{
+# load data matrix of Clarke et al. (2006)
+x <- read.nex(system.file("extdata", "clarke_2006.nex", package = "phenotools"))
+# merge 2 duck species into a new taxon (family Anatidae):
+y <- collapse(x, map = c('Anas_platyrhynchos' = 'Anatidae', 'Chauna_torquata' = 'Anatidae'), method = 'merge')
+x$tax
+y$tax
+}
+
+}
+\references{
+Clarke, J. A., Zhou, Z., & Zhang, F. (2006). Insight into the
+evolution of avian flight from a new clade of Early Cretaceous ornithurines
+from China and the morphology of Yixianornis grabaui. Journal of Anatomy,
+208, 287–308.
 }
 \author{
 Chad Eliason \email{celiason@fieldmuseum.org}

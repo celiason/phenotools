@@ -1,6 +1,6 @@
-#' Write a nexus data object to a file
+#' Collapse taxa in a `nex` object
 #'
-#' Function to collapse taxa and merge data in taxon 1 with other taxa
+#' Function to collapse and merge data across taxa
 #'
 #' @param x (required) a `nex` object
 #' @param map a list specifying equivalent taxa to map from and to (e.g., `c('Tinamus' = 'Tinamus_major')` will map all characters from Tinamus to Tinamus_major)
@@ -8,40 +8,45 @@
 #' 
 #' @return an object of class \code{nex} for use in further \code{phenotools} functions
 #' 
+#' @examples \dontrun{
+#' # load data matrix of Clarke et al. (2006)
+#' x <- read.nex(system.file("extdata", "clarke_2006.nex", package = "phenotools"))
+#' # merge 2 duck species into a new taxon (family Anatidae):
+#' y <- collapse(x, map = c('Anas_platyrhynchos' = 'Anatidae', 'Chauna_torquata' = 'Anatidae'), method = 'merge')
+#' x$tax
+#' y$tax
+#' }
+#' 
+#' @references Clarke, J. A., Zhou, Z., & Zhang, F. (2006). Insight into the
+#' evolution of avian flight from a new clade of Early Cretaceous ornithurines
+#' from China and the morphology of Yixianornis grabaui. Journal of Anatomy,
+#' 208, 287–308.
+#' 
 #' @author Chad Eliason \email{celiason@@fieldmuseum.org}
 #' 
 #' @export
 #' 
 collapse <- function(x, map, method = c('retain', 'merge')) {
-
-# TODO maybe use mutate? or merge?
-
+  # TODO maybe rename function to merge?
   res <- x
-
   method <- match.arg(method)
-
-# add new characters to the matrix first
-
+  # add new characters to the matrix first
   added <- sort(unique(as.character(unlist(map))))
-
   kept <- intersect(added, x$taxlabels)
-
   # added <- setdiff(sort(unique(as.character(unlist(map)))), x$taxlabels)
-
+  # data frame for taxon mapping
   df <- data.frame(from = rep(names(map), lapply(map, length)),
                    to = unlist(map),
                    index = rep(seq_along(map), lapply(map, length)),
                    stringsAsFactors=FALSE)
-
   # if (any(df$from %in% df$to)) {
   #   stop("Taxa in 'from' are also in 'to' taxa. This is redundant -- please fix.")
   # }
-
   dropped <- names(map)[!names(map) %in% added]
-
-  # this is tricky
-  # if you are saying to map two species to a new terminal, then you need to run the above iteratively to
-  # make sure you aren't overwriting the character data..
+  
+  # this is tricky. if you are saying to map two species to a new terminal,
+  # then you need to run the above iteratively to make sure you aren't
+  # overwriting the character data..
 
   # find new taxa that aren't already in the dataset
   if (any(!added %in% x$taxlabels)) {
@@ -62,13 +67,11 @@ collapse <- function(x, map, method = c('retain', 'merge')) {
   # loop over all original taxa - i.e. names of 'map' list
 
   for (i in 1:nrow(df)) {
-
       # extract character scorings
       id1 <- which(res$tax == df$from[i])
       id2 <- which(res$tax == df$to[i])
       scores1 <- res$data[id1, ]
       scores2 <- res$data[id2, ]
-
       # find overlaps in scored characters
       # scores in original, NAs in target:
       id.scored1 <- which(!is.na(scores1) & is.na(scores2))
@@ -78,10 +81,8 @@ collapse <- function(x, map, method = c('retain', 'merge')) {
       id.diff <- which(scores1 != scores2)
       # same scores in target, orginal:
       id.overlap <- which(scores1 == scores2)
-
       # replace NAs in target/new with original/old taxon
       res$data[id2, id.scored1] <- scores1[id.scored1]
-      
       # merge method
       if (method=='merge') {  
       
@@ -122,17 +123,10 @@ collapse <- function(x, map, method = c('retain', 'merge')) {
           }
       }
   }
-
   # drop taxa
-  
   res$data <- res$data[-dropid, ]
-  
   res$taxlabels <- res$taxlabels[-dropid]
-  
   cat('Dropped taxa:', setdiff(dropped, kept), 'Added taxa:', setdiff(added, kept), sep='\n')
-  
   # return results
-  
   res
-
 }

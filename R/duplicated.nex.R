@@ -114,6 +114,7 @@ duplicated.nex <- function(x, opt=c("fuzzy", "terms", "comments", "traitcor"),
     dups <- t(utils::combn(1:ncol(x$data), m=2))
     dups <- cbind(dups, sdist)    
     dups <- dups[dups[,3]!=Inf, ]
+    
     # old way:
     # dups <- lapply(lapply(grps, str_extract, "\\d+"), na.omit)
     # dups <- lapply(dups, as.numeric)
@@ -127,6 +128,7 @@ duplicated.nex <- function(x, opt=c("fuzzy", "terms", "comments", "traitcor"),
     # dups[,3] <- sapply(1:nrow(dups), function(i) {
     #   dmat[as.character(dups[i,1]), as.character(dups[i,2])]
     # })
+    
   }
 
   # Calculate text distances using fuzzy string distance
