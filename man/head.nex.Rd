@@ -4,7 +4,7 @@
 \alias{head.nex}
 \title{Look at top of nexus file}
 \usage{
-\method{head}{nex}(x)
+\method{head}{nex}(x, ...)
 }
 \arguments{
 \item{x}{nex object}

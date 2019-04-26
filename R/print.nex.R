@@ -1,6 +1,8 @@
 #' Utility function to print metadata for nexus file
+#' 
 #' @param x nex class object
 #' @param ... other arguments (not used)
+#' 
 #' @export
 #' 
 print.nex <- function(x, ...) {

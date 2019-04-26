@@ -1,5 +1,5 @@
 # do other functions use this function??
-# might need to save in nexustools/R
+# might need to save in phenotools/R
 
 findpaths <- function(g) {
 	# create groups of words based on trait ontology/tree

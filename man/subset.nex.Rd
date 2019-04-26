@@ -3,7 +3,7 @@
 \name{subset.nex}
 \alias{subset.nex}
 \alias{[.nex}
-\title{subset a nexus file}
+\title{Subset a nexus file}
 \usage{
 \method{subset}{nex}(x, condition)
 
@@ -23,7 +23,5 @@
 \item{...}{other arguments (not used)}
 }
 \description{
-subset a nexus file
-
-subset a nexus file
+Subset a nexus file
 }

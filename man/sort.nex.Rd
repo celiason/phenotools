@@ -2,7 +2,7 @@
 % Please edit documentation in R/sort.nex.R
 \name{sort.nex}
 \alias{sort.nex}
-\title{sort nexus file by something}
+\title{Sort a nexus file}
 \usage{
 \method{sort}{nex}(x, by = c("taxlabels", "charlabels"), ...)
 }
@@ -14,5 +14,13 @@
 \item{...}{other arguments passed to sort}
 }
 \description{
-sort nexus file by something
+Sort a nexus file
+}
+\examples{
+\dontrun{
+data(twig)
+twig.sorted <- sort(twig, by="taxlabels")
+plot(twig.sorted)
+}
+
 }

@@ -316,10 +316,12 @@ printout(hindlimb.dup, file="hindlimb_terms.html")
 ### Test buildnex function (reading PDF and converting to a nexus object)
 
 ```{r}
-tmp1 <- buildnex(file = 'examples/Bertelli_Chiappe_2005.pdf', ntax = 34, nchar = 63, first = 20, last = 22)
-# plot(tmp1, legend.pos = 'right')
+tmp1 <- buildnex(file = system.file("extdata", "Bertelli_2005.pdf", package = "phenotools"), ntax = 34, nchar = 63, first = 20, last = 22)
+tmp1
+plot(tmp1)
+https://nhm.org/site/sites/default/files/pdf/contrib_science/CS502.pdf
 
-pdf_text("examples/Bertelli_Chiappe_2005.pdf")
+# plot(tmp1, legend.pos = 'right')
 
 tmp2 <- buildnex(pdffile = 'examples/Johnston_2011.pdf', ntax = 13, nchar = 57, first = 21, last = 24)
 # plot(tmp2, legend.pos = 'right')

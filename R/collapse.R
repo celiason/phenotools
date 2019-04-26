@@ -6,9 +6,9 @@
 #' @param map a list specifying equivalent taxa to map from and to (e.g., `c('Tinamus' = 'Tinamus_major')` will map all characters from Tinamus to Tinamus_major)
 #' @param method whether to convert characters scored in both taxa to polymorphisms (`merge`) or retain original characters (default)
 #' 
-#' @return an object of class \code{nex} for use in further \code{nexustools} functions
+#' @return an object of class \code{nex} for use in further \code{phenotools} functions
 #' 
-#' @author Chad Eliason \email{chad_eliason@@utexas.edu}
+#' @author Chad Eliason \email{celiason@@fieldmuseum.org}
 #' 
 #' @export
 #' 

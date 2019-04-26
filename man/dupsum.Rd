@@ -2,18 +2,23 @@
 % Please edit documentation in R/dupsum.R
 \name{dupsum}
 \alias{dupsum}
-\title{function to output a summary table of precision and recall}
+\title{Function to output a summary table of precision and recall}
 \usage{
 dupsum(true, test = list())
 }
 \arguments{
-\item{true}{unique pairs of true duplicated characters}
+\item{true}{a character vector denoting pairs of overlapping/duplicated
+characters (e.g., "1--2")}
 
-\item{test}{list of pairs of potential duplicated characters (each member of list is a different method)}
+\item{test}{a list of pairs of potential duplicated characters (e.g., each
+element of the list might represent a different method of locating duplicates
+with the `duplicated.nex` function).}
 }
 \value{
-a data frame object with false negatives (FN), true positives (TP), false positive (FP), along with precision (TP/(TP+FP)), recall (TP/(TP+FN)), and F1 score (2 * (precision * recall) / (precision + recall))
+a data frame object with false negatives (FN), true positives (TP),
+false positive (FP), along with precision (TP/(TP+FP)), recall (TP/(TP+FN)),
+and F1 score (2 * (precision * recall) / (precision + recall))
 }
 \description{
-function to output a summary table of precision and recall
+Function to output a summary table of precision and recall
 }

@@ -8,10 +8,11 @@
   "traitcor"), method = NULL, within_dataset = FALSE,
   commasep = FALSE, weighting = c(1, 1, 1), K = 1,
   cluster = c("infomap", "fast_greedy", "walktrap", "label_prop",
-  "leading_eigen", "louvain", "optimal", "spinglass"), cores = 1)
+  "leading_eigen", "louvain", "optimal", "spinglass"), cores = 1,
+  latin = TRUE)
 }
 \arguments{
-\item{x}{(required) a nexus data object}
+\item{x}{(required) a `nex` object}
 
 \item{opt}{method to use for finding duplicates}
 
@@ -21,21 +22,22 @@
 
 \item{commasep}{whether characters should be split into parts based on commas}
 
-\item{weighting}{vector for parts of character (before comma, after comma, states)}
+\item{weighting}{vector for parts of character (before comma, after comma, character states)}
 
 \item{K}{number of clusters (if 1 cluster are found automatically according to method specified with `cluster=`)}
 
 \item{cluster}{clustering algorithm to use for finding overlapping characters}
 
 \item{cores}{how many cores to use (for parallel processing in traitcor option)}
+
+\item{latin}{whether to use Schinke Latin stemmer (logical)}
 }
 \value{
-an object of class \code{nex} for use in further \code{nexustools} functions
+an object of class \code{nex} for use in further \code{phenotools} functions
 }
 \description{
-Function uses fuzzy text matching to output a list of potentially redundant
-characters in a `nex` object, waits for user input to confirm, and then
-handles merging of characters and outputs a new `nex` object
+Function uses fuzzy text matching to output a list of potentially overlapping
+characters in a `nex` object
 }
 \examples{
 \dontrun{

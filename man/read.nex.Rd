@@ -14,13 +14,14 @@ read.nex(file, missing = "?", gap = "-")
 \item{gap}{character representing inapplicable/incomporable data}
 }
 \value{
-an object of class \code{nex} for use in further \code{nexustools} functions
+an object of class \code{nex} for use in further \code{phenotools} functions
 }
 \description{
 A function that reads data stored in nexus files
 }
 \examples{
 \dontrun{
+# read in a nexus file:
 x <- read.nex(file = system.file("extdata", "clarke_2006.nex", package = "phenotools"))
 x
 plot(x)

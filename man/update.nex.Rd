@@ -15,3 +15,6 @@
 Changing cutoff will affect the characters identified as duplicates for later
 visualization (e.g., with `printout` or `duptree` functions)
 }
+\author{
+Chad Eliason \email{celiason@fieldmuseum.org}
+}

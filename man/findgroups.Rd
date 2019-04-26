@@ -12,3 +12,6 @@ findgroups(x)
 \description{
 Sub-function to get groups of duplicated characters based on input map (char1 in column 1, char2 in column 2)
 }
+\author{
+Chad Eliason \email{celiason@fieldmuseum.org}
+}

@@ -1,17 +1,20 @@
 #' Merge a list of nexus files
 #'
-#' a function that combines numerous nexus datasets
+#' A function that combines numerous nexus datasets
 #'
-#' @param x (required) a list of nexus files to merge
+#' @param x (required) a list of `nex` objects to merge
 #' @param taxa a character vector of names of taxa to include in concatenated nexus file (optional)
-#' @return an object of class \code{nex} for use in further \code{nexustools} functions
+#' 
+#' @return an object of class `nex` for use in further `phenotools` functions
+#' 
 #' @examples \dontrun{
 #' x <- read.nex(system.file("extdata", "clarke_2006.nex", package = "phenotools"))
 #' y <- read.nex(system.file("extdata", "nesbitt_2015.nex", package = "phenotools"))
 #' xy <- concat(list(x, y), taxa = c('Anas_platyrhynchos', 'Gallus_gallus', 'Crypturellus_undulatus'))
 #' xy
 #' }
-#' @author Chad Eliason \email{chad_eliason@@utexas.edu}
+#' 
+#' @author Chad Eliason \email{celiason@@fieldmuseum.org}
 #' 
 #' @export
 #' 

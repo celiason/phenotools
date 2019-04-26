@@ -14,11 +14,11 @@ collapse(x, map, method = c("retain", "merge"))
 \item{method}{whether to convert characters scored in both taxa to polymorphisms (`merge`) or retain original characters (default)}
 }
 \value{
-an object of class \code{nex} for use in further \code{nexustools} functions
+an object of class \code{nex} for use in further \code{phenotools} functions
 }
 \description{
 Function to collapse taxa and merge data in taxon 1 with other taxa
 }
 \author{
-Chad Eliason \email{chad_eliason@utexas.edu}
+Chad Eliason \email{celiason@fieldmuseum.org}
 }

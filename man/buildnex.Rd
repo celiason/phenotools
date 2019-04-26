@@ -35,7 +35,7 @@ buildnex(file, charlabels = NULL, charnums = NULL,
 \item{gap}{character representing inapplicable/incomporable data}
 }
 \value{
-an object of class \code{nex} for use in further \code{nexustools} functions
+an object of class \code{nex} for use in further \code{phenotools} functions
 }
 \description{
 A function that reads data stored in nexus files
@@ -43,14 +43,24 @@ NOTE: it is necessary to first install poppler with, e.g., `brew install poppler
 }
 \examples{
 \dontrun{
-# Build a nex object from raw text files:
+# Build a `nex` object from text files:
 charpath <- system.file("extdata", "brusatte2014_charlist.txt", package = "phenotools")
 matpath <- system.file("extdata", "brusatte2014_matrix.txt", package = "phenotools")
 x <- buildnex(matpath, charlabels=charpath)
 plot(x, legend.pos = "top")
+
+# Build a `nex` object from a PDF file (Bertelli & Chiappe 2005):
+x <- buildnex(file = system.file("extdata", "Bertelli_2005.pdf", package = "phenotools"), ntax = 34, nchar = 63, first = 20, last = 22)
+x
+plot(x)
 }
 
 }
+\references{
+Bertelli, S., & Chiappe, L. M. (2005). Earliest Tinamous (Aves: Palaeognathae)
+from the Miocene of Argentina and Their Phylogenetic Position. Contributions
+in Science, 502, 1–20.
+}
 \author{
-Chad Eliason \email{chad_eliason@utexas.edu}
+Chad Eliason \email{celiason@fieldmuseum.org}
 }

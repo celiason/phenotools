@@ -1,20 +1,20 @@
 #' Find duplicate or overlapping characters in nexus files
 #' 
-#' Function uses fuzzy text matching to output a list of potentially redundant
-#' characters in a `nex` object, waits for user input to confirm, and then
-#' handles merging of characters and outputs a new `nex` object
+#' Function uses fuzzy text matching to output a list of potentially overlapping
+#' characters in a `nex` object
 #' 
-#' @param x (required) a nexus data object
+#' @param x (required) a `nex` object
 #' @param opt method to use for finding duplicates
 #' @param method specific method arguments to pass to functions
 #' @param commasep whether characters should be split into parts based on commas
 #' @param K number of clusters (if 1 cluster are found automatically according to method specified with `cluster=`)
 #' @param cluster clustering algorithm to use for finding overlapping characters
 #' @param within_dataset whether to limit search to only among-dataset characters (e.g., useful if you are certain the individual matrices do not contain duplicates)
-#' @param weighting vector for parts of character (before comma, after comma, states)
+#' @param weighting vector for parts of character (before comma, after comma, character states)
 #' @param cores how many cores to use (for parallel processing in traitcor option)
+#' @param latin whether to use Schinke Latin stemmer (logical)
 #' 
-#' @return an object of class \code{nex} for use in further \code{nexustools} functions
+#' @return an object of class \code{nex} for use in further \code{phenotools} functions
 #' 
 #' @examples \dontrun{
 #' x1 <- read.nex(system.file("extdata", "clarke_2006.nex", package = "phenotools"))
@@ -43,7 +43,7 @@
 duplicated.nex <- function(x, opt=c("fuzzy", "terms", "comments", "traitcor"),
   method=NULL, within_dataset=FALSE, commasep=FALSE, weighting=c(1,1,1),
   K=1, cluster = c("infomap", "fast_greedy", "walktrap", "label_prop", "leading_eigen",
-    "louvain", "optimal", "spinglass"), cores=1) {
+    "louvain", "optimal", "spinglass"), cores=1, latin=TRUE) {
 
   # TODO write a lda.nex() function? separate the dup finding and dropping? maybe filter.nex()?
   # TODO add option to "nest" state labels in the network graph (so things like "size of distal end" wouldn't be matched across all characters, only those with state label as, say, "Humerus...")
@@ -84,7 +84,7 @@ duplicated.nex <- function(x, opt=c("fuzzy", "terms", "comments", "traitcor"),
   if (opt == "terms") {
     chars <- paste(oldcharnames, oldstatenames)
     chars <- gsub("\\-\\s", "", chars)    
-    termlist <- cleantext(chars)
+    termlist <- cleantext(chars, latin=latin)
     # make document matrix, sort by term frequency
     if (K == 1) {
       dtm <- tm::TermDocumentMatrix(termlist, control = list(wordLengths = c(2, Inf), weighting = function(x) tm::weightTfIdf(x, normalize = TRUE), stemming=FALSE))
@@ -149,9 +149,9 @@ duplicated.nex <- function(x, opt=c("fuzzy", "terms", "comments", "traitcor"),
     }
     
     # Clean up character names
-    part1 <- sapply(cleantext(part1), as.character)
-    part2 <- sapply(cleantext(part2), as.character)
-    part3 <- sapply(cleantext(part3), as.character)
+    part1 <- sapply(cleantext(part1, latin=latin), as.character)
+    part2 <- sapply(cleantext(part2, latin=latin), as.character)
+    part3 <- sapply(cleantext(part3, latin=latin), as.character)
     
 #### TEST
 # For this example you need to have the 'hashr' package installed.
@@ -314,19 +314,17 @@ duplicated.nex <- function(x, opt=c("fuzzy", "terms", "comments", "traitcor"),
     grps <- igraph::communities(cl)  # get clusters
     res$clusters <- grps
   }
-  
   res$cutoff <- cutoff
-  
   res
-
 }
-
 
 #' Sub-function to get groups of duplicated characters based on input map (char1 in column 1, char2 in column 2)
 #' 
 #' @param x a nex object
 #' 
 #' @export
+#' 
+#' @author Chad Eliason \email{celiason@@fieldmuseum.org}
 #' 
 findgroups <- function(x) {
   g <- graph_from_data_frame(x, directed=FALSE)
@@ -345,6 +343,8 @@ findgroups <- function(x) {
 #' @param cutoff cuttoff to filter duplicates/overlapping characters by
 #' 
 #' @export
+#' 
+#' @author Chad Eliason \email{celiason@@fieldmuseum.org}
 #' 
 update.nex <- function(x, cutoff=Inf) {
   dups <- x$dups

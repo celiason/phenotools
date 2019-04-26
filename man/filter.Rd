@@ -24,8 +24,6 @@ dups <- duplicated(xy, opt="terms")
 xy[,c(144,345)]$charlab
 # drop from dataset
 xy2 <- filter(xy, cbind(144,345))
-dups <- update.nex(dups, cutoff = .25)
-xy2 <- filter(xy, dups$dups[, c('char1','char2')])
 xy
 xy2
 }

@@ -5,7 +5,6 @@
 #' @export
 #' 
 printneat <- function(x, y) {
-# TODO printneat() function for character pairs
   charnames <- x$charlabels[y]
   statenames <- x$statelabels[y]
   charnames <- str_replace_all(charnames, "Note\\:.*?$", "")

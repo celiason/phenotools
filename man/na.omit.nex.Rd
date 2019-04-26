@@ -2,7 +2,7 @@
 % Please edit documentation in R/na.omit.nex.R
 \name{na.omit.nex}
 \alias{na.omit.nex}
-\title{remove NAs from nexus files}
+\title{Remove NAs from nexus files}
 \usage{
 \method{na.omit}{nex}(x, ...)
 }
@@ -12,5 +12,5 @@
 \item{...}{other arguments}
 }
 \description{
-remove NAs from nexus files
+Remove NAs from nexus files
 }

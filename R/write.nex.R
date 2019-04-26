@@ -12,14 +12,14 @@
 #' @param run whether to run TNT analysis
 #' @param format output formate
 #' 
-#' @return an object of class \code{nex} for use in further \code{nexustools} functions
+#' @return an object of class \code{nex} for use in further \code{phenotools} functions
 #' 
 #' @examples \dontrun{
 #' x <- read.nex(file='example/toy1.nex')
 #' write.nex(x2, file='output/testnexus.nex')
 #' }
 #' 
-#' @author Chad Eliason \email{chad_eliason@@utexas.edu}
+#' @author Chad Eliason \email{celiason@@fieldmuseum.org}
 #' 
 #' @export
 #'
@@ -47,15 +47,6 @@ write.nex <- function(x, file, missing=NULL, gap=NULL, mrbayes=FALSE, ngen=NULL,
   # Write character partitions
   if (!all(x$charpart=="''")) {
       test <- factor(x$charpartition)
-      # Function for finding starts and lengths of string/number sequences
-      seqle <- function(x,incr=1) { 
-        if(!is.numeric(x)) x <- as.numeric(x) 
-        n <- length(x)  
-        y <- x[-1L] != x[-n] + incr 
-        i <- c(which(y|is.na(y)),n) 
-        list(lengths = diff(c(0L,i)),
-             values = x[utils::head(c(0L,i)+1L,-1L)]) 
-      } 
       # Find sequence locations and lengths
       xx <- lapply(levels(test), function(x) {
           seqle(which(test==x))
@@ -93,7 +84,6 @@ write.nex <- function(x, file, missing=NULL, gap=NULL, mrbayes=FALSE, ngen=NULL,
   }
 
   if (format=="nexus") {
-
     if (mrbayes) {
       fcat('#NEXUS\n[Data written by write.nex.R, ', date(), "]\n")
       fcat('begin data;\n')
@@ -156,26 +146,24 @@ write.nex <- function(x, file, missing=NULL, gap=NULL, mrbayes=FALSE, ngen=NULL,
 
         # write character partitions
         fcat('BEGIN SETS;\n')
-        fcat('\tCHARPARTITION set1=', paste0(names(charpart), ":", charpart, collapse=","), ';\n')
+        if (!is.null(x$charpart)) {
+          fcat('\tCHARPARTITION set1=', paste0(names(charpart), ":", charpart, collapse=","), ';\n')
+        }
         if (!all(x$file=="''")) {
           fcat('\tCHARPARTITION file=', paste0(names(filepart), ":", filepart, collapse=","), ';\n')
         }
         fcat('END;\n')
         close(zz)
       }
-  }
-
+    }
   if (format == "tnt") {
-
-  dat <- gsub("\\(", "\\[", dat)
-  dat <- gsub("\\)", "\\]", dat)
-  fcat("xread\n'Data written by write.nex.R\n", date(), "'\n", sep="")
-  fcat(nchar, " ", ntax, "\n")
-  # write data matrix
-  sapply(1:ntax, function(z) {fcat(x$taxlabels[z], " ", dat[z,], "\n")})
-  fcat(";\n")
-  close(zz)
-
+    dat <- gsub("\\(", "\\[", dat)
+    dat <- gsub("\\)", "\\]", dat)
+    fcat("xread\n'Data written by write.nex.R\n", date(), "'\n", sep="")
+    fcat(nchar, " ", ntax, "\n")
+    # write data matrix
+    sapply(1:ntax, function(z) {fcat(x$taxlabels[z], " ", dat[z,], "\n")})
+    fcat(";\n")
+    close(zz)
   }
-
 }

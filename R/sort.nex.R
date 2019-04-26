@@ -1,8 +1,16 @@
-#' sort nexus file by something
+#' Sort a nexus file
+#' 
 #' @param x nexus object
 #' @param by sorting by
 #' @param ... other arguments passed to sort
+#' 
 #' @export
+#' 
+#' @examples \dontrun{
+#' data(twig)
+#' twig.sorted <- sort(twig, by="taxlabels")
+#' plot(twig.sorted)
+#' }
 #' 
 sort.nex <- function(x, by = c('taxlabels', 'charlabels'), ...) {
   res <- x

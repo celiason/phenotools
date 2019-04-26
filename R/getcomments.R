@@ -1,10 +1,9 @@
 #' Function to find comments in text file
 #' 
-#' How characters are characterized
-#' DD = duplicate
-#' KK = keep
-#' KKM = keep and modify wording
-#' XX = cut
+#' This function reads in a character list (as a text file) that have been annotated
+#' as to whether a given character is a duplicate (DD), should be cut (XX), a
+#' good character that should be kept (KK), or a character that should be kept but
+#' modified (KKM).
 #' 
 #' @param file name of file
 #' 

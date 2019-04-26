@@ -1,6 +1,8 @@
-#' remove NAs from nexus files
+#' Remove NAs from nexus files
+#' 
 #' @param x nex object
 #' @param ... other arguments
+#' 
 #' @export
 #' 
 na.omit.nex <- function(x, ...) {

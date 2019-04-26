@@ -7,15 +7,15 @@
 concat(x, taxa = NULL)
 }
 \arguments{
-\item{x}{(required) a list of nexus files to merge}
+\item{x}{(required) a list of `nex` objects to merge}
 
 \item{taxa}{a character vector of names of taxa to include in concatenated nexus file (optional)}
 }
 \value{
-an object of class \code{nex} for use in further \code{nexustools} functions
+an object of class `nex` for use in further `phenotools` functions
 }
 \description{
-a function that combines numerous nexus datasets
+A function that combines numerous nexus datasets
 }
 \examples{
 \dontrun{
@@ -24,7 +24,8 @@ y <- read.nex(system.file("extdata", "nesbitt_2015.nex", package = "phenotools")
 xy <- concat(list(x, y), taxa = c('Anas_platyrhynchos', 'Gallus_gallus', 'Crypturellus_undulatus'))
 xy
 }
+
 }
 \author{
-Chad Eliason \email{chad_eliason@utexas.edu}
+Chad Eliason \email{celiason@fieldmuseum.org}
 }

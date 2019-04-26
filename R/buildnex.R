@@ -16,14 +16,19 @@
 #' @param taxlabels optional vector with names of taxa
 #' @param filename vector with names of files associated with characters
 #' 
-#' @return an object of class \code{nex} for use in further \code{nexustools} functions
+#' @return an object of class \code{nex} for use in further \code{phenotools} functions
 #' 
 #' @examples \dontrun{
-#' # Build a nex object from raw text files:
+#' # Build a `nex` object from text files:
 #' charpath <- system.file("extdata", "brusatte2014_charlist.txt", package = "phenotools")
 #' matpath <- system.file("extdata", "brusatte2014_matrix.txt", package = "phenotools")
 #' x <- buildnex(matpath, charlabels=charpath)
 #' plot(x, legend.pos = "top")
+#' 
+#' # Build a `nex` object from a PDF file (Bertelli & Chiappe 2005):
+#' x <- buildnex(file = system.file("extdata", "Bertelli_2005.pdf", package = "phenotools"), ntax = 34, nchar = 63, first = 20, last = 22)
+#' x
+#' plot(x)
 #' }
 #' 
 #' @export
@@ -32,7 +37,11 @@
 #' @importFrom stats sd
 #' @importFrom stats na.omit
 #' 
-#' @author Chad Eliason \email{chad_eliason@@utexas.edu}
+#' @references Bertelli, S., & Chiappe, L. M. (2005). Earliest Tinamous (Aves: Palaeognathae)
+#' from the Miocene of Argentina and Their Phylogenetic Position. Contributions
+#' in Science, 502, 1–20.
+#' 
+#' @author Chad Eliason \email{celiason@@fieldmuseum.org}
 #'
 buildnex <- function(file, charlabels=NULL, charnums=NULL, statelabels=NULL, taxlabels=NULL, filename=NULL, ntax=NULL, nchar=NULL, first=NULL, last=NULL, missing="?", gap="-") {
 
@@ -77,32 +86,21 @@ buildnex <- function(file, charlabels=NULL, charnums=NULL, statelabels=NULL, tax
 	}
 
 	# pdf input
-
 	if (filetype=="pdf") {
-
 		# convert pdf to text file
 		syscall <- paste("pdftotext -layout -f ", first, " -l ", last, " '", file, "'", sep="")
-
 		# might need to give option for this in case it doesn't read well
 		# turning off `-layout` can help
 		# syscall <- paste("pdftotext -f ", first, " -l ", last, " '", file, "'", sep="")
-
 		# removing layout was a better option for Livezey and Zusi (2006)
-
 		system(syscall)
-
 		# load and scan newly created text file
-
 		txtfile <- gsub('pdf', 'txt', file)
-
 		raw <- scan(txtfile, what="", sep="\n")
-
 		# remove whitespace at beginning of lines
 		raw <- gsub("^\\s+", "", raw)
-
 		# remove/clean up exported text files
 		system(paste("rm '", txtfile, "'", sep=""))
-
 		# find first character label
 		# charlabelstart <- grep('^[\\s]*\\s1\\s', x) 
 		# charlabelend <- grep(paste0('^[\\s]*', nchar, '\\s'), x[charlabelstart:length(x)]) + charlabelstart
@@ -113,25 +111,17 @@ buildnex <- function(file, charlabels=NULL, charnums=NULL, statelabels=NULL, tax
 		# charmatches <- str_match_all(charlabels, regex('\\n[\\s]*(\\d{1,3})(.+)'))
 		# charnums <- charmatches[[1]][,2]
 		# charlabels <- charmatches[[1]][,3]
-
 		####### START OF THIS NEW STUFF ############
-
 		raw2 <- do.call(paste0, list(raw, collapse="\n"))
-
 		# how to find the data matrix?
-
 		# patterns to search for:
-
 		# Genus species 00110101011001000010010002003020 (continuous string of data)
 		tmp <- str_match_all(raw, "([A-Z][a-z]+\\s[a-z]+)[\\s\\t]*([0-9\\-\\?]+.+)$")
-
 		tmp <- str_match_all(raw2, "([A-Za-z]+[\\._\\s]*[a-z]*[\\.]*)\\s+([0-9\\?\\-]{1}(?![a-z]).+)")
-
 		# SEARCH PATTERN:
 		# letters/numbers/periods/single spaces separated by tab/multiple spaces than
 		# contiguous blocks of numbers/brackets/dashes/?
 		tmp <- str_match_all(raw, "(^[A-Z].*?)\\s{2,}([0-9\\?\\-]{1}(?![a-z]).+)")
-
 		# Bertelli et al. (2014) issue
 		# problem is that there is a new line after the taxon name (Crypturellus undulatus)
 		# want to be able to "eat" through text in front of this until reaching a pattern, like 00011010 100100220 2003000
@@ -140,8 +130,6 @@ buildnex <- function(file, charlabels=NULL, charnums=NULL, statelabels=NULL, tax
 		# maybe - if subsequent lines have all text (no numbers) remove one line??
 
 		# str_match_all(raw2, regex("\\n([A-Z][a-z]+\\s[a-z]+).*?([0-9\\-\\?]+.+)", multiline=F, dotall=F))
-
-
 
 		# Genus a b a a b (spaces between alphanumeric data)
 		# tmp <- str_match_all(raw, "([A-Z][a-z]+)[\\s\\t]+([a-z0-9\\-\\?^,]+.+)$")
@@ -310,7 +298,3 @@ text2charlabels <- function(x) {
 	res <- gsub("\n", " ", res)
 	res
 }
-
-# setwd("/Users/chadeliason/github/nexustools/")
-# buildnex(file = 'example/Bertelli_Chiappe_2005.pdf', ntax=34, nchar=63, first=22, last=22)
-# buildnex(file = "example/brusatte2014_matrix.txt", charlabels="example/brusatte2014_charlist.txt")

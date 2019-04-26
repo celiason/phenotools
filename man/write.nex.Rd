@@ -27,7 +27,7 @@ write.nex(x, file, missing = NULL, gap = NULL, mrbayes = FALSE,
 \item{format}{output formate}
 }
 \value{
-an object of class \code{nex} for use in further \code{nexustools} functions
+an object of class \code{nex} for use in further \code{phenotools} functions
 }
 \description{
 Function to write nexus file to data for, e.g., analysis in MESQUITE, etc.
@@ -40,5 +40,5 @@ write.nex(x2, file='output/testnexus.nex')
 
 }
 \author{
-Chad Eliason \email{chad_eliason@utexas.edu}
+Chad Eliason \email{celiason@fieldmuseum.org}
 }

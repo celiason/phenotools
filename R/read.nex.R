@@ -6,9 +6,10 @@
 #' @param missing character representing missing data
 #' @param gap character representing inapplicable/incomporable data
 #' 
-#' @return an object of class \code{nex} for use in further \code{nexustools} functions
+#' @return an object of class \code{nex} for use in further \code{phenotools} functions
 #' 
 #' @examples \dontrun{
+#' # read in a nexus file:
 #' x <- read.nex(file = system.file("extdata", "clarke_2006.nex", package = "phenotools"))
 #' x
 #' plot(x)
@@ -19,57 +20,42 @@
 #' @export
 #'
 read.nex <- function(file, missing = '?', gap = '-') {
-
   	x <- scan(file = file, what = "", sep = "\n")
-	
 	# find number of characters
 	nchar <- as.numeric(na.omit(stringr::str_extract(x, regex('(?<=NCHAR=)\\d+', ignore_case=TRUE))))
-	
 	# throws an error if ntax specified multiple times
 	ntax <- as.numeric(na.omit(stringr::str_extract(x, regex('(?<=NTAX=)\\d+', ignore_case=TRUE)))[1])
-	
 	# find taxon labels
 	taxlabelsstart <- grep('TAXLABELS', x, ignore.case=TRUE) + 1
 	# lines that had END + semicolon
 	taxlabelsend <- taxlabelsstart + ntax - 1
 	taxlabels <- stringr::str_match(x[taxlabelsstart:taxlabelsend], '[\\t]*(.*)')[,2]
-
 	# remove space at start of taxon label
 	taxlabels <- gsub('^\\s*', '', taxlabels)
-
 	# remove puncutation at end of taxon label
 	taxlabels <- gsub('(\\s|\\;)$', '', taxlabels)
-
 	# this makes it possible to read mesquite saved nexus files with taxa in a single line separated by spaces
 	if (length(taxlabels)!=ntax){
 		taxlabels <- strsplit(taxlabels, split="\\s")[[1]]
 	}
-
 	# extract data matrix
 	matstart <- grep('MATRIX$', x, ignore.case=TRUE) + 1
 	ends <- grep('\\;', x)
 	matend <- ends[which(ends > matstart)[1]] - 1
-
 	# mesquite saves spaces between polymorphic characters (annoying)
-	
 	# convert to single string of text (causing problems downstream?)
 	mat <- x[matstart:matend]
 	mat <- gsub("^(\t|\\s)+", "", mat)
 	mat <- paste0(mat, collapse="\n")
 	mat <- paste0("\n", mat)
-
 	taxlabels0 <- taxlabels
-
 	taxlabels <- gsub("[^_'A-Za-z0-9]", " ", taxlabels)
 	taxlabels <- gsub("\\s{2,}", " ", taxlabels)
-
 	# replace "bad" characters in taxon names
 	for (i in seq_along(taxlabels)) {
 		mat <- stringr::str_replace_all(string=mat, pattern = stringr::fixed(taxlabels0[i]), replacement=taxlabels[i])
 	}
-
 	locs <- stringr::str_locate(mat, paste0("\n", taxlabels, "(\\b|\\t)"))
-
 	# Two formats:
 	# Genus_species
 	# 'Genus species'
@@ -217,14 +203,4 @@ read.nex <- function(file, missing = '?', gap = '-') {
 	class(res) <- c('nex', 'list')
 	
 	res
-}
-
-
-# Function to go from this "2,5-7,10,12-15" to this "c(2,5,6,7,10,12,13,14,15)"
-# see http://r.789695.n4.nabble.com/convert-delimited-strings-with-ranges-to-numeric-td4673763.html
-text2numeric <- function(xx) {
-	xx <- gsub("^\\s*|\\s*$", "", xx)
-  xx <- gsub('\\s|,\\s', ',', xx)
-	xx <- gsub('\\-', ':', xx)
-	eval(parse(text = paste("c(", xx, ")")))
 }

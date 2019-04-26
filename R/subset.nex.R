@@ -1,7 +1,9 @@
-#' subset a nexus file
+#' Subset a nexus file
+#' 
 #' @param x nexus file
 #' @param condition subset condition
 #' @param ... other arguments (not used)
+#' 
 #' @export
 #' 
 subset.nex <- function(x, condition) {
@@ -25,13 +27,11 @@ subset.nex <- function(x, condition) {
   }
 }
 
-
-#' subset a nexus file
 #' @param i rows (taxa) to keep
 #' @param j columns (characters) to keep
 #' @param drop unused
+#' 
 #' @rdname subset.nex
-#' @export
 #' 
 '[.nex' <- function(x, i, j=NULL, drop = FALSE, ...) {
   res <- x
