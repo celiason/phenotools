@@ -35,11 +35,10 @@
 #' @importFrom stringr str_length
 #' @importFrom stats complete.cases
 #' @importFrom pbmcapply pbmclapply
+#' @export 
 #' 
 #' @author Chad Eliason \email{celiason@@fieldmuseum.org}
 #' 
-#' @export
-#'
 duplicated.nex <- function(x, opt=c("fuzzy", "terms", "comments", "traitcor"),
   method=NULL, within_dataset=FALSE, commasep=FALSE, weighting=c(1,1,1),
   K=1, cluster = c("infomap", "fast_greedy", "walktrap", "label_prop", "leading_eigen",
@@ -324,8 +323,6 @@ duplicated.nex <- function(x, opt=c("fuzzy", "terms", "comments", "traitcor"),
 #' 
 #' @param x a nex object
 #' 
-#' @export
-#' 
 #' @author Chad Eliason \email{celiason@@fieldmuseum.org}
 #' 
 findgroups <- function(x) {
@@ -343,8 +340,6 @@ findgroups <- function(x) {
 #' 
 #' @param x nex object
 #' @param cutoff cuttoff to filter duplicates/overlapping characters by
-#' 
-#' @export
 #' 
 #' @author Chad Eliason \email{celiason@@fieldmuseum.org}
 #' 

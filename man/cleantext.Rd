@@ -24,7 +24,7 @@ and non-anatomical terms
 }
 \examples{
 \dontrun{
-cleantext("dorsalmost part of the processus ligamentus cranii")
+cleantext("dorsalmost part of the processus ligamentus cranii", fast=FALSE, cuts=FALSE)
 }
 
 }

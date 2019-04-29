@@ -1,0 +1,489 @@
+#NEXUS
+[Data written by write.nex.R, Mon Apr 29 14:23:41 2019]
+	BEGIN TAXA;
+		DIMENSIONS NTAX=29;
+		TAXLABELS
+			'Anas_platyrhynchos'
+			'Chauna_torquata'
+			'Gallus_gallus'
+			'Crax_pauxi'
+			'Crypturellus_undulatus'
+			'Lithornis'
+			'Iaceornis_marshii'
+			'Ichthyornis'
+			'Hesperornis_regalis'
+			'Baptornis_adventus'
+			'Songlingornis_linghensis'
+			'Patagopteryx_deferrariisi'
+			'Cathayornis_yandica'
+			'Concornis_lacustris'
+			'Neuquenornis_volans'
+			'Gobipteryx_minuta'
+			'Vorona_berivotrensis'
+			'Apsaravis_ukhaana'
+			'Confuciusornis_sanctus'
+			'Archaeopteryx_lithographica'
+			'Dromaeosauridae'
+			'Yixianornis_grabaui'
+			'Yanornis_martini'
+			'Sapeornis'
+			'Pengornis'
+			'Protopteryx'
+			'Hongshanornis'
+			'Archaeorynchus'
+			'Jeholornis'
+		;
+END;
+	BEGIN CHARACTERS;
+		DIMENSIONS  NTAX=29 NCHAR=205;
+		FORMAT DATATYPE=STANDARD GAP=- MISSING=? SYMBOLS="0123456";
+		CHARLABELS
+			[1] Premaxillae:
+			[2] Premaxillary teeth:
+			[3] Premaxillae at least partially edentulous:
+			[4] Maxillary teeth:
+			[5] Dentary teeth:
+			[6] Tooth crown serration:
+			[7] Dentaries:
+			[8] Mandibular symphysis, two strong grooves forming an anteriorly-opening ‘v’ in ventral view:
+			[9] Facial margin:
+			[10] Nasal [frontal] process of premaxilla:
+			[11] Nasal process of maxilla, dorsal ramus:
+			[12] Nasal process of maxilla, participation of ventral ramus in anterior margin of antorbital fenestra in lateral view:
+			[13] Osseous external naris:
+			[14] Ectopterygoid:
+			[15] Articulation between vomer and pterygoid:
+			[16] Palatine and pterygoid:
+			[17] Palatine contacts:
+			[18] Vomer contacts premaxilla:
+			[19] Coronoid ossification:
+			[20] Projecting basisphenoid articulation with pterygoid:
+			[21] Basipterygoid processes:
+			[22] Basisphenoid-pterygoid articulations:
+			[23] Basisphenoid/pterygoid articulation, orientation of contact:
+			[24] Pterygoid, articular surface for basisphenoid:
+			[25] Pterygoid, kinked:
+			[26] Osseous interorbital septum (mesethmoid):
+			[27] Osseous interorbital septum (mesethmoid):
+			[28] Eustachian tubes:
+			[29] Eustachian tubes ossified:
+			[30] Squamosal, ventral or ‘zygomatic’ process:
+			[31] Orbital process of quadrate, pterygoid articulation:
+			[32] Quadrate, orbital process:
+			[33] Quadrate/pterygoid contact:
+			[34] Quadrate, well-developed tubercle on anterior surface of dorsal process:
+			[35] Quadrate, quadratojugal articulation:
+			[36] Quadrate, dorsal process, articulation:
+			[37] Quadrate, dorsal process, development of intercotylar incisure between prootic and squamosal cotylae:
+			[38] Quadrate, mandibular articulation:
+			[39] Quadrate, pneumaticity:
+			[40] Quadrate, cluster of pneumatic foramina on posterior surface of the tip of dorsal process:
+			[41] Quadrate, pneumatization, large, single pneumatic foramen:
+			[42] Articular pneumaticity:
+			[43] Dentary strongly forked posteriorly:
+			[44] Splenial, anterior extent:
+			[45] Mandibular symphysis, anteroposteriorly extensive, flat to convex, dorsal-facing surface developed:
+			[46] Mandibular symphysis, symphysial foramina:
+			[47] Mandibular symphysis, symphysial foramen/foramina:
+			[48] Mandibular symphysis, symphysial foramen/foramina:
+			[49] Meckel’s groove:
+			[50] Anterior external mandibular fenestra:
+			[51] Postorbital:
+			[52] Frontal/parietal suture:
+			[53] Cervical vertebrae:
+			[54] Thoracic vertebrae (with ribs articulating with the sternum), one or more with prominent hypapophyses:
+			[55] Thoracic vertebrae, count:
+			[56] Thoracic vertebrae:
+			[57] Thoracic vertebrae, parapophyses:
+			[58] Thoracic vertebrae, centra, length, and midpoint width:
+			[59] Thoracic vertebrae, lateral surfaces of centra:
+			[60] Thoracic vertebrae with ossified connective tissue bridging transverse processes:
+			[61] Notarium:
+			[62] Sacral vertebrae, number ankylosed:
+			[63] Sacral vertebrae, series of short vertebrae, with dorsally-directed parapophyses just anterior to the acetabulum:
+			[64] Free caudal vertebrae, number:
+			[65] Caudal vertebrae, chevrons, fused on at least one anterior caudal:
+			[66] Free caudals, length of transverse processes:
+			[67] Anterior free caudal vertebrae:
+			[68] Distal caudals:
+			[69] Fused distal caudals, morphology:
+			[70] Ossified uncinate processes:
+			[71] Gastralia:
+			[72] Ossified sternal plates:
+			[73] Carina or midline ridge:
+			[74] Sternum, dorsal surface, pneumatic foramen (or foramina):
+			[75] Sternum, pneumatic foramina in the depressions (loculi costalis, Baumel and Witmer, 1993) between rib articulations (processi articularis sternocostalis, Baumel and Witmer [1993]):
+			[76] Sternum, coracoidal sulci spacing on anterior edge:
+			[77] Sternum, number of processes for articulation with the sternal ribs:
+			[78] Sternum, raised, paired intermuscular ridges (linea intermuscularis, Baumel and Witmer, 1993) parallel to sternal midline:
+			[79] Sternum, posterior margin, distinct posteriorly projected medial and/or lateral processes:
+			[80] Clavicles:
+			[81] Interclavicular angle (clavicles elongate):
+			[82] Furcula, hypocleideum:
+			[83] Furcula, laterally excavated:
+			[84] Furcula, dorsal (omal) tip:
+			[85] Furcula, ventral margin of apophysis:
+			[86] Scapula and coracoid:
+			[87] Scapula and coracoid articulation:
+			[88] Coracoid, procoracoid process:
+			[89] Coracoid:
+			[90] Coracoid, lateral margin:
+			[91] Coracoid, dorsal surface (= posterior surface of basal maniraptoran theropods):
+			[92] Coracoid, pneumatized:
+			[93] Coracoid, pneumatic foramen:
+			[94] Coracoid, lateral process:
+			[95] Coracoid, ventral surface, lateral intermuscular line or ridge:
+			[96] Coracoid, glenoid facet:
+			[97] Coracoid, acrocoracoid:
+			[98] Coracoid, n. supracoracoideus passes through coracoid:
+			[99] Coracoid, medial surface, area of the foramen n. supracoracoideus (when developed):
+			[100] Angle between coracoid and scapula at glenoid:
+			[101] Scapula, posterior end:
+			[102] Scapula:
+			[103] Scapula, length:
+			[104] Scapula, acromion process:
+			[105] Scapula, acromion process:
+			[106] Humerus and ulna, length:
+			[107] Humerus, proximal end, head in anterior or posterior view:
+			[108] Humerus, proximal end, proximal projection:
+			[109] Humerus, ventral tubercle and capital incisure:
+			[110] Humerus, capital incisure:
+			[111] Humerus, anterior surface, well-developed fossa on midline making proximal articular surface appear v-shaped in proximal view:
+			[112] Humerus, ‘transverse groove’:
+			[113] Humerus, deltopectoral crest:
+			[114] Humerus, deltopectoral crest:
+			[115] Humerus, deltopectoral crest, proximoposterior surface:
+			[116] Humerus, deltopectoral crest:
+			[117] Humerus, bicipital crest, pit-shaped scar/fossa for muscular attachment on anterodistal, distal or posterodistal surface of crest:
+			[118] Humerus, bicipital crest, pit-shaped fossa for muscular attachment:
+			[119] Humerus, bicipital crest:
+			[120] Humerus, proximal end, one or more pneumatic foramina:
+			[121] Humerus, distal condyles:
+			[122] Humerus, long axis of dorsal condyle:
+			[123] Humerus, distal condyles:
+			[124] Humerus, distal margin:
+			[125] Humerus, distal end, compressed anteroposteriorly and flared dorsoventrally:
+			[126] Humerus, brachial fossa:
+			[127] Humerus, ventral condyle:
+			[128] Humerus, demarcation of muscle origins (e.g. m. extensor metacarpi radialis in Aves) on the dorsal edge of the distal humerus:
+			[129] Humerus, distal end, posterior surface, groove for passage of m. scapulotriceps:
+			[130] Humerus, m. humerotricipitalis groove:
+			[131] Ulna, cotylae:
+			[132] Ulna, dorsal cotyla convex:
+			[133] Ulna, distal end, dorsal condyle, dorsal trochlear surface developed as a semilunate ridge:
+			[134] Ulna, distal end, dorsal condyle, dorsal trochlear surface, extent along posterior margin:
+			[135] Ulna, bicipital scar:
+			[136] Ulna, brachial scar:
+			[137] Radius, ventroposterior surface:
+			[138] Ulnare:
+			[139] Ulnare:
+			[140] Ulnare, ventral ramus (crus longus, Baumel and Witmer, 1993):
+			[141] Semilunate carpal and metacarpals:
+			[142] Semilunate carpal, position relative to metacarpal I:
+			[143] Metacarpal III, anteroposterior diameter as a percent of same dimension of metacarpal II:
+			[144] Metacarpal I, anteroproximally-projected muscular process:
+			[145] Metacarpal I, anterior surface:
+			[146] Metacarpal I, distal articulation with phalanx I:
+			[147] Pisiform process:
+			[148] Carpometacarpus, ventral surface, supratrochlear fossa deeply excavating proximal surface of pisiform process:
+			[149] Intermetacarpal space (between metacarpals II and III):
+			[150] Carpometacarpus, distal end, metacarpals II and III, articular surfaces for digits:
+			[151] Intermetacarpal process or tubercle:
+			[152] Manual digit II, phalanx 1:
+			[153] Manual digit II, phalanges:
+			[154] Manual digit II, phalanx 2, ‘internal index process’ (Stegmann, 1978) on posterodistal edge:
+			[155] Ilium, ischium, pubis, proximal contact in adult:
+			[156] Ilium/ischium, distal coossification to completely enclose the ilioischiadic fenestra:
+			[157] Ischium, distal dorsal process:
+			[158] Ischium, proximal dorsal process:
+			[159] Ischium and pubis:
+			[160] Laterally projected process on ischiadic peduncle (antitrochanter):
+			[161] Preacetabular pectineal process (Baumel and Witmer, 1993):
+			[162] Preacetabular ilium:
+			[163] Preacetabular ilium extends anterior to first sacral vertebrae:
+			[164] Postacetabular ilium:
+			[165] Postacetabular ilium, ventral surface, renal fossa developed:
+			[166] Ilium, m. cuppedicus fossa as broad, mediolaterally-orientated surface directly anteroventral to acetabulum:
+			[167] Ischium, posterior demarcation of the obturator foramen:
+			[168] Ischium, length relative to that of pubis:
+			[169] Pubis:
+			[170] Pubes, distal contact:
+			[171] Distal end of pubis:
+			[172] Femur, fossa for insertion of lig. capitis femoris:
+			[173] Femur, posterior trochanter:
+			[174] Femur, lesser and greater trochanters:
+			[175] Femur, patellar groove:
+			[176] Femur:
+			[177] Femur, posterior projection of the lateral border of the distal end, continuous with lateral condyle:
+			[178] Laterally-projected fibular trochlea:
+			[179] Femur, popliteal fossa:
+			[180] Calcaneum and astragalus:
+			[181] Tibia, cnemial crest (s):
+			[182] Tibia/tarsal formed condyles:
+			[183] Tibia/tarsal formed condyles, extensor canal:
+			[184] Tibia/tarsal formed condyles, tuberositas retinaculi extensoris (Baumel and Witmer, 1993) indicated by short medial ridge or tubercle proximal to the condyles close to the midline and a more proximal second ridge on the medial edge:
+			[185] Tibia/tarsal formed condyles, mediolateral widths:
+			[186] Tibia/tarsal formed condyles:
+			[187] Tibia/tarsal formed condyles, intercondylar groove:
+			[188] Tibia, extension of articular surface for distal tarsals/tarsometatarsus:
+			[189] Tibia, distal-most mediolateral width:
+			[190] Fibula:
+			[191] Distal tarsals and metatarsals, fusion:
+			[192] Metatarsal V:
+			[193] Metatarsal III:
+			[194] Tarsometatarsus, intercotylar eminence:
+			[195] Tarsometatarsus, projected surface or grooves on proximoposterior surface (associated with the passage of tendons of the pes flexors in Aves, hypotarsus):
+			[196] Tarsometatarsus, proximal vascular foramen (foramina):
+			[197] Metatarsal I:
+			[198] Metatarsal II tubercle (associated with the insertion of the tendon of the m. tibialis cranialis in Aves):
+			[199] Metatarsal II, distal plantar surface, fossa for metatarsal I (fossa metatarsi I, Baumel and Witmer, 1993):
+			[200] Metatarsal II, articular surface for first phalanx:
+			[201] Metatarsals, relative mediolateral width:
+			[202] Metatarsals, comparative trochlear width:
+			[203] Distal vascular foramen:
+			[204] Metatarsal III, trochlea in plantar view, proximal extent of lateral and medial edges of trochlea:
+			[205] Metatarsal II, distal extent of metatarsal II relative to metatarsal IV:
+		;
+		STATELABELS
+			1 'unfused in adults' 'fused anteriorly in adults, posterior nasal [frontal] processes not fused to each other' 'frontal processes completely fused as well as anterior premaxillae (Ordered)',
+			2 'present' 'absent',
+			3 'absent' 'present',
+			4 'present' 'absent',
+			5 'present' 'absent',
+			6 'present' 'vestigial or absent',
+			7 'joined proximally by ligaments' 'joined by bone',
+			8 'absent' 'present',
+			9 'primarily formed by the maxilla, with the maxillary process of the premaxilla restricted to the anterior tip' 'maxillary process of the premaxilla extending 1/2 facial margin' 'maxillary process of the premaxilla extending more than 1/2 of facial margin (Ordered)',
+			10 'short' 'long, closely approaching frontal',
+			11 'prominent, exposed medially and laterally' 'absent or reduced to slight medial, and no lateral, exposure',
+			12 'present, extensive' 'small dorsal projection of the maxilla participates in the anterior margin of the antorbital fenestra, descending process of the nasals contacts premaxilla to exclude maxilla from narial margin' 'no dorsal projection of maxilla participates in anterior margin of the antorbital fenestra. (Ordered)',
+			13 'considerably smaller than the antorbital fenestra' 'larger',
+			14 'present' 'absent',
+			15 'present, well developed' 'reduced, narrow process of pterygoid passes dorsally over palatine to contact vomer' 'absent, pterygoid and vomer do not contact',
+			16 'long, anteroposteriorly-overlapping, contact' 'short, primarily dorsoventral, contact',
+			17 'maxillae only' 'premaxillae and maxillae',
+			18 'present' 'absent',
+			19 'present' 'absent',
+			20 'present' 'absent',
+			21 'long' 'short (articulation with pterygoid sub-equal to, or longer than, amount projected from the basisphenoid rostrum)',
+			22 'located basal on basisphenoid' 'located markedly anterior on basisphenoid (parasphenoid rostrum) such that the articulations are subadjacent on the narrow rostrum (the ‘rostropterygoid articulation’ of Weber, 1993)',
+			23 'anteroventral' 'mediolateral' 'entirely dorsoventral',
+			24 'concave ‘socket,’ or short groove enclosed by dorsal and ventral flanges' 'flat to convex' 'flat to convex facet, stalked, variably projected. (Ordered)',
+			25 'present, surface for basisphenoid articulation at high angle to axis of palatal process of pterygoid' 'absent, articulation in line with axis of pterygoid',
+			26 'absent' 'present',
+			27 'restricted to posterior or another just surpassing premaxillae/frontal contact in rostral extent does not surpass posterior edge of external nares in rostral extent' 'extending rostral to posterior extent of frontal processes of premaxillae and rostral to posterior edge of external nares',
+			28 'paired and lateral' 'paired, close to cranial midline' 'paired and adjacent on midline or single anterior opening',
+			29 'absent' 'present',
+			30 'variably elongate, dorsally enclosing otic process of the quadrate and extending anteroventrally along shaft of this bone, dorsal head of quadrate not visible in lateral view' 'short, head of quadrate exposed in lateral view',
+			31 'pterygoid broadly overlapping medial surface of orbital process (i.e. ‘pterygoid ramus’)' 'restricted to anteromedial edge of process',
+			32 'pterygoid articulates with anterior-most tip' 'pterygoid articulation does not reach tip' 'pterygoid articulation with no extent up orbital process, restricted to quadrate corpus. (Ordered)',
+			33 'as a facet, variably with slight anteromedial projection cradling base' 'condylar, with a well- projected tubercle on the quadrate',
+			34 'absent' 'present',
+			35 'overlapping' 'peg and socket articulation',
+			36 'with squamosal only' 'with squamosal and prootic',
+			37 'absent, articular surfaces not differentiated' 'two distinct articular facets, incisure not developed' 'incisure present, ‘double headed.’',
+			38 'bicondylar articulation with mandible' 'tricondylar articulation, additional posterior condyle or broad surface',
+			39 'absent' 'present',
+			40 'absent' 'present',
+			41 'absent' 'posteromedial surface of corpus',
+			42 'absent' 'present',
+			43 'unforked, or with a weakly developed dorsal ramus' 'strongly forked with the dorsal and ventral rami approximately equal in posterior extent',
+			44 'splenial stops well posterior to mandibular symphysis' 'extending to mandibular symphysis, though non-contacting' 'extending to proximal tip of mandible, contacting on midline',
+			45 'absent, concave' 'flat surface developed',
+			46 'absent' 'present',
+			47 'single' 'paired',
+			48 'opening on posterior edge of symphysis' 'opening on dorsal surface of symphysis',
+			49 'not completely covered by splenial, deep and conspicuous medially' 'covered by splenial, not exposed medially',
+			50 'absent' 'present',
+			51 'present, variably contacting jugal ' 'absent. REVISED',
+			52 'open' 'fused',
+			53 'variably dorsoventrally compressed, amphicoelous (‘biconcave’: flat to concave articular surfaces)' 'anterior surface heterocoelous (i.e. mediolaterally concave, dorsoventrally convex), posterior surface flat' 'heterocoelous anterior (i.e. mediolaterally concave, dorsoventrally convex) and posterior (i.e. mediolaterally convex, dorsoventrally concave) surfaces. (Ordered)',
+			54 'absent' 'present. (This character does not address the presence of hypapophyses on transitional vertebrae, or ‘cervicothoracics’, that do not have associated ribs that articulate with the sternum [e.g. Gauthier, 1986, Chiappe, 1996]. In contrast, in Aves, well-developed hypapophyses are developed well into the thoracic series, on vertebrae with ribs articulating with the sternum.)',
+			55 '12 or more' '11' '10 or fewer. (Ordered)',
+			56 'at least part of series with subround, central articular surfaces (e.g. amphicoelous/opisthocoelous) that lack the dorsoventral compression seen in heterocoelous vertebrae' 'series completely heterocoelous',
+			57 'rostral to transverse processes' 'directly ventral to transverse processes (close to midpoint of vertebrae)',
+			58 'approximately equal in length and midpoint width' 'length markedly greater than midpoint width',
+			59 'flat to slightly depressed' 'deep, emarginate fossae' 'central ovoid foramina',
+			60 'absent' 'present',
+			61 'absent' 'present',
+			62 'less than 7' '7' '8' '9' '10' '11 or more' '15 or more (Chiappe, 1996). (Ordered)',
+			63 'absent' 'present, three such vertebrae' 'present, four such vertebrae. (Ordered)',
+			64 'more than 8' '8 or less',
+			65 'present' 'absent',
+			66 'subequal to width of centrum' 'significantly shorter than centrum width',
+			67 'elongate pre/post-zygapophyses' 'pre- and post-zygapophyses short and variably non-contacting' 'prezygapophyses clasping the posterior surface of neural arch of preceding vertebra, postzygapophyses negligible. (Ordered)',
+			68 'unfused' 'fused',
+			69 'fused element length equal or greater than 4 free caudal vertebrae' 'length less than 4 caudal vertebrae' 'less than 2 caudal vertebrae in length. (Ordered)',
+			70 'absent' 'present and unfused to ribs' 'fused to ribs. (Ordered)',
+			71 'present' 'absent',
+			72 'unfused' 'fused, flat' 'fused, with slightly raised midline ridge' 'fused with projected carina. (Ordered)',
+			73 'restricted to posterior half of sternum' 'approaches anterior limit of sternum',
+			74 'absent' 'present',
+			75 'absent' 'present',
+			76 'widely-separated mediolaterally' 'adjacent' 'crossed on midline',
+			77 'three' 'four' 'five' 'six' 'seven or more. (0rdered)',
+			78 'absent' 'present',
+			79 'absent (directly laterally projected zyphoid processes developed but not considered homologues as these are copresent with the posterior processes in the new clade)' 'with distinct posterior processes' 'midpoint of posterior sternal margin connected to medial posterior processes to enclose paired fenestra. (Ordered)',
+			80 'fused' 'unfused',
+			81 'greater than, or equal, to 90°' 'less than 90°',
+			82 'absent' 'a tubercle' 'an elongate blade-like process ' 'an elongate blade-like process that is over 1/2 the length of the clavicular rami. (Ordered). REVISED',
+			83 'absent' 'present',
+			84 'flat or blunt tip' 'with a pronounced posteriorly pointed tip',
+			85 'curved, angling' 'with a truncate or squared base',
+			86 'fused' 'unfused',
+			87 'pit-shaped scapular cotyla developed on the coracoid, and coracoidal tubercle developed on the scapula (‘ball and socket’ articulation)' 'scapular articular surface of coracoid convex' 'flat',
+			88 'absent' 'present',
+			89 'height approximately equal mediolateral dimension' 'height more than twice width, coracoid ‘strut-like.’',
+			90 'straight to slightly concave' 'convex',
+			91 'strongly concave' 'flat to convex',
+			92 'absent' 'present',
+			93 'proximal' 'distal',
+			94 'absent' 'present',
+			95 'absent' 'present',
+			96 'dorsal to, or at approximately same level as, acrocoracoid process/‘biceps tubercle’' 'ventral to acrocoracoid process',
+			97 'straight' 'hooked medially',
+			98 'present' 'absent',
+			99 'strongly depressed' 'flat to convex',
+			100 'more than 90°' '90° or less',
+			101 'wider or approximately the same width as proximal dorsoventral shaft width' 'tapering distally',
+			102 'straight' 'dorsoventrally curved',
+			103 'shorter than humerus' 'as long as or longer than the humerus',
+			104 'projected anteriorly to surpass the articular surface for coracoid (facies articularis coracoidea, Baumel and Witmer, 1993)' 'projected less anteriorly than the articular surface for coracoid',
+			105 'straight' 'laterally hooked tip',
+			106 'humerus longer than ulna' 'ulna and humerus approximately the same length' 'ulna significantly longer than humerus. (Ordered)',
+			107 'strap-like, articular surface flat, no proximal midline convexity' 'head domed proximally',
+			108 'dorsal edge projected farthest' 'midline projected farthest',
+			109 'absent' 'present',
+			110 'an open groove' 'closed by tubercle associated with a muscle insertion just distal to humeral head',
+			111 'absent' 'present',
+			112 'absent' 'present, developed as a discreet, depressed scar on the proximal surface of the bicipital crest or as a slight transverse groove',
+			113 'projected dorsally (in line with the long axis of humeral head)' 'projected anteriorly',
+			114 'less than shaft width' 'same width' 'dorsoventral width greater than shaft width. (Ordered)',
+			115 'flat to convex' 'concave',
+			116 'not perforate' 'with a large fenestra',
+			117 'absent' 'present',
+			118 'anterodistal on bicipital crest' 'directly ventrodistal at tip of bicipital crest' 'posterodistal, variably developed as a fossa',
+			119 'little or no anterior projection' 'developed as an anterior projection relative to shaft surface in ventral view' 'hypertrophied, rounded tumescence. (Ordered)',
+			120 'absent' 'present',
+			121 'developed distally' 'developed on anterior surface of humerus',
+			122 'at low angle to humeral axis, proximodistally orientated' 'at high angle to humeral axis, almost transversely orientated',
+			123 'sub-round, bulbous' 'weakly defined, ‘strap-like.’',
+			124 'approximately perpendicular to long axis of humeral shaft' 'ventrodistal margin projected significantly distal to dorsodistal margin, distal margin angling strongly ventrally (sometimes described as a well-projected flexor process)',
+			125 'absent' 'present',
+			126 'absent' 'present, developed as a flat scar or as a scar-impressed fossa',
+			127 'length of long axis of condyle less than the same measure of the dorsal condyle' 'same or greater',
+			128 'no indication of origin as a scar, a pit, or a tubercle' 'indication as a pit-shaped scar or as a variably projected scar-bearing tubercle or facet',
+			129 'absent' 'present',
+			130 'absent' 'present as a ventral depression contiguous with the olecranon fossa',
+			131 'dorsoventrally adjacent' 'widely separated by a deep groove',
+			132 'absent' 'present',
+			133 'absent' 'present',
+			134 'less than transverse measure of dorsal trochlear surface' 'approximately equal in extent',
+			135 'absent' 'developed as a slightly-raised scar' 'developed as a conspicuous tubercle',
+			136 'absent' 'present',
+			137 'smooth' 'with muscle impression along most of surface' 'deep longitudinal groove',
+			138 'absent' 'present',
+			139 , ‘heart-shaped,’ little differentiation into short dorsal and ventral rami,  'V-shaped, well-developed dorsal and ventral rami',
+			140 'shorter than dorsal ramus (crus brevis)' 'same length as dorsal ramus' 'longer than dorsal ramus',
+			141 'no fusion' 'incomplete proximal fusion' 'complete proximal fusion' 'complete proximal and distal fusion. (Ordered)',
+			142 'over 1/2 or more of proximal surface ' 'over less than 1/2 proximal surface. (0rdered)',
+			143 'approximately equal or greater than 50%' 'less than 50%',
+			144 'absent no distinct process visible' 'small knob at anteroproximal tip of metacarpal' 'tip of process just surpasses the distal articular facet for phalanx 1 in anterior extent' 'tip of extensor process conspicuously surpasses articular facet by approximately half the width of facet, producing a pronounced knob' 'tip of extensor process conspicuously surpasses articular facet by approximately the width of facet, producing a pronounced knob. (Ordered)',
+			145 'roughly hourglass-shaped proximally, at least moderately expanded anteroposteriorly, and constricted just before flare of articulation for phalanx 1' 'anterior surface broadly convex',
+			146 'ginglymoid' 'shelf',
+			147 'absent' 'present',
+			148 'absent' 'present',
+			149 'reaches proximally as far as the distal end of metacarpal I' 'terminates distal to end of metacarpal I',
+			150 'metacarpal II sub-equal or surpasses metacarpal III in distal extent' 'metacarpal III extends farther',
+			151 'absent' 'present as scar' 'present as tubercle or flange. (Ordered)',
+			152 'subcylindrical, not dorsoventrally compressed' 'subtriangular, moderately dorsoventrally compressed' 'flat posterior surface, strongly dorsoventrally compressed. (Ordered). REVISED',
+			153 'length of phalanx II-1 less than or equal to that of II-2' 'longer',
+			154 'absent' 'present (Clarke and Chiappe, 2001)',
+			155 'unfused' 'partial fusion (pubis not ankylosed)' 'completely fused. (Ordered)',
+			156 'absent' 'present',
+			157 'present' 'absent. REVISED',
+			158 'absent' 'present, does not contact ilium ' 'present, does contact ilium. (Ordered). REVISED',
+			159 'not subparallel, pubis directed nearly directly ventrally' 'subparallel, pubis posteriorly directed. REVISED',
+			160 'directly posterior to acetabulum' 'posterodorsal to acetabulum',
+			161 'absent' 'present as a small flange' 'present as a well-projected flange. (Ordered)',
+			162 'approach on midline, open, or cartilaginous connection' 'coossified, dorsal closure of ‘iliosynsacral canals’',
+			163 'no free ribs overlapped' 'one or more ribs overlapped',
+			164 'dorsoventrally orientated' 'mediolaterally orientated',
+			165 'absent' 'present',
+			166 'present' 'surface absent, insertion variably marked by a small entirely lateral fossa anterior to acetabulum',
+			167 'absent' 'present, developed as a small flange or raised scar contacting/fused with pubis and demarcating the obturator foramen distally',
+			168 '1/3 or greater total pubis length extends posterior to end of ishium' 'less than 1/ 3 pubis extends farther than end of ishium',
+			169 'sub-oval in cross section' 'compressed mediolaterally',
+			170 'contacting, variably coossified into symphysis' 'non-contacting',
+			171 'expanded, flared' 'straight, subequal, in proportion with rest of pubis',
+			172 'absent' 'present',
+			173 'present, developed as a slightly projected tubercle or flange' 'hypertrophied, ‘shelf-like’ conformation (in combination with development of the trochanteric shelf, see Hutchinson, 2001)' 'absent (Chiappe, 1991). (Ordered)',
+			174 'separated by a notch' 'developed as a single trochanteric crest',
+			175 'absent' 'present',
+			176 'ectocondylar tubercle and lateral condyle separated by deep notch' 'ectocondylar tubercle and lateral condyle form single trochlear surface',
+			177 'absent' 'present',
+			178 'absent' 'present, developed as small notch' 'a shelf-like projection. (Ordered)',
+			179 'a groove open distally and bounded medially and laterally by narrow condyles' 'closed distally by expansion of both condyles (primarily the medial)',
+			180 'unfused to each other or tibia in adult' 'fused to each other, unfused to tibia' 'complete fused to each other and tibia. (Ordered)',
+			181 'lateral crest only' 'lateral and anterior crests developed',
+			182 'medial condyle projecting farther anteriorly than lateral' 'equal in anterior projection',
+			183 'absent' 'an emarginate groove' 'groove bridged by an ossified supratendinal bridge. (Ordered)',
+			184 'absent' 'present',
+			185 'medial condyle wider' 'approximately equal' 'lateral condyle wider. (Ordered)',
+			186 'gradual sloping medial constriction of condyles' 'no medial tapering of either condyle',
+			187 'mediolaterally broad, approximately 1/3 width of anterior surface' 'less than 1/3 width of total anterior surface',
+			188 'no posterior extension of trochlear surface, or restricted to distal-most edge of posterior surface' 'well-developed posterior extension, sulcus cartilaginis tibialis of Aves (Baumel and Witmer, 1993), distinct surface extending up the posterior surface of the tibiotarsus' 'with well-developed, posteriorly projecting, medial and lateral crests. (Ordered)',
+			189 'wider than mid-point of shaft, giving distal profile a weakly developed triangular form' 'approximately equal to shaft width, no distal expansion of whole shaft, although condyles may be variably splayed mediolaterally',
+			190 'reaches tarsal joint articulating into distinct socket formed between the proximal tarsals and the tibia' 'reduced in length, does not reach tarsal joint',
+			191 'distal tarsals fuse to metatarsals' 'distal tarsals fuse to metatarsals and proximal metatarsals coossify' 'distal tarsals fuse to metatarsals, and metatarsals fuse to each other proximally and distally' 'extreme distal fusion, distal vascular foramen closed (Martin, 1983, Cracraft, 1986). (Ordered)',
+			192 'present' 'absent',
+			193 'proximally in plane with II and IV' 'proximally displaced plantarly, relative to metatarsals II and IV',
+			194 'absent' 'a slight midline projection' 'well developed, globose. (Ordered). REVISED',
+			195 'absent' 'developed as posterior projection with flat posterior surface' 'projection, with distinct crests and grooves' 'at least one groove enclosed by bone posteriorly. (Ordered)',
+			196 'absent' 'one, between metatarsals III and IV' 'two. (Ordered)',
+			197 'straight' 'curved or distally deflected but not twisted, ventral surface convex J shaped' 'deflected and twisted such that the ventromedial surface is concave proximal to trochlear surface for phalanx I. (Ordered)',
+			198 'absent' 'present, on approximately the center of the proximodorsal surface of metatarsal II' 'present, developed on lateral surface of metatarsal II, at contact with metatarsal III or on lateral edge of metatarsal III. (Ordered)',
+			199 'absent' 'shallow notch' 'conspicuous ovoid fossa. (Ordered)',
+			200 'ginglymoid' 'rounded',
+			201 'metatarsal IV approximately the same width as metatarsals II and III' 'metatarsal IV narrower than MII and MIII' 'metatarsal IV greater in width than either metatarsal II or III',
+			202 'II approximately the same size as III and/or IV' 'II wider than III and/or IV' 'II narrower than III and/or IV',
+			203 'simple, with one exit' 'forked, two exits (plantar and distal) between metatarsals III and IV',
+			204 'absent, trochlear edges approximately equal in proximal extent' 'present, lateral edge extends farther',
+			205 'approximately equal in distal extent' 'metatarsal II shorter than metatarsal IV, but reaching distally farther than base of metatarsal IV trochlea' 'metatarsal II shorter than metatarsal IV, reaching distally only as far as base of metatarsal IV trochlea. (Ordered)',
+		;
+		MATRIX
+			'Anas_platyrhynchos'		21111?10211211111110112211021112111111101100011110112121010106211011121311113120110??1011010?1(01)1111111000011100110001211100001011101111111123114011010121021?0111111101111110111011210211002113112(23)2221000102
+			'Chauna_torquata'		11111?10211211(12)111101022110111121111111011000111101121210121062110111113111140101(01)01110110111111011111010211100110001211100001011101101111123114011011121021?011111111111111211102121021200211311222222100100
+			'Gallus_gallus'		11111?102112112111101122110111111111111011000110101121210101162100111(12)13111121101200?12110111111111111100111110110001211100001011101101111113114011001221021?011111111111111211102121021100211311232222100111
+			'Crax_pauxi'		21111?102112112111101122110111111111111011000110101121210101162110111213111121101200012110111111111111100111110110001211100001011101101111113114011011221021?011111111111111211102121021100211311232222100110
+			'Crypturellus_undulatus'		21111?11211211(01)01010001111101011001101111111110010102121010116210111221311112?1010000121101101011111111001111101100012111000011101011011111031140110111210201011110110111111211102121021100211311222221(01)00101
+			'Lithornis'		21111?1121121100?0100011111010110?11(01)1101?1111?01?102121012?0(56)11?1?1(12)(12)13111221001000(01)10110110111101111001111100110001(12)1110000101010110111111311301110(01)12102000?111011011111121110212101100021131122222110010(01)
+			'Iaceornis_marshii'		???????????????????????????????????????????????????????????????????????31?02(23)11????1?1011010?111101111?01????????????????????????????????1113114011110121020001110??1?11?11121110212?121100211???????????????
+			'Ichthyornis'		(12)110010?11????????0??????10(01)1?111011101001020???101?(01)1200111?(45)110021(12)?1311022010100001011010?11110111111011110010110110010000101(01)10111211112311201110012?12000111(01)00101?11?12111021211111002113112(12)2?21000002
+			'Hesperornis_regalis'		1110010?1111112001?1?0?1010??1110011100??00?0???101021210110050100112111?00010010?0001??0?10?0???000010??0?????????0???0????0?????????????????????????????201?11110000111111211102121111100211311212221022002
+			'Baptornis_adventus'		(12)11???????????????????????????11001??00??1??????????212101100401001121?(123)??012?0??????1010?10?0???000?????0?????????0???0??????????01??(01)1(01)?????????????????201?11110000111111211102121111100211211(12)1?221?020?2
+			'Songlingornis_linghensis'		(01)010010?01????????????????????????????????1??????0?????????????????????31??(12)?0201(01)00110110???1?11011?????????????????????????????????????????????????????????????????????????????????????????????????????????
+			'Patagopteryx_deferrariisi'		???????????????????0?0?1??????00??111110000?????????20100000030????????????0?????????10010????0101?11110(01)00???(01)?10?0??001000001(01)0001??(12)00???3?0????????10?20?0110000?011011?2?0????20?0?000(12)11310(01)110000000?(01)
+			'Cathayornis_yandica'		(01)000010?00??(01)?????????????????????????????0??????0(01)????0111??201?0?10??30??1??101310011011????010?0110000100101100?010001111100(01)?1??1???2101210?1?1?01?110101201??000000000?11???11(12)0?0?0?1(01)1?(01)?00?????0?????
+			'Concornis_lacustris'		???????????????????????????????????????????????????????0111????????10??30??1?0101210011011?0?0010001?0???1001?1100?0100?1???10???1(01)1??(12)????????????????11????(12)0?????????00?1???????20?0?00??111?00??1???11??0
+			'Neuquenornis_volans'		???????????????????????????????????????????????????????0110????????????31?????101(12)1001?01100?001?001?0???2??1???0(01)?0???0?????(01)???1?11???2???210?1???01??????????????????????110?1?1?0???????1?(01)?0???1?0111???
+			'Gobipteryx_minuta'		11111?10010000?001?1?0?10?????00?????0???0??0???1????????????(345)?????10???????????131??1101100?0?1000110?002001?1?0110???0????????????11?121??(012)?0??????1?1??1???????????0?001???0????1?10?00111111000?11?111?0?
+			'Vorona_berivotrensis'		???????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????1???????10101011111200001?20000000
+			'Apsaravis_ukhaana'		????1?10?????????????????????????0?1(01)?????1?0???????2?20010??4010011???31??1?????????1001000?0?10001111011111(01)01011010001111100001011021110?(23)11201100?12??2010111(01)0010111111?1110??2?101211211311111?201000?1
+			'Confuciusornis_sanctus'		11111?(01)0010010???????????10??00??011200??01(12)0111110010000110010100010(01)020001200001(01)000?01000?0??0??0000000000?000211??0010000000010100210101110?100?000100101201000000000001110101120001000111100001110111?00
+			'Archaeopteryx_lithographica'		0000010?000000000??000110??00?0??000?00???000???00100000000000000000?00????????0000000?00000?0000000000000000?0010000?000??000?00001000000??0000000?00000000010000000?00000?000000000?00?0?(01)1010000000?1(01)(01)???
+			'Dromaeosauridae'		0000000?000000000000000000?00000?000?00??0000???00000000000000000000?100?00000000(01)0000?00000?0000000000000000?0010000?00000000100001000000??0000000?0000000001000(01)00000(01)000(01)0000000000000000000000000(01)00(01)(01)?00
+			'Yixianornis_grabaui'		101?010001???????????01??1????????11(01)?????1?0?????100?2001100301???111031??(12)??20100011011010?111101111100111100?0110??001?000???0?011021(01)10?3112001100(01)200?00001100000?0001?21?101?2???????1113111(01)?1???00??1
+			'Yanornis_martini'		1010010001?01????????????10???????1???????1?0?????100020011?0301??0???0310?(12)??20100001011010?1?11?1111000111??0101?0100?10000?0?????1021(01)1013111001100(01)200?0??01?000?0?0001??1?????2??0??00?11(23)11(01)(01)?12??00??1
+			'Sapeornis'		1000010000000?????????????????????????????1?0?????0000(01)00010010000010?0????????0020000?0000??0?00000000001000?0?01?10?0010000?1???0?00?1(01)10?1111001100(01)10?00?(12)00?00?0000000???000?010?0??00??0000000?0??11??0
+			'Pengornis'		0000010?00000???????????????????????????????0?????0?(12)??0011??(12)0??0010?0????????012(01)001?010??????0??1???012111(01)0?011010001(01)(01)1?????1??11???10(12)(12)?0??01??1?11?????0??0??????000??10????(12)0?0??0(01)?1?1?00??11??11??0
+			'Protopteryx'		(01)00?010?00000????????????10?????????????????0?????0???(01)001100(23)01?0?10?030??1(12)0101210011(01)10?0?(01)010(01)?1110001000?0?0000??001??0????????100?010?110000??00(01)100(01)0??0??0000??000??11??????0?????????(01)?000?1???11??0
+			'Hongshanornis'		11110?0?010(01)1????????????10???????????????1(01)0?????1?0?(01)001100(23)01?0?111031??(12)2?20120001011000?(01)0100011110111110010100100010000?0(01)??011001?1??3112001?00(01)200?0??0??0?00?000011?1?101?(12)1001000(12)1131111112?000?01
+			'Archaeorynchus'		1?????000(01)000?????????????????????????????0?0???01?0?1?00010?(123)0???????031??1(12)0(12)01000010?1(01)???0010??111000211??0?01?0??0?10000?????0?10???10??10(12)00??0??100?0100??0000??0001?21???1?(01)??0??00(01)1?1?00?01???00??0
+			'Jeholornis'		??????????????????????????????????????????????????0???????????????????0??????????????10?10?0?0?0?0?11000?100??0000?00?0???000?1???0???0??1??1001?010000100(01)0020?00?00??0000????00(01)000?0??00?(01)00000?0????00???
+	;
+END;
+BEGIN SETS;
+	CHARPARTITION set1=axial:53-71,forelimb:106-154,hindlimb:172-205,pectoral:72-105,pelvic:155-171,skull:1-52;
+	CHARPARTITION file=clarke_2006:1-205;
+END;

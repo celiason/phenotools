@@ -2,22 +2,33 @@
 % Please edit documentation in R/read_ontology.R
 \name{read_ontology}
 \alias{read_ontology}
-\title{Function to create network graph from tab-based text file}
+\title{Function to create a trait ontology from a tabular text file}
 \usage{
 read_ontology(file, root = FALSE)
 }
 \arguments{
-\item{file}{path to text file containing trait ontology (see Details)}
+\item{file}{path to text file containing a tab-delimited trait ontology}
 
-\item{root}{whether to add a root node
-
-e.g.,
-feather
-    rachis 
-  barb
-        barbule
-            hooklet}
+\item{root}{whether to add a root node}
 }
 \description{
-Function to create network graph from tab-based text file
+Function to create a trait ontology from a tabular text file
+}
+\details{
+The text file should contain hierarchical data about relationships 
+among traits (e.g., for feathers: feather -> rachis -> barb -> barbules ->
+barbule hooklets)
+}
+\examples{
+\dontrun{
+# Read in the ontology of Baumel and Whitmer (1993):
+ont <- read_ontology(file = system.file("extdata", "baumel_ontology.txt",
+package = "phenotools"))
+ont
+}
+}
+\references{
+Baumel, J. J., and L. M. Witmer. 1993. Osteologia. P. in
+Handbook of avian anatomy: nomina anatomica avium. Publications of the
+Nuttall Ornithological Club.
 }

@@ -4,17 +4,21 @@
 #' characters in a `nex` object, waits for user input to confirm, and then
 #' handles merging of characters and outputs a new `nex` object
 #' 
-#' @param tree trait ontology (igraph object)
+#' @param tree trait ontology (an `igraph` object produced, e.g., by \code{read_ontology})
 #' @param x nexus file
 #' 
-#' @return an object of class XX
+#' @return a list with character names (chars), distance matrix (dmat), trait
+#' ontology links (ont), and node depths for each character(nodedepth)
 #' 
 #' @author Chad M. Eliason
 #' 
 #' @examples \dontrun{
-#' x <- twig2.ss
-#' tree <- tree
-#' x=nex
+#' x <- twig
+#' ont <- read_ontology(file = system.file("extdata", "baumel_ontology.txt",
+#' package = "phenotools"))
+#' tl <- traitlink(tree=ont, x=x)
+#' # first five characters, links to trait ontology:
+#' tl$ont[1:5]
 #' }
 #' 
 #' @export

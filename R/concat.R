@@ -1,6 +1,6 @@
 #' Merge a list of nexus files
 #'
-#' A function that combines numerous nexus datasets
+#' A function that combines nexus datasets
 #'
 #' @param x (required) a list of `nex` objects to merge
 #' @param taxa a character vector of names of taxa to include in concatenated nexus file (optional)
@@ -21,8 +21,10 @@
 concat <- function(x, taxa=NULL) {
   mat <- lapply(x, '[[', 'data')
   alltaxlabels <- unique(unlist(lapply(x, '[[', 'taxlabels')))
+
   # get taxon labels for each input dataset
   taxbydataset <- lapply(x, '[[', 'taxlabels')
+
   # find overlapping species
   if (!is.null(taxa)) {
     ids <- lapply(1:length(taxbydataset), function(z) {match(taxa,
@@ -33,12 +35,14 @@ concat <- function(x, taxa=NULL) {
       taxbydataset[[z]])})
     taxlabels <- alltaxlabels
   }
+
   # combine data
   dat <- do.call(cbind, lapply(1:length(mat), function(z) {mat[[z]][ids[[z]], ]}))
   rownames(dat) <- 1:length(taxlabels)
   names(dat) <- 1:ncol(dat)
   nchar <- ncol(dat)
   ntax <- nrow(dat)
+
   # get metadata for characters
   charlabels <- unlist(lapply(x, '[[', 'charlabels'))
   charnums <- unlist(lapply(x, '[[', 'charnums'))

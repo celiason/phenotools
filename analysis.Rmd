@@ -9,8 +9,10 @@
 # install.packages("rlang")
 # devtools::install_github('phenotools', dependencies=TRUE, build_vignettes=FALSE)
 # devtools::install_local('~/github/phenotools', dependencies=FALSE)
-# devtools::load_all()
+# devtools::load_all(export_all=FALSE)
 # devtools::document()
+# devtools::check()
+# ls("package:phenotools")
 
 # system.file("extdata", "brusatte2014_charlist.txt", package = "phenotools")
 # system.file("extdata", "clarke_2006.nex", package = "phenotools")

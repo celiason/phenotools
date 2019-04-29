@@ -3,21 +3,25 @@
 #' Function to collapse and merge data across taxa
 #'
 #' @param x (required) a `nex` object
-#' @param map a list specifying equivalent taxa to map from and to (e.g., `c('Tinamus' = 'Tinamus_major')` will map all characters from Tinamus to Tinamus_major)
-#' @param method whether to convert characters scored in both taxa to polymorphisms (`merge`) or retain original characters (default)
+#' @param map a list specifying equivalent taxa to map from and to (e.g.,
+#' `c('spA' = 'spB')` will map all characters from spA to spB)
+#' @param method whether to convert characters scored in both taxa to
+#' polymorphisms (`merge`) or retain original characters (default)
 #' 
-#' @return an object of class \code{nex} for use in further \code{phenotools} functions
+#' @return an object of class \code{nex} for use in further \code{phenotools}
+#' functions
 #' 
 #' @examples \dontrun{
 #' # load data matrix of Clarke et al. (2006)
 #' x <- read.nex(system.file("extdata", "clarke_2006.nex", package = "phenotools"))
 #' # merge 2 duck species into a new taxon (family Anatidae):
-#' y <- collapse(x, map = c('Anas_platyrhynchos' = 'Anatidae', 'Chauna_torquata' = 'Anatidae'), method = 'merge')
+#' y <- collapse(x, map = c('Anas_platyrhynchos' = 'Anatidae', 'Chauna_torquata'
+#' = 'Anatidae'), method = 'merge')
 #' x$tax
 #' y$tax
 #' }
 #' 
-#' @references Clarke, J. A., Zhou, Z., & Zhang, F. (2006). Insight into the
+#' @references Clarke, J. A., Zhou, Z., Zhang, F. (2006). Insight into the
 #' evolution of avian flight from a new clade of Early Cretaceous ornithurines
 #' from China and the morphology of Yixianornis grabaui. Journal of Anatomy,
 #' 208, 287–308.
@@ -40,7 +44,8 @@ collapse <- function(x, map, method = c('retain', 'merge')) {
                    index = rep(seq_along(map), lapply(map, length)),
                    stringsAsFactors=FALSE)
   # if (any(df$from %in% df$to)) {
-  #   stop("Taxa in 'from' are also in 'to' taxa. This is redundant -- please fix.")
+  #   stop("Taxa in 'from' are also in 'to' taxa. This is redundant -- please
+  # fix.")
   # }
   dropped <- names(map)[!names(map) %in% added]
   
@@ -88,45 +93,59 @@ collapse <- function(x, map, method = c('retain', 'merge')) {
       
         # if data values are not the same, convert to polymorphisms
         if (any(id.diff)) {
-            warning('Different character scorings [characters ', paste0(id.diff, sep=' '), '] between taxa ', df$from[i], ' and ', df$to[i], '; converting to polymorphisms')
+            warning('Different character scorings [characters ', paste0(id.diff,
+              sep=' '), '] between taxa ', df$from[i], ' and ', df$to[i],
+            '; converting to polymorphisms')
             # splits into digits
-            char1 <- stringr::str_extract_all(res$data[id1, id.diff], '[\\d\\-]', simplify=T)
-            char2 <- stringr::str_extract_all(res$data[id2, id.diff], '[\\d\\-]', simplify=T)
+            char1 <- stringr::str_extract_all(res$data[id1, id.diff], '[\\d\\-]',
+              simplify=T)
+            char2 <- stringr::str_extract_all(res$data[id2, id.diff], '[\\d\\-]',
+              simplify=T)
             chars <- cbind(char1, char2)
             # convert to polymorphic characters
-            newchars <- sapply(seq_along(id.diff), function(z) paste0(sort(unique(chars[z, ])), collapse=""))
+            newchars <- sapply(seq_along(id.diff), function(z) {
+              paste0(sort(unique(chars[z, ])), collapse="")
+            })
             # add parentheses
-            newchars <- ifelse(stringr::str_length(newchars) > 1, paste0('(',newchars,')'), newchars)
+            newchars <- ifelse(stringr::str_length(newchars) > 1,
+              paste0('(',newchars,')'), newchars)
             # check if any gaps coded with normal scorings
             id.gap <- grep('-', newchars)
             if (any(id.gap)) {
-              warning('Error in character', id.diff[id.gap], ': polymorphism containing a gap `-` in character 
-                      and scored character; replacing with gap scoring')
+              warning('Error in character', id.diff[id.gap],
+                ': polymorphism containing a gap `-` in character and scored
+                character; replacing with gap scoring')
               newchars[id.gap] <- gsub("[0-9()]", "", newchars[id.gap])
             }
             res$data[id2, id.diff] <- newchars  # replace data
         }
         # merge data if no overlap in scorings or if character scorings are the same
         if (any(id.overlap)) {
-          warning('Redundant character scorings between taxa ', df$from[i], ' and ', df$to[i],
-           '[characters ', paste0(id.overlap, sep=" "), ']; combining taxa')
+          warning('Redundant character scorings between taxa ', df$from[i],
+            ' and ', df$to[i], '[characters ', paste0(id.overlap, sep=" "),
+            ']; combining taxa')
         }
       }
       if (method=='retain') {
         # if data values are not the same, retain original taxa
         if (any(id.diff)) {
-          warning('Different character scorings [characters ', paste0(id.diff, sep=' '), '] between taxa ', df$from[i], ' and ', df$to[i], '; retaining both taxa')
+          warning('Different character scorings [characters ', paste0(id.diff,
+            sep=' '), '] between taxa ', df$from[i], ' and ', df$to[i],
+          '; retaining both taxa')
               id <- id[!id == id1] # don't drop
               dropped <- dropped[-i]
           } else if (any(id.overlap)) {
-              warning('Redundant character scorings between taxa ', df$from[i], ' and ', df$to[i], '[characters ', paste0(id.overlap, sep=" "), ']; combining taxa')   
+              warning('Redundant character scorings between taxa ', df$from[i],
+                ' and ', df$to[i], '[characters ', paste0(id.overlap, sep=" "),
+                ']; combining taxa')   
           }
       }
   }
   # drop taxa
   res$data <- res$data[-dropid, ]
   res$taxlabels <- res$taxlabels[-dropid]
-  cat('Dropped taxa:', setdiff(dropped, kept), 'Added taxa:', setdiff(added, kept), sep='\n')
+  cat('Dropped taxa:', setdiff(dropped, kept), 'Added taxa:', setdiff(added,
+    kept), sep='\n')
   # return results
   res
 }

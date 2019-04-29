@@ -2,6 +2,7 @@
 #' 
 #' @param x nexus object
 #' @param y numeric vectors of character numbers to print
+#' 
 #' @export
 #' 
 printneat <- function(x, y) {

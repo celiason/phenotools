@@ -10,7 +10,7 @@
 #' @param comments logical whether to remove test in square brackets
 #' 
 #' @examples \dontrun{
-#' cleantext("dorsalmost part of the processus ligamentus cranii")
+#' cleantext("dorsalmost part of the processus ligamentus cranii", fast=FALSE, cuts=FALSE)
 #' }
 #' 
 #' @importFrom tm Corpus

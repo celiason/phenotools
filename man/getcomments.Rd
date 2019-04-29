@@ -7,11 +7,16 @@
 getcomments(file)
 }
 \arguments{
-\item{file}{name of file}
+\item{file}{name of text file}
 }
 \description{
-This function reads in a character list (as a text file) that have been annotated
-as to whether a given character is a duplicate (DD), should be cut (XX), a
-good character that should be kept (KK), or a character that should be kept but
-modified (KKM).
+This function reads in a character list that have been annotated
+as to whether characters are duplicates (see Details)
+}
+\details{
+Text file contains list of characters with flags indicating whether
+characters are duplicates (DD), should be cut (XX), good characters that
+should be kept (KK), or characters that should be kept but modified (KKM).
+Comments in curly braces indicate which other characters a focal character
+duplicates (e.g., "{duplicates 125, 250}").
 }

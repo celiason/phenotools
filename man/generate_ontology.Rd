@@ -2,14 +2,26 @@
 % Please edit documentation in R/generate_ontology.R
 \name{generate_ontology}
 \alias{generate_ontology}
-\title{Generate trait ontology from a nexus file}
+\title{Generate a trait ontology from a nexus file}
 \usage{
 generate_ontology(x)
 }
 \arguments{
-\item{x}{a nexus file}
+\item{x}{a `nex` object containing character descriptions}
 }
 \description{
-Comma separate terms are used to define links among components of a nexus
+Comma separated terms are used to define links among components of a nexus
 character list
+}
+\examples{
+\dontrun{
+x <- read.nex(system.file("extdata", "clarke_2006.nex", package = "phenotools"))
+# plot data matrix:
+plot(x)
+# generate ontology based on comma-separated terms in characters:
+ont <- generate_ontology(x)
+# plot ontology for humerus characters:
+searchtree(ont$tree, pattern="humer")
+}
+
 }

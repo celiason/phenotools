@@ -1,17 +1,17 @@
 #' Function to find comments in text file
 #' 
-#' This function reads in a character list (as a text file) that have been annotated
-#' as to whether a given character is a duplicate (DD), should be cut (XX), a
-#' good character that should be kept (KK), or a character that should be kept but
-#' modified (KKM).
-#' 
-#' @param file name of file
-#' 
+#' This function reads in a character list that have been annotated
+#' as to whether characters are duplicates (see Details)
+#' @param file name of text file
+#' @details Text file contains list of characters with flags indicating whether
+#' characters are duplicates (DD), should be cut (XX), good characters that
+#' should be kept (KK), or characters that should be kept but modified (KKM).
+#' Comments in curly braces indicate which other characters a focal character
+#' duplicates (e.g., "{duplicates 125, 250}").
 #' @importFrom stringr str_trim
 #' @importFrom stringr regex
 #' @importFrom stringr str_locate
 #' @importFrom stringr str_extract_all
-#' 
 #' @export
 #'
 getcomments <- function(file) {
@@ -55,6 +55,9 @@ getcomments <- function(file) {
 	# output
 	# write.csv(res, file = "output/regex_extracted.csv")
 
+	# as.character(res1$comment)[16]
+	# overlaps and duplicates
+	# dups <- str_match_all(as.character(res1$comment), "(\\bdupl|\\boverl).*?(\\d+(?:[;,]\\s\\d+)*)")
 	# just duplicates
 	dups <- str_match_all(as.character(res1$comment), "(\\bdupl).*?(\\d+(?:[;,]\\s\\d+)*)")
 	# types <- sapply(dups, "[", i=2)
@@ -65,7 +68,6 @@ getcomments <- function(file) {
 	names(dups) <- res1$charnum
 	dups <- na.omit(stats::setNames(unlist(dups, use.names=F), rep(names(dups), times = sapply(dups, length))))
 	dups <- data.frame(target = as.numeric(names(dups)), duplicate = as.numeric(dups))
-
 	# output stuff
 	list(dups=dups, markup=res2$charnum, todo=todo)
 

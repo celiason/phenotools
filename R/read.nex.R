@@ -45,9 +45,9 @@
 #' @importFrom stats sd
 #' @importFrom stats na.omit
 #' 
-#' @references Bertelli, S., & Chiappe, L. M. (2005). Earliest Tinamous (Aves: Palaeognathae)
+#' @references Bertelli, S. and Chiappe, L. M. (2005). Earliest Tinamous (Aves: Palaeognathae)
 #' from the Miocene of Argentina and Their Phylogenetic Position. Contributions
-#' in Science, 502, 1–20.
+#' in Science, 502, 1-20.
 #' 
 #' @author Chad Eliason \email{celiason@@fieldmuseum.org}
 #'

@@ -22,8 +22,7 @@ seqle <- function(x, incr=1) {
 # convert string of scorings to a matrix
 text2mat <- function(x) {
 	x <- readLines(x)
-	require(stringr)
-	if (any(str_detect(x, "[Mm]atrix"))) {
+	if (any(stringr::str_detect(x, "[Mm]atrix"))) {
 		x <- x[!grepl("[Mm]atrix", x)]
 	}
 	# scorings have to be separated from taxon names by either a tab or 2+ spaces (as in Xu et al. 2011)
@@ -48,7 +47,7 @@ text2charlabels <- function(x) {
 	# DONE: make it so this selects all text on multiple lines
 	# TODO: make it so we can extract characters and character states separately (e.g., separated by a ":")
 	# for Brusatte 2014
-	if (any(str_detect(x, "^[Cc]haracter"))) {
+	if (any(stringr::str_detect(x, "^[Cc]haracter"))) {
 		x <- paste0(x, collapse="\n")
 		# matches <- str_match_all(x, regex("Character\\s*(\\d*)\\:\\s(.*?)", dotall=TRUE))
 		matches <- str_match_all(x, regex("Character\\s*(\\d*)\\:\\s(.+?)(?=Character\\s*\\d*\\:\\s|$)", dotall=TRUE))
@@ -79,3 +78,19 @@ text2charlabels <- function(x) {
 	res
 }
 
+
+# stemmer function based on Schinke et al. 1996
+# TODO make it so things like -ity, -ed will be removed from end of word
+schinke <- function(x) {
+	x <- tolower(x)
+	x <- gsub("m\\.", "muscul", x)
+	x <- gsub("proc\\.", "processus", x)
+	x <- gsub("(lig|ligg)\\.", "ligamentos", x)
+	x <- gsub("n\\.", "nervos", x)
+	# x <- gsub("j", "i", x)
+	# x <- gsub("v", "u", x)
+	# x <- str_replace_all(x, "(ibus|ius|ae|am|as|em|es|ia|is|nt|os|ud|um|us|a|e|i|o|u)\\b", "")
+    # NEW VERSIon  (not exactly Schinke)
+	x <- str_replace_all(x, "(ity|ed|al|ibus|ius|ae|am|as|em|es|ia|is|nt|os|ud|um|us|a|e|i|o|u)\\b", "")
+	x
+}

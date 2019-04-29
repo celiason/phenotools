@@ -34,8 +34,9 @@ Function to write nexus file to data for, e.g., analysis in MESQUITE, etc.
 }
 \examples{
 \dontrun{
-x <- read.nex(file='example/toy1.nex')
-write.nex(x2, file='output/testnexus.nex')
+x <- read.nex(file = system.file("extdata", "clarke_2006.nex",
+package = "phenotools"))
+write.nex(x, file='test.nex')
 }
 
 }

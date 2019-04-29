@@ -1,24 +1,26 @@
-#' Function to create network graph from tab-based text file
+#' Function to create a trait ontology from a tabular text file
 #' 
-#' @param file path to text file containing trait ontology (see Details)
+#' @param file path to text file containing a tab-delimited trait ontology
 #' @param root whether to add a root node
-#' 
-#' e.g.,
-#' feather
-#' 	rachis 
-#'	  barb
-#' 		barbule
-#' 			hooklet
-#'
-#' @import igraph
-#' 
+#' @examples \dontrun{
+#' # Read in the ontology of Baumel and Whitmer (1993):
+#' ont <- read_ontology(file = system.file("extdata", "baumel_ontology.txt",
+#' package = "phenotools"))
+#' ont
+#' }
+#' @details The text file should contain hierarchical data about relationships 
+#' among traits (e.g., for feathers: feather -> rachis -> barb -> barbules ->
+#' barbule hooklets)
+#' @references Baumel, J. J., and L. M. Witmer. 1993. Osteologia. P. in
+#' Handbook of avian anatomy: nomina anatomica avium. Publications of the
+#' Nuttall Ornithological Club.
 #' @export
 #' 
 read_ontology <- function(file, root=FALSE){
 	
 	fields <- max(utils::count.fields(file, sep = "\t"))
 	
-	dat <- utils::read.table(file, sep="\t",col.names = paste0("V", sequence(fields)), header=FALSE, fill=TRUE, strip.white=TRUE, stringsAsFactors=FALSE, na.strings="")
+	dat <- utils::read.table(file, sep="\t", col.names = paste0("V", sequence(fields)), header=FALSE, fill=TRUE, strip.white=TRUE, stringsAsFactors=FALSE, na.strings="")
 	
 	# To prepare the data carry forward the last value in columns if lower level (col to the right) is non-missing
 	dat[1] <- zoo::na.locf(dat[1], na.rm=FALSE)
@@ -48,10 +50,10 @@ read_ontology <- function(file, root=FALSE){
 	edges <- as.matrix(edges)
 	
 	# create graph
-	g <- graph_from_edgelist(edges[, 1:2])
+	g <- igraph::graph_from_edgelist(edges[, 1:2])
 
 	# sort attribute for sorting characters that match to a given term
-	edge.attributes(g)$sort <- edges[, 3]
+	igraph::edge.attributes(g)$sort <- edges[, 3]
 	
 	# make new vertex labels
 	verts <- V(g)$name
@@ -62,7 +64,6 @@ read_ontology <- function(file, root=FALSE){
 	verts <- gsub("^ ", "", verts)
 	
 	V(g)$name <- verts
-	# V(g)$names <- vertsold
 	
 	if (root) {
 		g <- addroot(g)
@@ -80,10 +81,10 @@ addroot <- function(g) {
 		stop("Root already present")
 		return(g)
 	}
-	g <- add_vertices(g, nv=1, name="root")
+	g <- igraph::add_vertices(g, nv=1, name="root")
 	rootid <- which(V(g)$name=="root")
 	for (i in roots) {
-		g <- add_edges(g, edges=c(rootid, i))
+		g <- igraph::add_edges(g, edges=c(rootid, i))
 	}
 	return(g)
 }

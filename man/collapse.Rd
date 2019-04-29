@@ -9,12 +9,15 @@ collapse(x, map, method = c("retain", "merge"))
 \arguments{
 \item{x}{(required) a `nex` object}
 
-\item{map}{a list specifying equivalent taxa to map from and to (e.g., `c('Tinamus' = 'Tinamus_major')` will map all characters from Tinamus to Tinamus_major)}
+\item{map}{a list specifying equivalent taxa to map from and to (e.g.,
+`c('spA' = 'spB')` will map all characters from spA to spB)}
 
-\item{method}{whether to convert characters scored in both taxa to polymorphisms (`merge`) or retain original characters (default)}
+\item{method}{whether to convert characters scored in both taxa to
+polymorphisms (`merge`) or retain original characters (default)}
 }
 \value{
-an object of class \code{nex} for use in further \code{phenotools} functions
+an object of class \code{nex} for use in further \code{phenotools}
+functions
 }
 \description{
 Function to collapse and merge data across taxa
@@ -24,14 +27,15 @@ Function to collapse and merge data across taxa
 # load data matrix of Clarke et al. (2006)
 x <- read.nex(system.file("extdata", "clarke_2006.nex", package = "phenotools"))
 # merge 2 duck species into a new taxon (family Anatidae):
-y <- collapse(x, map = c('Anas_platyrhynchos' = 'Anatidae', 'Chauna_torquata' = 'Anatidae'), method = 'merge')
+y <- collapse(x, map = c('Anas_platyrhynchos' = 'Anatidae', 'Chauna_torquata'
+= 'Anatidae'), method = 'merge')
 x$tax
 y$tax
 }
 
 }
 \references{
-Clarke, J. A., Zhou, Z., & Zhang, F. (2006). Insight into the
+Clarke, J. A., Zhou, Z., Zhang, F. (2006). Insight into the
 evolution of avian flight from a new clade of Early Cretaceous ornithurines
 from China and the morphology of Yixianornis grabaui. Journal of Anatomy,
 208, 287–308.

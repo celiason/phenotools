@@ -2,7 +2,6 @@
 # k = number of shared terms (increasing this takes exponentially more time)
 # l = minimum number of characters in a module
 computeBicliques <- function(graph, k, l) {
-  require(igraph)
   vMode1 <- c()
   if (!is.null(V(graph)$type)) {
     vMode1 <- which(!V(graph)$type)

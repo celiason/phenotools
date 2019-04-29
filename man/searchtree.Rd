@@ -20,3 +20,17 @@ searchtree(graph, pattern, plot = TRUE, mode = "out", ...)
 \description{
 Function to grep search labels in tree and plot all connected components
 }
+\examples{
+\dontrun{
+# load Baumel and Whitmer (1993) ontology:
+ont <- read_ontology(file = system.file("extdata", "baumel_ontology.txt",
+package = "phenotools"))
+# show all traits in ontology under "orbita"
+searchtree(ont, "\\\\borbita\\\\b")
+}
+}
+\references{
+Baumel, J. J., and L. M. Witmer. 1993. Osteologia. P. in
+Handbook of avian anatomy: nomina anatomica avium. Publications of the
+Nuttall Ornithological Club.
+}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/read.nex.R
 \name{read.nex}
 \alias{read.nex}
-\title{Read a nexus data file}
+\title{Read in nexus data}
 \usage{
 read.nex(file, charlabels = NULL, charnums = NULL,
   statelabels = NULL, taxlabels = NULL, filename = NULL,
@@ -10,7 +10,7 @@ read.nex(file, charlabels = NULL, charnums = NULL,
   missing = "?", gap = "-")
 }
 \arguments{
-\item{file}{(required) path to either a .NEX, .TXT, or .PDF file containin data}
+\item{file}{(required) path to either a .nex, .txt, or .pdf file containin data}
 
 \item{charlabels}{optional path to text file with character statements}
 
@@ -38,8 +38,9 @@ read.nex(file, charlabels = NULL, charnums = NULL,
 an object of class \code{nex} for use in further \code{phenotools} functions
 }
 \description{
-A function that reads data stored in nexus files
-NOTE: it is necessary to first install poppler with, e.g., `brew install poppler`
+This function reads NEXUS data stored in nexus, text, or pdf files
+NOTE: for pdf files, it is necessary to first install poppler with, e.g.,
+`brew install poppler`
 }
 \examples{
 \dontrun{
@@ -64,9 +65,9 @@ package = "phenotools"))
 
 }
 \references{
-Bertelli, S., & Chiappe, L. M. (2005). Earliest Tinamous (Aves: Palaeognathae)
+Bertelli, S. and Chiappe, L. M. (2005). Earliest Tinamous (Aves: Palaeognathae)
 from the Miocene of Argentina and Their Phylogenetic Position. Contributions
-in Science, 502, 1–20.
+in Science, 502, 1-20.
 }
 \author{
 Chad Eliason \email{celiason@fieldmuseum.org}

@@ -23,15 +23,11 @@
 #' @export
 #' 
 plot.nex <- function(x, phy = NULL, legend.pos = c("none", "left", "right",
-          "bottom", "top"), bw = FALSE, na.value = 'lightgray', fsize = 8, fill = c('statelabels', 'charpartition', 'charset', 'file')) {
+          "bottom", "top"), bw = FALSE, na.value = 'lightgray', fsize = 8,
+          fill = c('statelabels', 'charpartition', 'charset', 'file')) {
 
 # TODO compute changes along different branches, set as branch thickness
 # TODO create a shiny app for exploring phenomic data?
-
-	# require(grid)
-	# require(ape)
-	# require(gridExtra)
-	# require(RColorBrewer)
 
   	# source('/Users/chadeliason/R/ggplotphylo.R')
 
@@ -127,11 +123,12 @@ plot.nex <- function(x, phy = NULL, legend.pos = c("none", "left", "right",
 			  		theme(
 						legend.position = "none",
 						axis.text.x = element_blank(),
-						axis.text.y = element_text(hjust = 0, size = fsize),
+						# axis.text.y = element_text(hjust = 0, size = fsize),
 						axis.title.x = element_text(colour = NA),
 						axis.title.y = element_blank(),
-						axis.line.y = element_line(colour=NA), axis.text.y=element_blank(),
-						axis.ticks.y = element_line(colour = NA), axis.title.y = element_blank(),
+						axis.line.y = element_line(colour=NA),
+						axis.text.y = element_blank(),
+						axis.ticks.y = element_line(colour = NA),
 						plot.margin = unit(c(0,0,0,0), "cm"),
 						panel.background = element_blank(), #element_rect(fill = NA, colour = NA),
 						panel.border = element_blank(), #element_rect(fill=NA, colour = NA),
@@ -152,7 +149,8 @@ plot.nex <- function(x, phy = NULL, legend.pos = c("none", "left", "right",
 		  		axis.text.x = element_blank(),
 				axis.text.y = element_text(hjust = 0, size = fsize),
 				axis.line.y = element_line(colour=NA),
-				axis.ticks.y = element_line(colour = NA), axis.title.y = element_blank(),
+				axis.ticks.y = element_line(colour = NA),
+				axis.title.y = element_blank(),
 				plot.margin = unit(c(0,0,0,0), "cm"),
 				panel.background = element_blank(),
 				panel.border = element_blank(),

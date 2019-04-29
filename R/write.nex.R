@@ -15,8 +15,9 @@
 #' @return an object of class \code{nex} for use in further \code{phenotools} functions
 #' 
 #' @examples \dontrun{
-#' x <- read.nex(file='example/toy1.nex')
-#' write.nex(x2, file='output/testnexus.nex')
+#' x <- read.nex(file = system.file("extdata", "clarke_2006.nex",
+#' package = "phenotools"))
+#' write.nex(x, file='test.nex')
 #' }
 #' 
 #' @author Chad Eliason \email{celiason@@fieldmuseum.org}

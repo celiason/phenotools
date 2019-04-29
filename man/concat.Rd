@@ -15,7 +15,7 @@ concat(x, taxa = NULL)
 an object of class `nex` for use in further `phenotools` functions
 }
 \description{
-A function that combines numerous nexus datasets
+A function that combines nexus datasets
 }
 \examples{
 \dontrun{
