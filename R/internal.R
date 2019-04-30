@@ -130,3 +130,9 @@ fortify.phylo <- function(phylo) {
     x <- rbind(linev, lineh)
     return(x)
 }
+
+# small function to count NAs
+allNA <- function(x) {
+	ifelse(all(is.na(x)), T, F)
+}
+

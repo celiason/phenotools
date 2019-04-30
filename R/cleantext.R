@@ -21,10 +21,6 @@
 #' @importFrom tm removeWords
 #' @importFrom tm stopwords
 #' 
-#' @export
-#' 
-#' @author Chad M. Eliason
-#' 
 cleantext <- function(x, fast=TRUE, latin=TRUE, cuts=TRUE, comments=TRUE) {
   if (comments) {
     x <- stringr::str_replace_all(x, "[\\s]*[\\[\\(].*?[\\]\\)][\\s]*", " ")  # remove comments in square brackets

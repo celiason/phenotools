@@ -2,9 +2,9 @@
 % Please edit documentation in R/print.nex.R
 \name{print.nex}
 \alias{print.nex}
-\title{Utility function to print metadata for nexus file}
+\title{Print data in a `nex` object}
 \usage{
-\method{print}{nex}(x, ...)
+\method{print}{nex}(x, width = 6, ...)
 }
 \arguments{
 \item{x}{nex class object}
@@ -12,5 +12,5 @@
 \item{...}{other arguments (not used)}
 }
 \description{
-Utility function to print metadata for nexus file
+Print data in a `nex` object
 }

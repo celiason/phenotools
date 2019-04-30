@@ -5,7 +5,7 @@
 \alias{[.nex}
 \title{Subset a nexus file}
 \usage{
-\method{subset}{nex}(x, condition)
+\method{subset}{nex}(x, condition, ...)
 
 \method{[}{nex}(x, i, j = NULL, drop = FALSE, ...)
 }
@@ -14,13 +14,13 @@
 
 \item{condition}{subset condition}
 
+\item{...}{other arguments (not used)}
+
 \item{i}{rows (taxa) to keep}
 
 \item{j}{columns (characters) to keep}
 
-\item{drop}{unused}
-
-\item{...}{other arguments (not used)}
+\item{drop}{(not used)}
 }
 \description{
 Subset a nexus file

@@ -2,7 +2,7 @@
 % Please edit documentation in R/read.nex.R
 \name{read.nex}
 \alias{read.nex}
-\title{Read in nexus data}
+\title{Read in NEXUS data}
 \usage{
 read.nex(file, charlabels = NULL, charnums = NULL,
   statelabels = NULL, taxlabels = NULL, filename = NULL,
@@ -10,7 +10,7 @@ read.nex(file, charlabels = NULL, charnums = NULL,
   missing = "?", gap = "-")
 }
 \arguments{
-\item{file}{(required) path to either a .nex, .txt, or .pdf file containin data}
+\item{file}{(required) path to either a .nex, .txt, or .pdf file with NEXUS data}
 
 \item{charlabels}{optional path to text file with character statements}
 
@@ -38,29 +38,27 @@ read.nex(file, charlabels = NULL, charnums = NULL,
 an object of class \code{nex} for use in further \code{phenotools} functions
 }
 \description{
-This function reads NEXUS data stored in nexus, text, or pdf files
-NOTE: for pdf files, it is necessary to first install poppler with, e.g.,
-`brew install poppler`
+This function reads NEXUS data stored in nexus, text, or pdf files. Note:
+for pdf files, it is necessary to first install poppler with, e.g., `brew
+install poppler`
 }
 \examples{
 \dontrun{
+# Read in a nexus file:
+x <- read.nex(file = system.file("extdata", "clarke_2006.nex",
+package = "phenotools"))
 # Build a `nex` object from text files:
 charpath <- system.file("extdata", "brusatte2014_charlist.txt",
 package = "phenotools")
 matpath <- system.file("extdata", "brusatte2014_matrix.txt",
 package = "phenotools")
 x <- read.nex(matpath, charlabels=charpath)
-plot(x, legend.pos = "top")
-
 # Build a `nex` object from a PDF file (Bertelli & Chiappe 2005):
 x <- read.nex(file = system.file("extdata", "Bertelli_2005.pdf",
 package = "phenotools"), ntax = 34, nchar = 63, first = 20, last = 22)
 x
-plot(x)
-
-# Read in a nexus file:
-x <- read.nex(file = system.file("extdata", "clarke_2006.nex",
-package = "phenotools"))
+# Plot
+plot(x, legend.pos = "top")
 }
 
 }

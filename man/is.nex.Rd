@@ -2,7 +2,7 @@
 % Please edit documentation in R/is.nex.R
 \name{is.nex}
 \alias{is.nex}
-\title{Check if x is a nexus file}
+\title{Check if x is a `nex` object}
 \usage{
 is.nex(x)
 }
@@ -10,5 +10,10 @@ is.nex(x)
 \item{x}{`nex` object}
 }
 \description{
-Check if x is a nexus file
+Check if x is a `nex` object
+}
+\examples{
+\dontrun{
+is.nex(twig)
+}
 }

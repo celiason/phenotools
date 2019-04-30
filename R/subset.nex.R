@@ -30,9 +30,9 @@ subset.nex <- function(x, condition, ...) {
 #' @param i rows (taxa) to keep
 #' @param j columns (characters) to keep
 #' @param drop (not used)
-#' @param ... other arguments (not used)
 #' 
 #' @rdname subset.nex
+#' 
 #' @export
 #' 
 '[.nex' <- function(x, i, j=NULL, drop = FALSE, ...) {
@@ -48,8 +48,5 @@ subset.nex <- function(x, condition, ...) {
   res$file <- x$file[j]
   res$data <- x$data[i, j, drop = drop]
   res$taxlabels <- x$taxlabels[i]
-  # print(as.matrix(x$data[i, j, drop = drop, ...]))
   return(res)
-  # rownames(res) <- x$taxlabels[i]
-  # colnames(res) <- sapply(x$charlabels[j], substring, first=1, last=8)
 }

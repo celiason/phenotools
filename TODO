@@ -1,12 +1,8 @@
-Misc:
- [ ] locate compound characters, consider whether to recode as separate characters
- 
 duplicated.nex:
 this is tricky. in many cases, new characters may differ from original ones (e.g., 0-1-2 instead of 0-1, even though they are scoring the same thing. how can we deal with this?)
 
 buildnex:
- [ ]  try out a few more PDF extractions
- [ ]  work on problem with text between data matrix scorings/rows
+ [ ]  work on problem with PDFs having text (page, journal name) between data matrix scorings/rows
  
 subset.nex:
  [ ]  can't subset on file and taxlabel right now. need to fix this.
@@ -16,26 +12,28 @@ plot.nex:
  [ ]  function is giving a plotting error if you don't have character labels in the nexus file
 
 merge.nex:
- [ ]   how handle missing state labels?
 
 read.nex:
- [ ]  add ability to write character sets/partitions
  [ ]  code character polymorphisms somehow (maybe '0&1&2'? this would work with rayDISC function then)
  [ ]  there are problems importing and merging datasets with missing state or character labels
- [ ]  if polymorphisms coded differently - e.g., with [] versus () - make it the same upon export with write.nex
 
 write.nex:
 
 testing:
- [ ] need to add a bunch of checks to ensure format of file is kosher
  [ ] benchmark against Rnexml reading capabilities
 
-someday/maybe:
+wishlist:
  [ ]  add ability to work with NEXML files
  [ ]  add a more general function to prune matrix (e.g., remove invariant characters, duplicates, etc.)
+ [ ] locate compound characters, consider whether to recode as separate characters
 
 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
 Archive:
+ [x] need to add a bunch of checks to ensure format of file is kosher @done (19-04-30 11:18) @project(testing)
+ [x]  if polymorphisms coded differently - e.g., with [] versus () - make it the same upon export with write.nex @done (19-04-30 11:17) @project(read.nex)
+ [x]   how handle missing state labels? @done (19-04-30 11:17) @project(merge.nex)
+ [x]  try out a few more PDF extractions @done (19-04-30 11:11) @project(buildnex)
+ [x]  add ability to write character sets/partitions @done (19-04-30 11:11) @project(read.nex)
  [x]  output a nexus object with some state, character labels NA @done (18-06-21 11:07) @project(write.nex)
  [x]  maybe create a function merge.nex with a `what` argument (either taxa or characters)? @done (18-06-21 11:07) @project(duplicated.nex)
  [x]  create a separate find duplicates function that returns a map of old-new characters for use with merge.nex @done (18-06-21 11:07) @project(duplicated.nex)

@@ -6,7 +6,6 @@
 #' @param dups an optional matrix or list specifying which character are duplicates (e.g., dups = list('1733' = c(1741,1745,1755)))
 #' 
 #' @examples \dontrun{
-
 #' x <- read.nex(system.file("extdata", "clarke_2006.nex", package = "phenotools"))
 #' y <- read.nex(system.file("extdata", "nesbitt_2015.nex", package = "phenotools"))
 #' xy <- concat(list(x,y))
@@ -21,7 +20,7 @@
 #' 
 #' @export
 #' 
-filter <- function(x, dups=NULL) {
+filter <- function(x, dups = NULL) {
     if (class(dups) == "list") {      	
       	# dups <- matrix(unlist(dups), ncol=length(dups))
       	dups <- cbind(as.numeric(rep(names(dups), sapply(dups, length))), as.numeric(unlist(dups)))
@@ -41,7 +40,8 @@ filter <- function(x, dups=NULL) {
 	  scores <- x$data[, match(id, x$charnum)]
 	  scores1 <- scores[,1]
 	  scores2 <- scores[,2]
-	  # create reverse scores (in the case where someone scores 0 & 1 and someone else 1 & 0 for the same structure)
+	  # create reverse scores (in the case where someone scores 0 & 1 and someone
+	  # else 1 & 0 for the same structure)
 	  scores2rev <- factor(scores2)
 	  levels(scores2rev) <- rev(levels(scores2rev))
 	  scores2rev <- as.character(scores2rev)
@@ -56,11 +56,13 @@ filter <- function(x, dups=NULL) {
 	      drops[i] <- id[1]
 	      message('Scores identical; dropping character ', id[1])
 	    }
-	    # if both traits have scored the same taxa, but scores differ either keep (if just reversed scores) or leave alone
+	    # if both traits have scored the same taxa, but scores differ either
+	    # keep (if just reversed scores) or leave alone
 	    if (all(scores1[cc] == scores2rev[cc], na.rm=TRUE)) {
 	      newscores <- scores1
 	      drops[i] <- id[1]
-	      message('Scores differ systematically (reversed values); dropping trait ', id[1], '; check state labels to confirm')
+	      message('Scores differ systematically (reversed values); dropping trait ',
+	      	id[1], '; check state labels to confirm')
 	    }
 	    if (!all(scores1[cc] == scores2[cc]) & !all(scores1[cc] == scores2rev[cc])) {
 	      warning('Traits differ in their scorings. Keeping both.')
@@ -68,15 +70,19 @@ filter <- function(x, dups=NULL) {
 	  }
 	  # Case 2: Different number of taxa scores, some overlapping scores
 	  if (diff(scorings) != 0 & n.overlap > 0) {
-	    # if trait 1 scores more taxa, overlapping scores same - keep character with more scorings
+	    # if trait 1 scores more taxa, overlapping scores same - keep character
+	    # with more scorings
 	    if (all(scores1[cc] == scores2[cc], na.rm=TRUE)) {
 	      drops[i] <- id[which.min(scorings)]  # drop trait with fewer scorings
-	      message('Score overlap identical; keeping character with more scorings and dropping character ', id[which.min(scorings)])
+	      message('Score overlap identical; keeping character with more scorings
+	      	and dropping character ', id[which.min(scorings)])
 	    }
 	    # if trait 1 scores more taxa, overlapping scores different - if reversed keep:
 	    if (all(scores1[cc] == scores2rev[cc], na.rm=TRUE)) {
 	      drops[i] <- id[which.min(scorings)]
-	      warning('Assuming characters are equivalent (reversed scorings) and dropping character with fewer scorings (', id[2], '); check state labels to confirm')
+	      warning('Assuming characters are equivalent (reversed scorings) and
+	      	dropping character with fewer scorings (', id[2], '); check state
+	      	labels to confirm')
 	    }
 	    # otherwise do nothing:
 	    if (!all(scores[cc,1] == scores[cc,2]) & !all(scores[cc,1] == rev(scores[cc,2]))) {
@@ -93,15 +99,14 @@ filter <- function(x, dups=NULL) {
 	    res$data[, match(id[keepchar], x$charnum)] <- newscores  # replace values
 	    # res$data[, id[2]] <- newscores  
 	    drops[i] <- id[dropchar]  # drop trait with fewer scorings
-	    warning('Merging non-overlapping character scorings; dropping character ', id[1], '; check state labels to confirm')
+	    warning('Merging non-overlapping character scorings; dropping character ',
+	    	id[1], '; check state labels to confirm')
 	  }  
 	}
 
 	keep <- !1:ncol(res$data) %in% drops
 
-	################################################################################
 	# Output, drop duplicated characters, labels, etc.:
-	################################################################################
 	res$data <- res$data[, keep]
 	res$charlabels <- res$charlabels[keep]
 	res$statelabels <- res$statelabels[keep]
@@ -109,9 +114,4 @@ filter <- function(x, dups=NULL) {
 	res$charnums <- res$charnums[keep]
 	res$charpartition <- res$charpartition[keep]
 	return(res)
-}
-
-# small function to count NAs
-allNA <- function(x) {
-	ifelse(all(is.na(x)), T, F)
 }

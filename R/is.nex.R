@@ -1,5 +1,10 @@
-#' Check if x is a nexus file
+#' Check if x is a `nex` object
+#' 
 #' @param x `nex` object
+#' @examples
+#' \dontrun{
+#' is.nex(twig)
+#' }
 #' @export
 is.nex <- function(x) {
   inherits(x, "nex")

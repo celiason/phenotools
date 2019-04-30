@@ -1,10 +1,10 @@
-#' Read in nexus data
+#' Read in NEXUS data
 #' 
-#' This function reads NEXUS data stored in nexus, text, or pdf files
-#' NOTE: for pdf files, it is necessary to first install poppler with, e.g.,
-#' `brew install poppler`
+#' This function reads NEXUS data stored in nexus, text, or pdf files. Note:
+#' for pdf files, it is necessary to first install poppler with, e.g., `brew
+#' install poppler`
 #' 
-#' @param file (required) path to either a .nex, .txt, or .pdf file containin data
+#' @param file (required) path to either a .nex, .txt, or .pdf file with NEXUS data
 #' @param charlabels optional path to text file with character statements
 #' @param ntax number of taxa (needed for PDF file reading)
 #' @param nchar number of characters (needed for PDF file reading)
@@ -20,23 +20,21 @@
 #' @return an object of class \code{nex} for use in further \code{phenotools} functions
 #' 
 #' @examples \dontrun{
+#' # Read in a nexus file:
+#' x <- read.nex(file = system.file("extdata", "clarke_2006.nex",
+#' package = "phenotools"))
 #' # Build a `nex` object from text files:
 #' charpath <- system.file("extdata", "brusatte2014_charlist.txt",
 #' package = "phenotools")
 #' matpath <- system.file("extdata", "brusatte2014_matrix.txt",
 #' package = "phenotools")
 #' x <- read.nex(matpath, charlabels=charpath)
-#' plot(x, legend.pos = "top")
-#' 
 #' # Build a `nex` object from a PDF file (Bertelli & Chiappe 2005):
 #' x <- read.nex(file = system.file("extdata", "Bertelli_2005.pdf",
 #' package = "phenotools"), ntax = 34, nchar = 63, first = 20, last = 22)
 #' x
-#' plot(x)
-#' 
-#' # Read in a nexus file:
-#' x <- read.nex(file = system.file("extdata", "clarke_2006.nex",
-#' package = "phenotools"))
+#' # Plot
+#' plot(x, legend.pos = "top")
 #' }
 #' 
 #' @export

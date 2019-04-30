@@ -28,6 +28,3 @@ cleantext("dorsalmost part of the processus ligamentus cranii", fast=FALSE, cuts
 }
 
 }
-\author{
-Chad M. Eliason
-}
