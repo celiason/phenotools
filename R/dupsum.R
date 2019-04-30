@@ -10,6 +10,8 @@
 #' false positive (FP), along with precision (TP/(TP+FP)), recall (TP/(TP+FN)),
 #' and F1 score (2 * (precision * recall) / (precision + recall))
 #' 
+#' @export
+#' 
 dupsum <- function(true, test = list()) {
   fneg <- sapply(seq_along(test), function(x) { sum(!true %in% test[[x]]) })
   tpos <- sapply(seq_along(test), function(x) { sum(test[[x]] %in% true) })

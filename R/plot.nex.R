@@ -9,12 +9,22 @@
 #' @param fsize font size
 #' @param fill how to color cells in matrix
 #' @param legend.pos position of legend
-#'
 #' @examples \dontrun{
-#' x <- allnex.genome
-#' phy <- tree
+#' # load theropod dataset:
+#' data(twig)
+#' # plot data matrix
+#' plot(twig[,1:10], fill="statelabels", legend.pos="top", na.value="black")
+#' # plot matrix alongside phylogeny
+#' library(ape)
+#' s <- "(Tyrannosaurus_rex,(Archaeopteryx_lithographi,Anas_platyrhynchus));"
+#' phy <- compute.brlen(read.tree(text=s))
+#' plot(phy)
+#' plot(x=twig[,1:20], phy=phy, fill="statelabels", legend.pos="top", na.value="white")
 #' }
-#' 
+#' @references Brusatte, S. L., G. T. Lloyd, S. C. Wang, and M. A. Norell. 2014.
+#' Gradual Assembly of Avian Body Plan Culminated in Rapid Rates of Evolution
+#' across the Dinosaur-Bird Transition. Curr Biol 24:2386–2392.
+#' (\href{https://www.ncbi.nlm.nih.gov/pubmed/25264248}{PubMed})
 #' @import ggplot2
 #' @importFrom RColorBrewer brewer.pal
 #' @importFrom stats reorder
@@ -26,10 +36,8 @@ plot.nex <- function(x, phy = NULL, legend.pos = c("none", "left", "right",
           "bottom", "top"), bw = FALSE, na.value = 'lightgray', fsize = 8,
           fill = c('statelabels', 'charpartition', 'charset', 'file')) {
 
-# TODO compute changes along different branches, set as branch thickness
-# TODO create a shiny app for exploring phenomic data?
-
-  	# source('/Users/chadeliason/R/ggplotphylo.R')
+	# TODO add option to show tips of phylogeny (maybe use tidytree?)
+	# TODO legend position not shown with phylogeny (to fix) 
 
   	fill <- match.arg(fill)
   	legend.pos <- match.arg(legend.pos)
@@ -67,8 +75,8 @@ plot.nex <- function(x, phy = NULL, legend.pos = c("none", "left", "right",
 
 	if (length(levels(df$fill)) < 12) {
 		# pal <- scale_fill_brewer(palette = 'Set3', na.value = na.value)
-		colourCount = length(unique(df$fill))
-		pal <- ggplot2::scale_fill_manual(values = colorRampPalette(brewer.pal(12, "Set3"))(colourCount))
+		colourCount <- length(unique(df$fill))
+		pal <- scale_fill_manual(values = colorRampPalette(brewer.pal(12, "Set3"))(colourCount), na.value = na.value)
 	} else {
 		pal <- scale_fill_discrete(na.value = na.value)
 	}
@@ -112,7 +120,7 @@ plot.nex <- function(x, phy = NULL, legend.pos = c("none", "left", "right",
 					panel.border = element_rect(fill = NA, colour = NA),
 					panel.grid = element_blank()
 				)
-		
+
 		df$matches <- match(df$y, tip.order)
 		
 		p2 <- ggplot(df, aes(x, reorder(y, matches), fill = fill)) + geom_tile() +
@@ -136,7 +144,7 @@ plot.nex <- function(x, phy = NULL, legend.pos = c("none", "left", "right",
 						)
 
 		gridExtra::grid.arrange(p1, p2, nrow = 1, widths = c(.2, 1))
-		return(list(phy = phy, data = x))
+		# return(list(phy = phy, data = x))
 	}
 
 	if (is.null(phy)) {

@@ -29,8 +29,21 @@ Plots a nexus dataset and optionally a tree
 }
 \examples{
 \dontrun{
-x <- allnex.genome
-phy <- tree
+# load theropod dataset:
+data(twig)
+# plot data matrix
+plot(twig[,1:10], fill="statelabels", legend.pos="top", na.value="black")
+# plot matrix alongside phylogeny
+library(ape)
+s <- "(Tyrannosaurus_rex,(Archaeopteryx_lithographi,Anas_platyrhynchus));"
+phy <- compute.brlen(read.tree(text=s))
+plot(phy)
+plot(x=twig[,1:20], phy=phy, fill="statelabels", legend.pos="top", na.value="white")
 }
-
+}
+\references{
+Brusatte, S. L., G. T. Lloyd, S. C. Wang, and M. A. Norell. 2014.
+Gradual Assembly of Avian Body Plan Culminated in Rapid Rates of Evolution
+across the Dinosaur-Bird Transition. Curr Biol 24:2386–2392.
+(\href{https://www.ncbi.nlm.nih.gov/pubmed/25264248}{PubMed})
 }

@@ -6,7 +6,7 @@
 #' 
 #' @export
 #' 
-subset.nex <- function(x, condition) {
+subset.nex <- function(x, condition, ...) {
   res <- x
   cond <- substitute(condition)
   ss <- eval(substitute(condition), envir=x)
@@ -29,7 +29,8 @@ subset.nex <- function(x, condition) {
 
 #' @param i rows (taxa) to keep
 #' @param j columns (characters) to keep
-#' @param drop unused
+#' @param drop (not used)
+#' @param ... other arguments (not used)
 #' 
 #' @rdname subset.nex
 #' @export

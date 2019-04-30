@@ -7,7 +7,6 @@ text2numeric <- function(xx) {
 	eval(parse(text = paste("c(", xx, ")")))
 }
 
-
 # Function for finding starts and lengths of string/number sequences
 seqle <- function(x, incr=1) {
 	if(!is.numeric(x)) {
@@ -44,7 +43,6 @@ text2mat <- function(x) {
 text2charlabels <- function(x) {
 	x <- readLines(x)
 	# matches <- str_match(x, "^(Character|[\\s\\t]*)(\\d+)[\\.]?(.*)(\\[\\[\\]\\])(.*)")
-	# DONE: make it so this selects all text on multiple lines
 	# TODO: make it so we can extract characters and character states separately (e.g., separated by a ":")
 	# for Brusatte 2014
 	if (any(stringr::str_detect(x, "^[Cc]haracter"))) {
@@ -90,7 +88,45 @@ schinke <- function(x) {
 	# x <- gsub("j", "i", x)
 	# x <- gsub("v", "u", x)
 	# x <- str_replace_all(x, "(ibus|ius|ae|am|as|em|es|ia|is|nt|os|ud|um|us|a|e|i|o|u)\\b", "")
-    # NEW VERSIon  (not exactly Schinke)
+    # NEW VERSIon  (~Schinke)
 	x <- str_replace_all(x, "(ity|ed|al|ibus|ius|ae|am|as|em|es|ia|is|nt|os|ud|um|us|a|e|i|o|u)\\b", "")
 	x
+}
+
+
+# Create data frame from phylogeny (FORTIFY.PHYLO)
+# see: https://github.com/GuangchuangYu/ggtree/tree/master/R
+fortify.phylo <- function(phylo) {
+    Ntip <- length(phylo$tip.label)
+    Nnode <- phylo$Nnode
+    Nedge <- dim(phylo$edge)[1]
+    z <- reorder(phylo, order = "pruningwise")
+    yy <- numeric(Ntip + Nnode)
+    TIPS <- phylo$edge[phylo$edge[, 2] <= Ntip, 2]
+    yy[TIPS] <- 1:Ntip
+    yy <- .C("node_height_clado", as.integer(Ntip), as.integer(z$edge[, 1]),
+        as.integer(z$edge[, 2]), as.integer(Nedge), double(Ntip + Nnode),
+        as.double(yy), PACKAGE = "ape")[[6]]
+    xx <- .C("node_depth_edgelength", as.integer(z$edge[, 1]),
+        as.integer(z$edge[, 2]), as.integer(Nedge), as.double(z$edge.length),
+        double(Ntip + Nnode), PACKAGE = "ape")[[5]]
+    edge <- phylo$edge
+    nodes <- (Ntip + 1):(Ntip + Nnode)
+    x0v <- xx[nodes]
+    y0v <- y1v <- numeric(Nnode)
+    NodeInEdge1 <- vector("list", Nnode)
+    for (i in nodes) {
+        ii <- i - Ntip
+        j <- NodeInEdge1[[ii]] <- which(edge[, 1] == i)
+        tmp <- range(yy[edge[j, 2]])
+        y0v[ii] <- tmp[1]
+        y1v[ii] <- tmp[2]
+    }
+    x0h <- xx[edge[, 1]]
+    x1h <- xx[edge[, 2]]
+    y0h <- yy[edge[, 2]]
+    lineh <- data.frame(x=x1h, y=y0h, xend=x0h, yend=y0h)
+    linev <- data.frame(x=x0v, y=y1v, xend=x0v, yend=y0v)
+    x <- rbind(linev, lineh)
+    return(x)
 }
