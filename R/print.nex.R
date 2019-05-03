@@ -60,3 +60,14 @@ tail.nex <- function(x, width=6, ...) {
 	# res[res==x$missing] <- "."
 	tail(res, ...)
 }
+
+#' Dimensions of a `nex` object
+#' 
+#' @param x `nex` class object
+#' @export
+#' 
+dim.nex <- function(x) {
+	dim(x$data)
+}
+
+

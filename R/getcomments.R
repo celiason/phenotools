@@ -14,21 +14,19 @@
 #' @importFrom stringr str_extract_all
 #' @export
 #'
+# file = "~/Dropbox/phenome dataset/data/2015-09-02/modified/final_reorderedJAC+CME.txt"
 getcomments <- function(file) {
-
 	# read text
 	txt <- readLines(file)
 	txt <- paste0(txt, collapse="\n")
 	txt <- str_trim(txt)
 	txt <- paste0("\n", txt)
-
 	# find actions, comments associated with characters
 	tmp <- str_match_all(txt, regex("\n([A-Z\\?]+)(\\d+)", multiline=TRUE, dotall=TRUE))
 	tmp <- tmp[[1]]
 	todo <- tmp[,2]
 	charnum <- as.numeric(tmp[,3])
 	matches <- tmp[, 1]
-
 	# find comments
 	locs <- str_locate(txt, fixed(matches))
 	comments <- list()
@@ -44,22 +42,23 @@ getcomments <- function(file) {
 	}
 	names(comments) <- charnum
 	comments <- stats::setNames(unlist(comments, use.names=F), rep(charnum, times = sapply(comments, length)))
-
 	# merge
 	res1 <- data.frame(charnum = as.numeric(names(comments)), comment = comments)
 	res2 <- data.frame(charnum = charnum, todo = todo)
 	res <- dplyr::left_join(res2, res1, by = "charnum")
-
 	ss <- res$charnum
-
 	# output
 	# write.csv(res, file = "output/regex_extracted.csv")
-
 	# as.character(res1$comment)[16]
 	# overlaps and duplicates
 	# dups <- str_match_all(as.character(res1$comment), "(\\bdupl|\\boverl).*?(\\d+(?:[;,]\\s\\d+)*)")
 	# just duplicates
-	dups <- str_match_all(as.character(res1$comment), "(\\bdupl).*?(\\d+(?:[;,]\\s\\d+)*)")
+	# grep("not duplicate", as.character(res1$comment), value=T)
+	# s <- as.character(res1$comment)[116]
+	# s
+	# (?<!a)b matches a "b" that is not preceded an "a"
+	# str_match_all(s, "(?<!not\\s)(\\bdupl).*?(\\d+(?:[;,]\\s\\d+)*)")
+	dups <- str_match_all(as.character(res1$comment), "(?<!not\\s)(\\bdupl).*?(\\d+(?:[;,]\\s\\d+)*)")
 	# types <- sapply(dups, "[", i=2)
 	dups <- lapply(dups, "[", , 3)
 	dups <- sapply(dups, strsplit, split = "[;,]")
@@ -70,5 +69,4 @@ getcomments <- function(file) {
 	dups <- data.frame(target = as.numeric(names(dups)), duplicate = as.numeric(dups))
 	# output stuff
 	list(dups=dups, markup=res2$charnum, todo=todo)
-
 }

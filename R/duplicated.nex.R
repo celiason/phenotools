@@ -337,11 +337,10 @@ findgroups <- function(x) {
 #' 
 #' Changing cutoff will affect the characters identified as duplicates for later
 #' visualization (e.g., with `printout` or `duptree` functions)
-#' 
 #' @param x nex object
 #' @param cutoff cuttoff to filter duplicates/overlapping characters by
-#' 
 #' @author Chad Eliason \email{celiason@@fieldmuseum.org}
+#' @export
 #' 
 update.nex <- function(x, cutoff=Inf) {
   dups <- x$dups
