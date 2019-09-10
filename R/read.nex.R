@@ -213,23 +213,33 @@ read.nex <- function(file, charlabels=NULL, charnums=NULL, statelabels=NULL,
 		x <- scan(file = file, what = "", sep = "\n")
 		
 		# find number of characters
-		nchar <- as.numeric(na.omit(stringr::str_extract(x, regex('(?<=NCHAR=)\\d+', ignore_case=TRUE))))
+		nchar <- as.numeric(na.omit(stringr::str_extract(x, stringr::regex('(?<=NCHAR=)\\d+', ignore_case=TRUE))))
 		# throws an error if ntax specified multiple times
-		ntax <- as.numeric(na.omit(stringr::str_extract(x, regex('(?<=NTAX=)\\d+', ignore_case=TRUE)))[1])
+		ntax <- as.numeric(na.omit(stringr::str_extract(x, stringr::regex('(?<=NTAX=)\\d+', ignore_case=TRUE)))[1])
 		
 		# get taxon labels
 		taxlabelsstart <- grep('TAXLABELS', x, ignore.case=TRUE) + 1
-		# lines that had END + semicolon
-		taxlabelsend <- taxlabelsstart + ntax - 1
-		taxlabels <- stringr::str_match(x[taxlabelsstart:taxlabelsend], '[\\t]*(.*)')[,2]
+		
+		# Check if taxon labels are in a
+		# single line
+		if (ntax == length(strsplit(x[taxlabelsstart], " ")[[1]])) {
+			taxlabels <- strsplit(x[taxlabelsstart], " ")[[1]]
+		  # or separate lines
+		} else {
+			# lines that had END + semicolon
+			taxlabelsend <- taxlabelsstart + ntax - 1
+			taxlabels <- stringr::str_match(x[taxlabelsstart:taxlabelsend], '[\\t]*(.*)')[,2]
+		}		
+
 		# remove space at start of taxon label
 		taxlabels <- gsub('^\\s*', '', taxlabels)
 		# remove puncutation at end of taxon label
 		taxlabels <- gsub('(\\s|\\;)$', '', taxlabels)
 		# this makes it possible to read mesquite saved nexus files with taxa in a single line separated by spaces
-		if (length(taxlabels)!=ntax){
-			taxlabels <- strsplit(taxlabels, split="\\s")[[1]]
-		}
+		# Changed (see above)
+		# if (length(taxlabels)!=ntax){
+		# 	taxlabels <- strsplit(taxlabels, split="\\s")[[1]]
+		# }
 		
 		# extract data matrix
 		matstart <- grep('MATRIX$', x, ignore.case=TRUE) + 1
@@ -380,14 +390,23 @@ read.nex <- function(file, charlabels=NULL, charnums=NULL, statelabels=NULL,
 		if (length(grep('\\bCHARSTATELABELS', x, ignore.case=TRUE)) > 0) {
 			charlabelsstart <- grep('\\bCHARSTATELABELS', x, ignore.case=TRUE) + 1
 			charlabelsend <- grep('\\;', x[charlabelsstart:length(x)])[1] + charlabelsstart - 1
-			# charstatelabels <- str_match_all(x[charlabelsstart:charlabelsend], "(\\t|\\,)\\s(\\d{1,})\\s'(.*?)'(\\s\\/\\s)?(.*?)(?=\\;|(\\,\\s\\d))")
 			
-			charstatelabels <- stringr::str_match_all(x[charlabelsstart:charlabelsend],
-				"(\\t|\\,)\\s(\\d{1,})\\s'(.*?)('\\s\\/(.*?))?(?=\\;(\\s)?$|(\\,\\s\\d{1,}\\s'))")
-
-			charnums <- as.numeric(charstatelabels[[1]][,3])
-			charlabels <- charstatelabels[[1]][,4]
-			statelabels <- charstatelabels[[1]][,6]
+			# charstatelabels <- str_match_all(x[charlabelsstart:charlabelsend], "(\\t|\\,)\\s(\\d{1,})\\s'(.*?)'(\\s\\/\\s)?(.*?)(?=\\;|(\\,\\s\\d))")
+# Modify function to handle correctly formatted CHARSTATELABELS (as in Maddison 1997 Nexus paper)
+			if (any(stringr::str_detect(x[charlabelsstart:charlabelsend], "\\d\\s*(\\w+|'.*?')\\s*\\/\\s*(.*?)(,|;)"))) {
+				charstatelabels <- stringr::str_match(x[charlabelsstart:charlabelsend], "(\\d{1,})\\s*(\\w+|'.*?')\\s*\\/\\s*(.*?)(,|;)")
+				charstatelabels <- list(charstatelabels)
+			} else {
+				# TODO check this format works with others
+				charstatelabels <- stringr::str_match_all(x[charlabelsstart:charlabelsend],
+					"[\\t|\\,]\\s(\\d{1,})\\s'(.*?)('\\s\\/(.*?))?(?=\\;(\\s)?$|(\\,\\s\\d{1,}\\s'))")
+			}
+			charnums <- as.numeric(charstatelabels[[1]][,2])
+			charlabels <- charstatelabels[[1]][,3]
+			statelabels <- charstatelabels[[1]][,4]
+			# statelabels <- charstatelabels[[1]][,5]
+			# charlabels <- charstatelabels[[1]][,4]
+			# statelabels <- charstatelabels[[1]][,6]
 			res$charlabels <- charlabels
 			res$charnums <- charnums
 			res$statelabels <- gsub("^\\s|\\s$", "", statelabels)
