@@ -2,9 +2,9 @@
 
 Please report any bugs or issues, as this package is currently under development.
 
-## Installing _phenotools_
+## Installation
 
-You can install the package using the devtools R package:
+You can install the `phenotools` package using the devtools R package:
 ```
 install.packages("devtools")
 library(devtools)
