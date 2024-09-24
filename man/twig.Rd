@@ -4,7 +4,9 @@
 \name{twig}
 \alias{twig}
 \title{Morphological character dataset for theropod dinosaurs}
-\format{An object of class \code{"nex"}; see \code{read.nex}.}
+\format{
+An object of class \code{"nex"}; see \code{read.nex}.
+}
 \usage{
 data(twig)
 }
@@ -19,7 +21,7 @@ twig$taxlabels
 \references{
 Brusatte, S. L., G. T. Lloyd, S. C. Wang, and M. A. Norell. 2014.
 Gradual Assembly of Avian Body Plan Culminated in Rapid Rates of Evolution
-across the Dinosaur-Bird Transition. Curr Biol 24:2386–2392.
+across the Dinosaur-Bird Transition. Curr Biol 24:2386-2392.
 (\href{https://www.ncbi.nlm.nih.gov/pubmed/25264248}{PubMed})
 }
 \keyword{datasets}

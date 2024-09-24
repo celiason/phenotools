@@ -4,8 +4,17 @@
 \alias{write.nex}
 \title{Write a nexus data object to a file}
 \usage{
-write.nex(x, file, missing = NULL, gap = NULL, mrbayes = FALSE,
-  ngen = NULL, phy = NULL, run = FALSE, format = c("nexus", "tnt"))
+write.nex(
+  x,
+  file,
+  missing = NULL,
+  gap = NULL,
+  mrbayes = FALSE,
+  ngen = NULL,
+  phy = NULL,
+  run = FALSE,
+  format = c("nexus", "tnt")
+)
 }
 \arguments{
 \item{x}{(required) nexus file (`nex`) object}

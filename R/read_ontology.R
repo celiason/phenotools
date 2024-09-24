@@ -14,6 +14,7 @@
 #' @references Baumel, J. J., and L. M. Witmer. 1993. Osteologia. P. in
 #' Handbook of avian anatomy: nomina anatomica avium. Publications of the
 #' Nuttall Ornithological Club.
+#' @importFrom zoo na.locf
 #' @export
 #' 
 read_ontology <- function(file, root=FALSE){

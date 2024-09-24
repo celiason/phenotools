@@ -9,6 +9,8 @@
 \arguments{
 \item{x}{nex class object}
 
+\item{width}{width of character string to display}
+
 \item{...}{other arguments (not used)}
 }
 \description{

@@ -10,6 +10,8 @@ Imports:
 	igraph,
 	pbapply,
 	ggplot2,
+	graphics,
+	ggtree,
 	phangorn,
 	polycor,
 	psych,
@@ -22,7 +24,9 @@ Imports:
 	gridExtra,
 	knitr,
 	pdftools,
+	zoo,
+	dplyr,
 	utils
 License: GPL (>= 2)
 LazyData: true
-RoxygenNote: 6.1.0
+RoxygenNote: 7.1.1

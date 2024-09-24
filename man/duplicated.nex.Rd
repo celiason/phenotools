@@ -4,15 +4,26 @@
 \alias{duplicated.nex}
 \title{Find duplicate or overlapping characters in nexus files}
 \usage{
-\method{duplicated}{nex}(x, opt = c("fuzzy", "terms", "comments",
-  "traitcor"), method = NULL, within_dataset = FALSE,
-  commasep = FALSE, weighting = c(1, 1, 1), K = 1,
-  cluster = c("infomap", "fast_greedy", "walktrap", "label_prop",
-  "leading_eigen", "louvain", "optimal", "spinglass"), cores = 1,
-  latin = TRUE)
+\method{duplicated}{nex}(
+  x,
+  incomparables = FALSE,
+  opt = c("fuzzy", "terms", "comments", "traitcor"),
+  method = NULL,
+  within_dataset = FALSE,
+  commasep = FALSE,
+  weighting = c(1, 1, 1),
+  K = 1,
+  cluster = c("infomap", "fast_greedy", "walktrap", "label_prop", "leading_eigen",
+    "louvain", "optimal", "spinglass"),
+  cores = 1,
+  latin = TRUE,
+  ...
+)
 }
 \arguments{
 \item{x}{(required) a `nex` object}
+
+\item{incomparables}{unused argument}
 
 \item{opt}{method to use for finding duplicates}
 
@@ -31,6 +42,8 @@
 \item{cores}{how many cores to use (for parallel processing in traitcor option)}
 
 \item{latin}{whether to use Schinke Latin stemmer (logical)}
+
+\item{...}{additional arguments (unused)}
 }
 \value{
 an object of class \code{nex} for use in further \code{phenotools} functions

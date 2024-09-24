@@ -2,6 +2,7 @@
 #' 
 #' @param x nexus object
 #' @param by sorting by
+#' @param decreasing whether to sort in decreasing order
 #' @param ... other arguments passed to sort
 #' 
 #' @export
@@ -12,7 +13,7 @@
 #' plot(twig.sorted)
 #' }
 #' 
-sort.nex <- function(x, by = c('taxlabels', 'charlabels'), ...) {
+sort.nex <- function(x, decreasing = FALSE, by = c('taxlabels', 'charlabels'), ...) {
   res <- x
   by <- match.arg(by)
   if (by == 'taxlabels') {
@@ -24,7 +25,7 @@ sort.nex <- function(x, by = c('taxlabels', 'charlabels'), ...) {
   if (by == 'charlabels') {
     ord <- order(x$charlabels, ...)
     res$data <- x$data[, ord]
-    res$charlabels <- sort(x$charlabels, ...)
+    res$charlabels <- sort(x$charlabels, decreasing, ...)
     return(res)
   }
 }

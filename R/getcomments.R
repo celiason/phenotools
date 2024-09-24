@@ -12,6 +12,7 @@
 #' @importFrom stringr regex
 #' @importFrom stringr str_locate
 #' @importFrom stringr str_extract_all
+#' @importFrom dplyr left_join
 #' @export
 #'
 # file = "~/Dropbox/phenome dataset/data/2015-09-02/modified/final_reorderedJAC+CME.txt"

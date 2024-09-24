@@ -4,12 +4,14 @@
 \alias{update.nex}
 \title{Small function to update a duplicated nex object}
 \usage{
-\method{update}{nex}(x, cutoff = Inf)
+\method{update}{nex}(object, cutoff = Inf, ...)
 }
 \arguments{
-\item{x}{nex object}
+\item{object}{nex object}
 
-\item{cutoff}{cuttoff to filter duplicates/overlapping characters by}
+\item{cutoff}{cutoff to filter duplicates/overlapping characters by}
+
+\item{...}{additional arguments (unused)}
 }
 \description{
 Changing cutoff will affect the characters identified as duplicates for later

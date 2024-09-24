@@ -13,6 +13,8 @@
 #' @param weighting vector for parts of character (before comma, after comma, character states)
 #' @param cores how many cores to use (for parallel processing in traitcor option)
 #' @param latin whether to use Schinke Latin stemmer (logical)
+#' @param incomparables unused argument
+#' @param ... additional arguments (unused)
 #' 
 #' @return an object of class \code{nex} for use in further \code{phenotools} functions
 #' 
@@ -39,10 +41,10 @@
 #' 
 #' @author Chad Eliason \email{celiason@@fieldmuseum.org}
 #' 
-duplicated.nex <- function(x, opt=c("fuzzy", "terms", "comments", "traitcor"),
+duplicated.nex <- function(x, incomparables = FALSE, opt=c("fuzzy", "terms", "comments", "traitcor"),
   method=NULL, within_dataset=FALSE, commasep=FALSE, weighting=c(1,1,1),
   K=1, cluster = c("infomap", "fast_greedy", "walktrap", "label_prop", "leading_eigen",
-    "louvain", "optimal", "spinglass"), cores=1, latin=TRUE) {
+    "louvain", "optimal", "spinglass"), cores=1, latin=TRUE, ...) {
 
   # TODO write a lda.nex() function? separate the dup finding and dropping? maybe filter.nex()?
   # TODO add option to "nest" state labels in the network graph (so things like "size of distal end" wouldn't be matched across all characters, only those with state label as, say, "Humerus...")
@@ -337,21 +339,23 @@ findgroups <- function(x) {
 #' 
 #' Changing cutoff will affect the characters identified as duplicates for later
 #' visualization (e.g., with `printout` or `duptree` functions)
-#' @param x nex object
-#' @param cutoff cuttoff to filter duplicates/overlapping characters by
+#' @param object nex object
+#' @param cutoff cutoff to filter duplicates/overlapping characters by
+#' @param ... additional arguments (unused)
 #' @author Chad Eliason \email{celiason@@fieldmuseum.org}
 #' @export
 #' 
-update.nex <- function(x, cutoff=Inf) {
-  dups <- x$dups
+update.nex <- function(object, cutoff=Inf, ...) {
+  res <- object
+  dups <- res$dups
   newdups <- dups[dups$stringdist < cutoff, ]
   if (nrow(newdups)==0) {
     stop("No duplicates below the set cutoff")
   }
   g <- igraph::graph_from_edgelist(t(apply(newdups[,c('char1','char2'),drop=F], 1, as.character)), directed=FALSE)
   grps <- igraph::communities(igraph::components(g))
-  x$clusters <- grps
-  x$cutoff <- cutoff
-  x$dups <- newdups
-  return(x)
+  res$clusters <- grps
+  res$cutoff <- cutoff
+  res$dups <- newdups
+  return(res)
 }

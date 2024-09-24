@@ -4,10 +4,20 @@
 \alias{read.nex}
 \title{Read in NEXUS data}
 \usage{
-read.nex(file, charlabels = NULL, charnums = NULL,
-  statelabels = NULL, taxlabels = NULL, filename = NULL,
-  ntax = NULL, nchar = NULL, first = NULL, last = NULL,
-  missing = "?", gap = "-")
+read.nex(
+  file,
+  charlabels = NULL,
+  charnums = NULL,
+  statelabels = NULL,
+  taxlabels = NULL,
+  filename = NULL,
+  ntax = NULL,
+  nchar = NULL,
+  first = NULL,
+  last = NULL,
+  missing = "?",
+  gap = "-"
+)
 }
 \arguments{
 \item{file}{(required) path to either a .nex, .txt, or .pdf file with NEXUS data}

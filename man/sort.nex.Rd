@@ -4,10 +4,12 @@
 \alias{sort.nex}
 \title{Sort a nexus file}
 \usage{
-\method{sort}{nex}(x, by = c("taxlabels", "charlabels"), ...)
+\method{sort}{nex}(x, decreasing = FALSE, by = c("taxlabels", "charlabels"), ...)
 }
 \arguments{
 \item{x}{nexus object}
+
+\item{decreasing}{whether to sort in decreasing order}
 
 \item{by}{sorting by}
 

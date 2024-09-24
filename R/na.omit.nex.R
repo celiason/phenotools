@@ -1,12 +1,12 @@
 #' Remove NAs from nexus files
 #' 
-#' @param x nex object
+#' @param object nex object
 #' @param ... other arguments
 #' 
 #' @export
 #' 
-na.omit.nex <- function(x, ...) {
-  res <- x
+na.omit.nex <- function(object, ...) {
+  res <- object
   x$data <- as.matrix(x$data)
   id.col <- sapply(1:ncol(x$data), function(z) { all(is.na(x$data[,z], ...)) } )
   id.row <- sapply(1:nrow(x$data), function(z) { all(is.na(x$data[z,], ...)) } )

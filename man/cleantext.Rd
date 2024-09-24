@@ -4,8 +4,7 @@
 \alias{cleantext}
 \title{Function to remove spaces, punctuation from phenome terms}
 \usage{
-cleantext(x, fast = TRUE, latin = TRUE, cuts = TRUE,
-  comments = TRUE)
+cleantext(x, fast = TRUE, latin = TRUE, cuts = TRUE, comments = TRUE)
 }
 \arguments{
 \item{x}{a character vector}

@@ -4,13 +4,22 @@
 \alias{plot.nex}
 \title{plot data matrix and phylogeny}
 \usage{
-\method{plot}{nex}(x, phy = NULL, legend.pos = c("none", "left",
-  "right", "bottom", "top"), bw = FALSE, na.value = "lightgray",
-  fsize = 8, fill = c("statelabels", "charpartition", "charset",
-  "file"))
+\method{plot}{nex}(
+  x,
+  y = NULL,
+  phy = NULL,
+  legend.pos = c("none", "left", "right", "bottom", "top"),
+  bw = FALSE,
+  na.value = "lightgray",
+  fsize = 8,
+  fill = c("statelabels", "charpartition", "charset", "file"),
+  ...
+)
 }
 \arguments{
 \item{x}{a `nex` object for plotting}
+
+\item{y}{unused}
 
 \item{phy}{a phylogeny in `phylo` format}
 
@@ -23,6 +32,8 @@
 \item{fsize}{font size}
 
 \item{fill}{how to color cells in matrix}
+
+\item{...}{additional arguments (unused)}
 }
 \description{
 Plots a nexus dataset and optionally a tree
@@ -36,6 +47,7 @@ plot(twig[,1:10], fill="statelabels", legend.pos="top", na.value="black")
 # plot matrix alongside phylogeny
 library(ape)
 s <- "(Tyrannosaurus_rex,(Archaeopteryx_lithographi,Anas_platyrhynchus));"
+s <- "(trex,(al,ap));"
 phy <- compute.brlen(read.tree(text=s))
 plot(phy)
 plot(x=twig[,1:20], phy=phy, fill="statelabels", legend.pos="top", na.value="white")
@@ -44,6 +56,6 @@ plot(x=twig[,1:20], phy=phy, fill="statelabels", legend.pos="top", na.value="whi
 \references{
 Brusatte, S. L., G. T. Lloyd, S. C. Wang, and M. A. Norell. 2014.
 Gradual Assembly of Avian Body Plan Culminated in Rapid Rates of Evolution
-across the Dinosaur-Bird Transition. Curr Biol 24:2386–2392.
+across the Dinosaur-Bird Transition. Curr Biol 24:2386-2392.
 (\href{https://www.ncbi.nlm.nih.gov/pubmed/25264248}{PubMed})
 }

@@ -38,7 +38,7 @@ y$tax
 Clarke, J. A., Zhou, Z., Zhang, F. (2006). Insight into the
 evolution of avian flight from a new clade of Early Cretaceous ornithurines
 from China and the morphology of Yixianornis grabaui. Journal of Anatomy,
-208, 287–308.
+208, 287-308.
 }
 \author{
 Chad Eliason \email{celiason@fieldmuseum.org}

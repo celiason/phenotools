@@ -4,10 +4,10 @@
 \alias{na.omit.nex}
 \title{Remove NAs from nexus files}
 \usage{
-\method{na.omit}{nex}(x, ...)
+\method{na.omit}{nex}(object, ...)
 }
 \arguments{
-\item{x}{nex object}
+\item{object}{nex object}
 
 \item{...}{other arguments}
 }

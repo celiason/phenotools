@@ -2,6 +2,8 @@
 .Rhistory
 .RData
 
+unused_code/
+
 pdfcharlabels
 
 pdfmatrix
@@ -11,3 +13,7 @@ example/Bertelli_Chiappe_2005.txt
 example/Bledsoe_1988.pdf
 
 *.sublime-workspace
+phenotools.Rproj
+R/.DS_Store
+.DS_Store
+

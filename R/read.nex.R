@@ -51,6 +51,7 @@
 #'
 # old:
 # read.nex <- function(file, filetype=c('nexus', 'txt', 'pdf'), charlabels=NULL,
+
 read.nex <- function(file, charlabels=NULL, charnums=NULL, statelabels=NULL,
 	taxlabels=NULL, filename=NULL, ntax=NULL, nchar=NULL, first=NULL, last=NULL,
 	missing="?", gap="-") {
@@ -182,7 +183,7 @@ read.nex <- function(file, charlabels=NULL, charnums=NULL, statelabels=NULL,
 		# merge data for same species in multiple rows/lines of the text
 		datamatrix <- sapply(untaxlabels, function(x) {paste0(datamatrix[which(names(datamatrix) %in% x)], collapse="")})
 		# extract character states
-		datamatrix <- str_extract_all(datamatrix, '\\d{1}|[\\(\\[\\{]\\d{1,4}[\\)\\]\\}]|\\-|\\–|\\?|\\w')  # extract scorings
+		datamatrix <- stringr::str_extract_all(datamatrix, '\\d{1}|[\\(\\[\\{]\\d{1,4}[\\)\\]\\}]|\\-|\u2013|\\?|\\w')  # extract scorings
 		nchars <- sapply(datamatrix, length)
 		# check - all same number of characters?
 		# all(diff(nchars)==0)

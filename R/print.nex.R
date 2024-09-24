@@ -1,6 +1,7 @@
 #' Print data in a `nex` object
 #' 
 #' @param x nex class object
+#' @param width width of character string to display
 #' @param ... other arguments (not used)
 #' 
 #' @export
@@ -31,6 +32,7 @@ summary.nex <- function(object, ...) {
 #' Look at top of a `nex` object
 #' 
 #' @param x nex object
+#' @param width width of character string to display
 #' @param ... optional arguments
 #' 
 #' @importFrom utils head
@@ -47,6 +49,7 @@ head.nex <- function(x, width=6, ...) {
 #' Look at bottom of a `nex` object
 #' 
 #' @param x `nex` class object
+#' @param width width of character string to display
 #' @param ... optional arguments
 #' 
 #' @importFrom utils head
